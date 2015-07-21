@@ -20,12 +20,9 @@ public class Helper {
 
 	/**
 	 * 
-	 * @param message
-	 *            Hint
-	 * @param min
-	 *            Minimum Value
-	 * @param max
-	 *            Maximum Value
+	 * @param message Hint
+	 * @param min Minimum Value
+	 * @param max Maximum Value
 	 * @return
 	 */
 	public static int checkUserInput(String message, int min, int max) {
@@ -34,12 +31,10 @@ public class Helper {
 			IO.println(message);
 			input = IO.readInt();
 			if (input < min || input > max) {
-				IO.println("Eingabe, außerhalb des gültigen Bereiches (" + min
-						+ "-" + max + ")");
+				IO.println("Eingabe, außerhalb des gültigen Bereiches (" + min + "-" + max + ")");
 				error = true;
 			} else {
 				error = false;
-
 			}
 		} while (error);
 		return input;
@@ -105,76 +100,9 @@ public class Helper {
 
 	}
 
-	/**
-	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll
-	 * 
-	 * @param player
-	 *            Spielerarray
-	 * @param playerN
-	 *            Spielernummer
-	 * @return shipIndex6
-	 */
-	public static int getAvailableShipToShoot(ArrayList<Player> playerList,
-			int playerindex) {
-		boolean error = true;
-		int shipIndex;
-		int[] tempShipArray;
-		IO.println("Mit welchem Schiff willst du schiessen?");
-		// printListOfReloadingShips(player, playerN);
-		// printListOfSunkShips(player, playerN);
-		// IO.println("Schiffe, die zur Verfuegung stehen");
-		tempShipArray = listOfAvalableShips(playerList, playerindex);
-		IO.println("Gib die Nummer des Schiffs ein: ");
-		do {
-			shipIndex = IO.readInt() - 1;
-			for (int counter = 0; counter > tempShipArray.length; counter++) {
-				if (tempShipArray[counter] == shipIndex) {
-					error = false;
-				}
-			}
-		} while (error);
-		IO.println("Sie haben das Schiff mit der Nummer "
-				+ playerList.get(playerindex).getShips().get(shipIndex)
-						.getNumber()
-				+ " vom Typ "
-				+ playerList.get(playerindex).getShips().get(shipIndex)
-						.getName() + " ausgewaehlt!");
-		return shipIndex;
-	}
+	
 
-	/**
-	 * Gibt Liste der Schiffe aus, die zur Verf�gung stehen
-	 *
-	 * @param player
-	 *            Playerarray
-	 * @param playerN
-	 *            Index des Spielers in Player-Array
-	 *
-	 */
-	public static int[] listOfAvalableShips(ArrayList<Player> playerList,
-			int playerindex) {
-		int[] tempShipArray;
-		int arrayLength = 0;
-		for (int ships = 1; ships < playerList.get(playerindex).getShips()
-				.size(); ships++) {
-			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
-					&& playerList.get(playerindex).getShips().get(ships)
-							.getCurrentReloadTime() == 0) {
-				arrayLength = arrayLength++;
-			}
-		}
-		tempShipArray = new int[arrayLength];
-		for (int ships = 1; ships < tempShipArray.length; ships++) {
-			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
-					&& playerList.get(playerindex).getShips().get(ships)
-							.getCurrentReloadTime() == 0) {
-				tempShipArray[ships] = playerList.get(playerindex).getShips()
-						.get(ships).getNumber();
-			}
-		}
-
-		return tempShipArray;
-	}
+	
 
 	/**
 	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll

@@ -4,8 +4,10 @@ import Game.Settings;
 import Gameobjects.Playfield.Playfield;
 import Gameobjects.Ships.*;
 import IO.IO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import Gameobjects.Playfield.PlayerPlayfieldGui;
 
 public class Player implements Serializable {
@@ -213,7 +215,7 @@ public class Player implements Serializable {
 					+ " Größe " + "(" + ship.getSize() + ")");
 		}
 	}
-	
+
 	/**
 	 * Gibt Koordinate des Schusses zurueck
 	 *
@@ -222,24 +224,11 @@ public class Player implements Serializable {
 	public String coordinateToShoot() {
 		String coordinate;
 		boolean error = false;
-		IO.print("Bitte geben Sie die Koordinaten fuer das Schiessen ein:");
+		//IO.print("Bitte geben Sie die Koordinaten fuer das Schiessen ein:");
 		do {
-			coordinate = IO.readString().toLowerCase(); // Grossbuchstaben->
-														// Kleinbuchstaben
-			if (coordinate.matches("^[1-9]{1}[0-9]{0,1}[a-z]{1}$")) { // Teste
-																		// Eingabe
-																		// mit
-																		// RegEx(^
-																		// Anfang,
-																		// 1
-																		// oder
-																		// 2
-																		// Zahlen(0-9)
-																		// & 1
-																		// Buchstabe
-																		// (a-z),
-																		// $
-																		// Ende
+			coordinate = IO.readString().toLowerCase(); // Grossbuchstaben->Kleinbuchstaben
+			if (coordinate.matches("^[1-9]{1}[0-9]{0,1}[a-z]{1}$")) { 
+				// Teste Eingabe mit RegEx(^Anfang, 1 oder 2 Zahlen(0-9) & 1 Buchstabe (a-z), $ Ende
 				error = false;
 			} else {
 				IO.println("Fehler");
@@ -249,19 +238,94 @@ public class Player implements Serializable {
 		return coordinate;
 	}
 
-	public void shootOnPlayField(ArrayList<Player> playerList, int opponentIndex, int shootRange, boolean orientation, String coordinate) {
+	public void shootOnPlayField(ArrayList<Player> playerList,
+			int opponentIndex, int shootRange, boolean orientation,
+			String coordinate) {
 		int[] hitShips;
-		hitShips = playerList.get(opponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
-		playerList.get(opponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
+		hitShips = playerList.get(opponentIndex).getPlayfield()
+				.setShot(coordinate, shootRange, orientation);
+		playerList.get(opponentIndex).getOpponentField()
+				.setShot(coordinate, shootRange, orientation);
 		// Prüfen ob schiffe getroffen
 		for (int i = 0; i < hitShips.length; i++) {
-			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex).getShips().size(); shipIndex++) {
-				if (playerList.get(opponentIndex).getShips().get(shipIndex).getNumber() == hitShips[i]) {
-					playerList.get(opponentIndex).getShips().get(shipIndex).setHitpoints();
+			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex)
+					.getShips().size(); shipIndex++) {
+				if (playerList.get(opponentIndex).getShips().get(shipIndex)
+						.getNumber() == hitShips[i]) {
+					playerList.get(opponentIndex).getShips().get(shipIndex)
+							.setHitpoints();
 				}
 			}
 		}
 		playerList.get(opponentIndex).getOpponentField().printOpponentField();
+	}
+
+	/**
+	 * Gibt Liste der Schiffe aus, die zur Verf�gung stehen
+	 *
+	 * @param player
+	 *            Playerarray
+	 * @param playerN
+	 *            Index des Spielers in Player-Array
+	 *
+	 */
+	public int[] listOfAvalableShips(ArrayList<Player> playerList,
+			int playerindex) {
+		int[] tempShipArray;
+		int arrayLength = 0;
+		for (int ships = 1; ships < playerList.get(playerindex).getShips()
+				.size(); ships++) {
+			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
+					&& playerList.get(playerindex).getShips().get(ships)
+							.getCurrentReloadTime() == 0) {
+				arrayLength = arrayLength++;
+			}
+		}
+		tempShipArray = new int[arrayLength];
+		for (int ships = 1; ships < tempShipArray.length; ships++) {
+			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
+					&& playerList.get(playerindex).getShips().get(ships)
+							.getCurrentReloadTime() == 0) {
+				tempShipArray[ships] = playerList.get(playerindex).getShips()
+						.get(ships).getNumber();
+			}
+		}
+		return tempShipArray;
+	}
+
+	/**
+	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll
+	 * 
+	 * @param player
+	 *            Spielerarray
+	 * @param playerN
+	 *            Spielernummer
+	 * @return shipIndex
+	 */
+	public int getAvailableShipToShoot(ArrayList<Player> playerList,
+			int playerindex) {
+		boolean error = true;
+		int shipIndex;
+		int[] tempShipArray;
+		IO.println("Mit welchem Schiff willst du schiessen?");
+		// printListOfReloadingShips(player, playerN);
+		// printListOfSunkShips(player, playerN);
+		// IO.println("Schiffe, die zur Verfuegung stehen");
+		tempShipArray = listOfAvalableShips(playerList, playerindex);
+		IO.println("Gib die Nummer des Schiffs ein: ");
+		do {
+			shipIndex = IO.readInt() - 1;
+			for (int counter = 0; counter > tempShipArray.length; counter++) {
+				if (tempShipArray[counter] == shipIndex) {
+					error = false;
+				}
+			}
+		} while (error);
+		IO.println("Sie haben das Schiff mit der Nummer "
+				+ playerList.get(playerindex).getShips().get(shipIndex).getNumber()
+				+ " vom Typ "
+				+ playerList.get(playerindex).getShips().get(shipIndex).getName() + " ausgewaehlt!");
+		return shipIndex;
 	}
 
 }
