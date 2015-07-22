@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import Game.Game;
+import IO.IO;
 
 public class SaveLoad {
 	
@@ -21,6 +22,7 @@ public class SaveLoad {
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			//Schreibt in Datei
 			objectOut.writeObject(game);
+			IO.println("Spiel wurde erfolgreich gespeichert...");
 			//Schliesst Datei
 			objectOut.close();
 		}
@@ -39,6 +41,8 @@ public class SaveLoad {
 			try {
 				//Gameobjekt aus der Datei wird dem Gameobjekt game zugeordnet
 				game = (Game)objectIn.readObject();
+				
+				IO.println("Spiel wurde erfolgreich geladen...");
 			} 
 			catch (ClassNotFoundException e) {
 				e.printStackTrace();

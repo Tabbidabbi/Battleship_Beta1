@@ -1,15 +1,10 @@
 package Helper;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -18,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 public class HelperMultipleChoiceDialog extends JDialog implements ActionListener {
 	private String[] array;

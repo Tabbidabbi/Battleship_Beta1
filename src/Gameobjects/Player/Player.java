@@ -279,11 +279,8 @@ public class Player implements Serializable {
 	/**
 	 * Gibt Liste der Schiffe aus, die zur Verfügung stehen
 	 *
-	 * @param player
-	 *            Playerarray
-	 * @param playerN
-	 *            Index des Spielers in Player-Array
-	 *
+	 * @param player Playerarray
+	 * @param playerN Index des Spielers in Player-Array
 	 */
 	
 	public int[] listOfAvalableShips(ArrayList<Player> playerList,

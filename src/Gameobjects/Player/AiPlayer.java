@@ -13,13 +13,15 @@ public class AiPlayer extends Player implements Serializable {
 	public AiPlayer(int number, String name, Settings gameSettings, boolean isAi) {
 		super(number, name, gameSettings, isAi);
 		setAiLastHitCoordinate(null);
+		//9 steht für keinen Gegner
+		setAiLastHitOpponentIndex(9);
 	}
 	    
 	/**
 	 * Gibt letzten getroffenen Gegner zurück
 	 * @return int lastHitOpponentNumber
 	 */
-	public int getaiLastHitOpponentIndex() {
+	public int getAiLastHitOpponentIndex() {
 		return aiLastHitOpponentIndex;
 	}
 
@@ -53,17 +55,23 @@ public class AiPlayer extends Player implements Serializable {
      * @return aiOpponent Zufällig berechneten Index
      */
     public int getAiOpponent(ArrayList<Player> playerList, int playerIndex) {
-    	int aiOpponentIndex; 
-    	boolean error = false;
-        do {
-        	aiOpponentIndex = (int)(Math.random() * playerList.size());
-            if (playerIndex != aiOpponentIndex && playerList.get(aiOpponentIndex).getisLost() == false) {
-                error = false;
-            }
-            else{
-            	error = true;
-            }
-        } while (error);
+    	int aiOpponentIndex = 9;
+    	int lastHitOpponentIndex = getAiLastHitOpponentIndex();
+    	if(lastHitOpponentIndex == 9){
+    		boolean error = false;
+            do {
+            	aiOpponentIndex = (int)(Math.random() * playerList.size());
+                if (playerIndex != aiOpponentIndex && playerList.get(aiOpponentIndex).getisLost() == false) {
+                    error = false;
+                }
+                else{
+                	error = true;
+                }
+            } while (error);
+    	}
+    	else{
+    		aiOpponentIndex = lastHitOpponentIndex;
+    	}
 		return aiOpponentIndex;
 	}
     
@@ -166,6 +174,7 @@ public class AiPlayer extends Player implements Serializable {
 		}
 		return aiCoordinate;
 	}
+
 	
 	/**
 	 * Wählt eine zufällige Koorindate
@@ -231,6 +240,9 @@ public class AiPlayer extends Player implements Serializable {
         if(playerList.get(aiOpponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getHasShip() == true){
         	hitCoordinate = coordinate;
         	setAiLastHitOpponentIndex(aiOpponentIndex);
+        }
+        else{
+        	setAiLastHitOpponentIndex(9);
         }
         
         return hitCoordinate;
