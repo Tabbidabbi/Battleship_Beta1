@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import Game.*;
+import java.awt.color.ColorSpace;
 
 /**
  *
@@ -33,15 +34,17 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
             for (int j = 0; j < playfieldMatrix[i].length; j++) {
                 playfieldMatrix[i][j] = new FieldGui();
                 playfieldMatrix[i][j].setActionCommand("" + i +"#"+ j);
-                
                 playfieldMatrix[i][j].addActionListener(this);
                 playfieldMatrix[i][0].setText("" + i);
+                playfieldMatrix[i][0].setBackground(Color.white);
                 playfieldMatrix[i][0].setEnabled(false);
                 playfieldMatrix[i][0].setActive(false);
                 playfieldMatrix[0][j].setText("" + j);
-                playfieldMatrix[0][0].setText("Y  /  X");
                 playfieldMatrix[0][j].setEnabled(false);
                 playfieldMatrix[0][j].setActive(false);
+                playfieldMatrix[0][j].setBackground(Color.white);
+                playfieldMatrix[0][0].setText("Y  /  X");
+                playfieldMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10 ));
                 playfieldMatrixPanel.add(playfieldMatrix[i][j]);
 //                if (playfieldMatrix[i][j].isActive()) {
 //                    playfieldMatrix[i][j].setText("a");

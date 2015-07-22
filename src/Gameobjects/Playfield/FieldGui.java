@@ -5,9 +5,12 @@
  */
 package Gameobjects.Playfield;
 
+import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -21,10 +24,10 @@ public class FieldGui extends JButton {
     private boolean active;
 
     public FieldGui() {
-        
+        setFont(new Font("Serif", Font.BOLD, 30 ));
+        setBorder(new LineBorder(new Color(200, 214, 222)));
         setVisible(true);
-        setText(this.fieldStatusPlayer = "~");
-        setText(this.fieldStatusOpponent = "~");
+        setBackground(new Color(64, 164, 223));
         this.active = true;
         
     }

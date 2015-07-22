@@ -76,13 +76,15 @@ public class GameGui extends JPanel  {
 
         textOutputArea = new JTextArea();
         textOutputArea.setEditable(false);
+        textOutputArea.setLineWrap(true);
+        textOutputArea.setFont(new Font("Serif", Font.BOLD, 12));
         PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea),true);
         standardOut = System.out;
         System.setOut(printStream);
         System.setErr(printStream);
         
 
-        textOutputPanel = new JScrollPane(textOutputArea);
+        textOutputPanel = new JScrollPane(textOutputArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         shipListLabel = new JLabel("Schiffe: ");
         shipListPanel = new JPanel();
@@ -108,9 +110,9 @@ public class GameGui extends JPanel  {
         gameGuiLayout.setVerticalGroup(
                 gameGuiLayout.createSequentialGroup()
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(playerPlayFieldPanel)
+                        .addComponent(playerPlayFieldPanel,200,1200,1200)
                         .addGroup(gameGuiLayout.createSequentialGroup()
-                                .addComponent(textOutputPanel)
+                                .addComponent(textOutputPanel, 200,350,750)
                                 .addGroup(gameGuiLayout.createParallelGroup()
                                         .addComponent(playerListPanel)
                                         .addComponent(shipListPanel))
@@ -120,9 +122,9 @@ public class GameGui extends JPanel  {
         );
         gameGuiLayout.setHorizontalGroup(
                 gameGuiLayout.createSequentialGroup()
-                .addComponent(playerPlayFieldPanel)
-                .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(textOutputPanel)
+                .addComponent(playerPlayFieldPanel, 200, 1250,1350)
+                .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(textOutputPanel,200,350,350)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerListPanel)
                                 .addComponent(shipListPanel))
@@ -159,7 +161,7 @@ public class GameGui extends JPanel  {
     public void showPlayerShips(int playerNumber, ArrayList<Player> playerList) {
         shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
         for (int i = 0; i < shipListButtons.length; i++) {
-            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName());
+            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
             shipListPanel.add(shipListButtons[i]);
         }
         repaint();
