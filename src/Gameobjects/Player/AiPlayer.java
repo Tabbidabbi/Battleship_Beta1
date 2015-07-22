@@ -104,37 +104,28 @@ public class AiPlayer extends Player implements Serializable {
 	}
 	
     /**
-	 * Wählt eine zufällige Integer-Koordinate
+	 * Wählt eine zufällige Zahl aus dem Pool aus
 	 * int pool ist die Menge an Ganzzahlen, die gewählt werden dürfen.
 	 * @param ArrayList<Player>playerList
 	 * @param int playerIndex
 	 * @return int Integer-Coordinate
 	 */
-	public int getAiIntCoordinate(ArrayList<Player> playerList, int playerIndex) {
+	public int getAiCount(ArrayList<Player> playerList, int playerIndex) {
 		int pool = playerList.get(playerIndex).getPlayfield().getFieldMatrix().length - 1;
 		return (int) (Math.random() * pool) + 1;
 	}
 
 	/**
-	 * Wählt eine zufällige Koorindate auf dem Spielfeld aus
+	 * Wählt und validiert eine zufällige oder eine logisch ausgewählte Integer-Koordinate auf dem Spielfeld aus
 	 * Benötigt für das Setzen von Schiffen und zum Schiessen
 	 * @param playerList ArrayList vom Typ Player
 	 * @param playerIndex Index des aktuellen Spielers
 	 * @return coordinate Koordinate vom Type String
 	 */
 	public String getAiShootCoordinate(ArrayList<Player> playerList, int opponentIndex, String lastHitCoordinate) {
-		boolean error = false;
 		String aiCoordinate = null;
 		if(lastHitCoordinate == null){
-			do {
-				int yCoordinate = getAiIntCoordinate(playerList, opponentIndex);
-				int xCoordinate = getAiIntCoordinate(playerList, opponentIndex);
-				aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
-				error = false;
-				if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
-					error = true;
-				}
-			} while (error);	
+			aiCoordinate = getRandomCoordinate(playerList, opponentIndex);	
 		}
 		else{
 			int[] lastHitCoordinateArray = splitCoordinate(lastHitCoordinate);
@@ -170,19 +161,33 @@ public class AiPlayer extends Player implements Serializable {
         		}
 			}
 			else{
-				do {
-					yCoordinate = getAiIntCoordinate(playerList, opponentIndex);
-					xCoordinate = getAiIntCoordinate(playerList, opponentIndex);
-					aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
-					error = false;
-					if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
-						error = true;
-					}
-				} while (error);
+				aiCoordinate = getRandomCoordinate(playerList, opponentIndex);
 			}
 		}
 		return aiCoordinate;
 	}
+	
+	/**
+	 * Wählt eine zufällige Koorindate
+	 * @param playerList
+	 * @param opponentIndex
+	 * @return
+	 */
+	public String getRandomCoordinate(ArrayList<Player> playerList, int opponentIndex){
+		boolean error;
+		String aiCoordinate;
+		do {
+			int yCoordinate = getAiCount(playerList, opponentIndex);
+			int xCoordinate = getAiCount(playerList, opponentIndex);
+			aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
+			error = false;
+			if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
+				error = true;
+			}
+		} while (error);
+		return aiCoordinate;
+	}
+	
 	
 	/**
 	 * Methode convertiert einen Kordinaten-String in ein int-Array
@@ -212,6 +217,7 @@ public class AiPlayer extends Player implements Serializable {
     	int[] tempIntCoordinates = splitCoordinate(coordinate);
     	int yCoordinate = tempIntCoordinates[0];
     	int xCoordinate = tempIntCoordinates[1];
+    	//Getroffene Schiffsnummern werden in das Array geschrieben
         hitShips = playerList.get(aiOpponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
         playerList.get(aiOpponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
         //Prüft, ob schiffe getroffen wurden und setzt Hitpoints

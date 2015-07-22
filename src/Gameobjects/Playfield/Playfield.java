@@ -85,7 +85,8 @@ public class Playfield implements Serializable{
                         		hitShips[i] = this.fieldMatrix[y][x + i].setIsShot();
                         	}
                         	catch(IndexOutOfBoundsException e){
-                        		e.printStackTrace();
+//                        		e.printStackTrace();
+                        		IO.println("Schuss auf die Koordinate " + (x + 1) + "/" + y +" ist außerhalb des Feldes");
                         	}
                         }
                     }
@@ -100,7 +101,8 @@ public class Playfield implements Serializable{
                         		hitShips[i] = this.fieldMatrix[y + i][x].setIsShot();
                         	}
                             catch(IndexOutOfBoundsException e){
-                            	e.printStackTrace();
+//                            	e.printStackTrace();
+                            	IO.println("Schuss auf die Koordinate " + x + "/" + (y + i) +" ist außerhalb des Feldes");
                             }
                         }
                     }
