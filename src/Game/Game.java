@@ -1,6 +1,7 @@
 package Game;
 
 import Gameobjects.Ships.Ship;
+import Gameobjects.Player.AiPlayer;
 import Gameobjects.Player.Player;
 import Gameobjects.Playfield.Playfield;
 import IO.IO;
@@ -12,9 +13,12 @@ import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
 
 import Helper.Helper;
 import SaveLoad.SaveLoad;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import Helper.*;
+
 import java.io.UnsupportedEncodingException;
 
 public class Game implements Serializable, ActionListener {
@@ -140,10 +144,16 @@ public class Game implements Serializable, ActionListener {
         this.playerList = new ArrayList<>();
         int playerNumber = 1;
         for (int i = 0; i < gameSettings.getAmountOfPlayer(); i++) {
-            Player player = new Player(playerNumber, gameSettings.getPlayerNames()[i], gameSettings);
-            playerList.add(player);
-            playerNumber++;
-
+        	if(gameSettings.getAiArray()[i] == false){
+        		Player player = new Player(playerNumber, gameSettings.getPlayerNames()[i], gameSettings, false);
+                playerList.add(player);
+                playerNumber++;	
+        	}
+        	else if(gameSettings.getAiArray()[i] == true){
+        		AiPlayer player = new AiPlayer(playerNumber, gameSettings.getPlayerNames()[i], gameSettings, true);
+        		playerList.add(player);
+        		playerNumber++;
+        	}
         }
         return playerList;
     }
@@ -399,7 +409,7 @@ public class Game implements Serializable, ActionListener {
         // Runden beginnen
         // Solange es mehr als einen spieler gibt, wird diese Schleife
         // ausgeführt
-        while (Helper.checkAmountOfAvailablePlayers(playerList) > 1) {
+        while (Helper.getAmountOfLivingPlayers(playerList) > 1) {
             for (int playerNumber = 0; playerNumber < playerList.size(); playerNumber++) {
 
                 // Spieler, die verloren haben, kommen nicht mehr an die Reihe
@@ -424,7 +434,7 @@ public class Game implements Serializable, ActionListener {
                                         + ": " + playerList.get(playerCounter).getName()
                                         + " ist am Zug!");
                                 playerList.get(playerCounter).getPlayfield().printPlayField();
-                                int aiShipIndex = Helper.getRandomShip(playerList, playerCounter);
+                                int aiShipIndex = playerList.get(playerCounter).getRandomShip(playerList, playerCounter);
                                 int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
                                 boolean orientation = false;
                                 if (shootRange > 1) {

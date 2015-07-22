@@ -6,80 +6,56 @@
 package Game;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import Main.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import Game.*;
-import Gameobjects.Player.Player;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.*;
-import javax.swing.plaf.basic.BasicMenuUI;
 
 /**
  *
  * @author Tobias
  */
 public class SettingsGui extends JPanel {
-
-    int amountOfPlayer;
-
-    String[] playerNames;
-
-    int amountOfKIPlayer;
-
-    int amountOfDestroyer;
-
-    int amountOfFrigate;
-
-    int amountOfCorvette;
-
-    int amountOfSubmarine;
-
-    int amountOfAllShips;
-
-    int playfieldSize;
+	
+	private static final long serialVersionUID = 2804307014155123447L;
+	private int amountOfPlayer;
+    private String[] playerNames;
+    private int amountOfKIPlayer;
+    private boolean[] aiArray;
+    private int amountOfDestroyer;
+    private int amountOfFrigate;
+    private int amountOfCorvette;
+    private int amountOfSubmarine;
+    private int amountOfAllShips;
+    private int playfieldSize;
 
     JLabel headerLabel;
     JPanel headerPanel;
-
     JComboBox amountPlayerComboBox;
     String[] comboBoxItems = {"2", "3", "4", "5", "6"};
     JLabel playerComboBoxLabel;
     JPanel playerComboBoxPanel;
-
     JLabel[] ammountPlayersLabel = {new JLabel("Spieler 1:"), new JLabel("Spieler 2:"), new JLabel("Spieler 3:"),
         new JLabel("Spieler 4:"), new JLabel("Spieler 5:"), new JLabel("Spieler 6:")};
     JTextField[] playerTextFields = new JTextField[6];
     JCheckBox[] kiCheckboxes = new JCheckBox[6];
     JPanel[] singlePlayerPanel = new JPanel[6];
     JPanel playerPanel;
-
     JSpinner[] setAmmountOfShipsSpinner;
     JLabel[] shipLabel = {new JLabel("Anzahl der Zerstörer:"),
         new JLabel("Anzahl der Fregatten:"), new JLabel("Anzahl der Korvetten:"),
         new JLabel("Anzahl der U-Boote:")};
     JPanel[] singleShipPanel = new JPanel[4];
     JPanel shipFieldsPanel;
-
     JLabel playFieldSizeLabel;
     JSpinner playFieldSizeSpinner;
     JPanel playFieldSizePanel;
-
     JPanel categoriePanel;
-
     JPanel backPanel;
-
     JButton backButton, resetSettingsButton, StartGameButton;
     JPanel buttonPanel;
-
     MainMenuGui mainMenuGUI;
-
     Settings gameSettings;
 
     public SettingsGui() {
@@ -211,7 +187,15 @@ public class SettingsGui extends JPanel {
         this.amountOfKIPlayer = amountOfKIPlayer;
     }
 
-    public int getAmountOfDestroyer() {
+    public boolean[] getAiArray() {
+		return aiArray;
+	}
+
+	public void setAiArray(boolean[] aiArray) {
+		this.aiArray = aiArray;
+	}
+
+	public int getAmountOfDestroyer() {
         return amountOfDestroyer;
     }
 
@@ -335,33 +319,32 @@ public class SettingsGui extends JPanel {
                         break;
                 }
             }
-
         }
     }
 
     public void setSettings() {
-        String userInput;
-
-        userInput = (String) amountPlayerComboBox.getSelectedItem();
+        String userInput = (String) amountPlayerComboBox.getSelectedItem();
         amountOfPlayer = Integer.parseInt(userInput);
         
         playerNames = new String[amountOfPlayer];
         for (int i = 0; i < playerNames.length; i++) {
             playerNames[i] = playerTextFields[i].getText();
         }
-        
+        //Setzt KI-Spieler in das Array
         for (int i = 0; i < amountOfPlayer; i++) {
             if (kiCheckboxes[i].isSelected()){
-                amountOfKIPlayer++;
+            	aiArray[i] = true;
+                //amountOfKIPlayer++;
+            }
+            else{
+            	aiArray[i] = false;
             }
         }
-        
         amountOfDestroyer = (int)setAmmountOfShipsSpinner[0].getValue();
         amountOfFrigate = (int)setAmmountOfShipsSpinner[1].getValue();
         amountOfCorvette = (int)setAmmountOfShipsSpinner[2].getValue();
         amountOfSubmarine = (int)setAmmountOfShipsSpinner[3].getValue();
         
         playfieldSize = (int)playFieldSizeSpinner.getValue();
-
     }
 }
