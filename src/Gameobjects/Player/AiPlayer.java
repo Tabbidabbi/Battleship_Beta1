@@ -141,50 +141,45 @@ public class AiPlayer extends Player implements Serializable {
 			int yCoordinate = lastHitCoordinateArray[0];
 			int xCoordinate = lastHitCoordinateArray[1];
 			int range = playerList.get(opponentIndex).getPlayfield().getFieldMatrix().length - 1;
-			error = true;
-			do{
-				//Randomwert aus der Menge {0, 1, 2, 3}
-				int choice = (int) (Math.random() * 4);
-				//Schuss auf die umliegenden Felder
-				switch(choice){ 
-		        case 0: 
-		        	//Entpricht oben
-		        	if(yCoordinate - 1 <= range && yCoordinate - 1 > 0){
-		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate - 1][xCoordinate].getIsShot() == false){
-		        			aiCoordinate = Integer.toString(yCoordinate - 1) + "#" + Integer.toString(xCoordinate);
-		        			error = false;
-		        		}
-		        	}
-		            break; 
-		        case 1: 
-		        	//Entspricht rechts
-		        	if(xCoordinate + 1 <= range && xCoordinate + 1 > 0){
-		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate + 1].getIsShot() == false){
-		        			aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate + 1);
-		        			error = false;
-		        		}
-		        	}
-		            break; 
-		        case 2:
-		        	//Entspricht unten
-		        	if(yCoordinate + 1 <= range && yCoordinate + 1 > 0){
-		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate + 1][xCoordinate].getIsShot() == false){
-		        			aiCoordinate = Integer.toString(yCoordinate + 1) + "#" + Integer.toString(xCoordinate); 
-		        			error = false;
-		        		}
-		        	}
-		            break; 
-		        case 3:
-		        	//Entspricht links
-		        	if(xCoordinate - 1 <= range && xCoordinate - 1 > 0){
-		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate - 1].getIsShot() == false){
-			        		aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate - 1);  
-			        		error = false;
-		        		}
-		        	} 
-		            break;	
-				}
-			}while(error);
+			//Entpricht oben
+			if(yCoordinate - 1 <= range && yCoordinate - 1 > 0){
+				if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate - 1][xCoordinate].getIsShot() == false
+        				&& playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate - 1][xCoordinate].getHasShip() == true){
+        			aiCoordinate = Integer.toString(yCoordinate - 1) + "#" + Integer.toString(xCoordinate);
+        		}
+			}
+			//Entspricht rechts
+			else if(xCoordinate + 1 <= range && xCoordinate + 1 > 0){
+				if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate + 1][xCoordinate].getIsShot() == false 
+        				&& playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate + 1][xCoordinate].getHasShip() == true){
+        			aiCoordinate = Integer.toString(yCoordinate + 1) + "#" + Integer.toString(xCoordinate); 
+        		}
+			}
+			//Entspricht unten
+			else if(yCoordinate + 1 <= range && yCoordinate + 1 > 0){
+				if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate + 1][xCoordinate].getIsShot() == false 
+        				&& playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate + 1][xCoordinate].getHasShip() == true){
+        			aiCoordinate = Integer.toString(yCoordinate + 1) + "#" + Integer.toString(xCoordinate); 
+        		}
+			}
+			//Entspricht links
+			else if(xCoordinate - 1 <= range && xCoordinate - 1 > 0){
+				if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate - 1].getIsShot() == false
+        				&& playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate - 1].getHasShip() == true){
+	        		aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate - 1);  
+        		}
+			}
+			else{
+				do {
+					yCoordinate = getAiIntCoordinate(playerList, opponentIndex);
+					xCoordinate = getAiIntCoordinate(playerList, opponentIndex);
+					aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
+					error = false;
+					if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
+						error = true;
+					}
+				} while (error);
+			}
 		}
 		return aiCoordinate;
 	}

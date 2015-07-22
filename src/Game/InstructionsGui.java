@@ -34,6 +34,7 @@ public class InstructionsGui extends JPanel{
         instructionsTextArea = new JTextArea(this.text);
         instructionsTextArea.setForeground(Color.red);
         instructionsTextArea.setEditable(false);
+        instructionsTextArea.setLineWrap(true);
         
         backButton = new JButton("Hauptmenü");
         backButton.setActionCommand("Instructions-MainMenuButton");
@@ -57,7 +58,12 @@ public class InstructionsGui extends JPanel{
     }
     
     public void setText(){
-    	this.text = "Schiffe versenken Regeln";
+    	this.text = "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln"
+    			+ "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln"
+    			+ "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln"
+    			+ "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln"
+    			+ "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln"
+    			+ "Schiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken RegelnSchiffe versenken Regeln";
     }
     
 }
