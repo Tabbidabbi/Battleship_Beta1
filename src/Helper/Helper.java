@@ -85,8 +85,7 @@ public class Helper {
 	/**
 	 * Gibt Summe der noch im Spiel befindenen Spieler zurueck
 	 * 
-	 * @param player
-	 *            Spielerarray
+	 * @param player Spielerarray
 	 * @return Summe der noch im Spiel befindenen Spieler
 	 */
 	public static int checkAmountOfAvailablePlayers(ArrayList<Player> playerList) {
@@ -100,17 +99,11 @@ public class Helper {
 
 	}
 
-	
-
-	
-
 	/**
 	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll
 	 * 
-	 * @param player
-	 *            Spielerarray
-	 * @param playerN
-	 *            Spielernummer
+	 * @param player Spielerarray
+	 * @param playerN Spielernummer
 	 * @return shipIndex
 	 */
 	public static int getAvailableOpponentsToShoot(
@@ -141,30 +134,24 @@ public class Helper {
 	/**
 	 * Gibt Liste der Gegner aus, die zur Verfügung stehen
 	 *
-	 * @param player
-	 *            Playerarray
-	 * @param playerN
-	 *            Index des Spielers in Player-Array
-	 *
+	 * @param player Playerarray
+	 * @param playerN Index des Spielers in Player-Array
 	 */
 	public static int[] listOfAvalableOpponents(ArrayList<Player> playerList,
 			int playerindex) {
 		int[] tempOpponentArray;
 		int arrayLength = 0;
 		for (int opponents = 1; opponents < playerList.size(); opponents++) {
-			if (playerList.get(opponents).getNumber() == playerList.get(
-					playerindex).getNumber()
+			if (playerList.get(opponents).getNumber() == playerList.get(playerindex).getNumber()
 					&& playerList.get(opponents).getisLost() == false) {
 				arrayLength = arrayLength++;
 			}
 		}
 		tempOpponentArray = new int[arrayLength];
 		for (int opponents = 1; opponents < playerList.size(); opponents++) {
-			if (playerList.get(opponents).getNumber() == playerList.get(
-					playerindex).getNumber()
+			if (playerList.get(opponents).getNumber() == playerList.get(playerindex).getNumber()
 					&& playerList.get(opponents).getisLost() == false) {
-				tempOpponentArray[opponents] = playerList.get(opponents)
-						.getNumber();
+				tempOpponentArray[opponents] = playerList.get(opponents).getNumber();
 			}
 		}
 		return tempOpponentArray;
@@ -173,10 +160,8 @@ public class Helper {
 	/**
 	 * Prüft, ob Spieler mindestens ein Schiff hat.
 	 * 
-	 * @param player
-	 *            Spielerarray
-	 * @param opponent
-	 *            Nummer des gegnerischen Spielers
+	 * @param player Spielerarray
+	 * @param opponent Nummer des gegnerischen Spielers
 	 * @return Booleanwert, ob Schiff vorhanden ist
 	 */
 	public static boolean checkIfShipAvailable(ArrayList<Player> playerList,

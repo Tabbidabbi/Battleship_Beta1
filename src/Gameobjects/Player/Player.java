@@ -18,9 +18,10 @@ public class Player implements Serializable {
 	private String name;
 	private ArrayList<Ship> ships;
 	private Playfield playfield;
-	private PlayerPlayfieldGui playerPlayFieldGui;
 	private Playfield opponentField;
+	private PlayerPlayfieldGui playerPlayFieldGui;
 	private boolean lost;
+	private boolean isAI;
 
 	/**
 	 * Konstruktor für den Spieler
@@ -42,57 +43,7 @@ public class Player implements Serializable {
 		// opponentField = new
 		// Playfield(gameSettings.getPlayfieldSize(),gameSettings.getPlayfieldSize());
 	}
-
-	/**
-	 * Gibt SpielerGUI zurück
-	 *
-	 * @return playerPlayFieldGui SpielerGui
-	 */
-	public PlayerPlayfieldGui getPlayerPlayFieldGui() {
-		return playerPlayFieldGui;
-	}
-
-	/**
-	 * Setzt SpielerGUI
-	 *
-	 * @param playerPlayFieldGui
-	 *            SpielerGUI
-	 */
-	public void setPlayerPlayFieldGui(PlayerPlayfieldGui playerPlayFieldGui) {
-		this.playerPlayFieldGui = playerPlayFieldGui;
-	}
-
-	/**
-	 * Erzeugt Schiffsarray
-	 *
-	 * @param cSettings
-	 *            Spieleinstellungen
-	 */
-	private void buildShipArray(Settings cSettings) {
-		ships = new ArrayList<>();
-		int shipNumber = 1;
-		for (int i = 1; i <= cSettings.getAmountOfDestroyer(); i++) {
-			Ship ship = new Destroyer(shipNumber);
-			ships.add(ship);
-			shipNumber++;
-		}
-		for (int i = 1; i <= cSettings.getAmountOfFrigate(); i++) {
-			Ship ship = new Frigate(shipNumber);
-			ships.add(ship);
-			shipNumber++;
-		}
-		for (int i = 1; i <= cSettings.getAmountOfCorvette(); i++) {
-			Ship ship = new Corvette(shipNumber);
-			ships.add(ship);
-			shipNumber++;
-		}
-		for (int i = 1; i <= cSettings.getAmountOfSubmarine(); i++) {
-			Ship ship = new Submarine(shipNumber);
-			ships.add(ship);
-			shipNumber++;
-		}
-	}
-
+	
 	/**
 	 * Gibt Nummer des Spielers zurück
 	 *
@@ -110,7 +61,7 @@ public class Player implements Serializable {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
+	
 	/**
 	 * Gibt Name des Spielers zurück
 	 *
@@ -129,7 +80,7 @@ public class Player implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * Gibt ArrayList vom Typ Ship zurück
 	 *
@@ -148,7 +99,7 @@ public class Player implements Serializable {
 	public void setShips(ArrayList<Ship> ships) {
 		this.ships = ships;
 	}
-
+	
 	/**
 	 * Gibt Playfield zurück
 	 *
@@ -188,6 +139,25 @@ public class Player implements Serializable {
 	}
 
 	/**
+	 * Gibt SpielerGUI zurück
+	 *
+	 * @return playerPlayFieldGui SpielerGui
+	 */
+	public PlayerPlayfieldGui getPlayerPlayFieldGui() {
+		return playerPlayFieldGui;
+	}
+
+	/**
+	 * Setzt SpielerGUI
+	 *
+	 * @param playerPlayFieldGui
+	 *            SpielerGUI
+	 */
+	public void setPlayerPlayFieldGui(PlayerPlayfieldGui playerPlayFieldGui) {
+		this.playerPlayFieldGui = playerPlayFieldGui;
+	}
+	
+	/**
 	 * Gibt zurück, ob Gegner verloren hat
 	 *
 	 * @return boolean lost
@@ -205,14 +175,60 @@ public class Player implements Serializable {
 	public void setLost(boolean lost) {
 		this.lost = lost;
 	}
+	
+	/**
+	 * Gibt boolean-Wert zurück, ob Player KI ist.
+	 * @return boolean isAi
+	 */
+	public boolean getIsAI() {
+		return isAI;
+	}
 
+	/**
+	 * Setzt Attribut auf einen boolean Wert
+	 * @param boolean isAI
+	 */
+	public void setAI(boolean isAI) {
+		this.isAI = isAI;
+	}
+
+	/**
+	 * Erzeugt Schiffsarray
+	 *
+	 * @param cSettings
+	 *            Spieleinstellungen
+	 */
+	private void buildShipArray(Settings cSettings) {
+		ships = new ArrayList<>();
+		int shipNumber = 1;
+		for (int i = 1; i <= cSettings.getAmountOfDestroyer(); i++) {
+			Ship ship = new Destroyer(shipNumber);
+			ships.add(ship);
+			shipNumber++;
+		}
+		for (int i = 1; i <= cSettings.getAmountOfFrigate(); i++) {
+			Ship ship = new Frigate(shipNumber);
+			ships.add(ship);
+			shipNumber++;
+		}
+		for (int i = 1; i <= cSettings.getAmountOfCorvette(); i++) {
+			Ship ship = new Corvette(shipNumber);
+			ships.add(ship);
+			shipNumber++;
+		}
+		for (int i = 1; i <= cSettings.getAmountOfSubmarine(); i++) {
+			Ship ship = new Submarine(shipNumber);
+			ships.add(ship);
+			shipNumber++;
+		}
+	}
+	
 	/**
 	 * Gibt die ArrayListe der Schiffe aus
 	 */
 	public void printShipList() {
 		for (Ship ship : ships) {
-			IO.println(ship.getName() + "\t" + ship.getNumber() + "\t"
-					+ " Größe " + "(" + ship.getSize() + ")");
+			IO.println(ship.getName() + "\t" + ship.getNumber() + "\t" + " Größe " + "(" + ship.getSize() + ")");
 		}
 	}
 
@@ -238,22 +254,23 @@ public class Player implements Serializable {
 		return coordinate;
 	}
 
-	public void shootOnPlayField(ArrayList<Player> playerList,
-			int opponentIndex, int shootRange, boolean orientation,
-			String coordinate) {
+	/**
+	 * 
+	 * @param playerList
+	 * @param opponentIndex
+	 * @param shootRange
+	 * @param orientation
+	 * @param coordinate
+	 */
+	public void shootOnPlayField(ArrayList<Player> playerList, int opponentIndex, int shootRange, boolean orientation, String coordinate) {
 		int[] hitShips;
-		hitShips = playerList.get(opponentIndex).getPlayfield()
-				.setShot(coordinate, shootRange, orientation);
-		playerList.get(opponentIndex).getOpponentField()
-				.setShot(coordinate, shootRange, orientation);
+		hitShips = playerList.get(opponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
+		playerList.get(opponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
 		// Prüfen ob schiffe getroffen
 		for (int i = 0; i < hitShips.length; i++) {
-			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex)
-					.getShips().size(); shipIndex++) {
-				if (playerList.get(opponentIndex).getShips().get(shipIndex)
-						.getNumber() == hitShips[i]) {
-					playerList.get(opponentIndex).getShips().get(shipIndex)
-							.setHitpoints();
+			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex).getShips().size(); shipIndex++) {
+				if (playerList.get(opponentIndex).getShips().get(shipIndex).getNumber() == hitShips[i]) {
+					playerList.get(opponentIndex).getShips().get(shipIndex).setHitpoints();
 				}
 			}
 		}
@@ -261,7 +278,7 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * Gibt Liste der Schiffe aus, die zur Verf�gung stehen
+	 * Gibt Liste der Schiffe aus, die zur Verfügung stehen
 	 *
 	 * @param player
 	 *            Playerarray
@@ -270,24 +287,20 @@ public class Player implements Serializable {
 	 *
 	 */
 	public int[] listOfAvalableShips(ArrayList<Player> playerList,
-			int playerindex) {
+		int playerindex) {
 		int[] tempShipArray;
 		int arrayLength = 0;
-		for (int ships = 1; ships < playerList.get(playerindex).getShips()
-				.size(); ships++) {
+		for (int ships = 1; ships < playerList.get(playerindex).getShips().size(); ships++) {
 			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
-					&& playerList.get(playerindex).getShips().get(ships)
-							.getCurrentReloadTime() == 0) {
+					&& playerList.get(playerindex).getShips().get(ships).getCurrentReloadTime() == 0) {
 				arrayLength = arrayLength++;
 			}
 		}
 		tempShipArray = new int[arrayLength];
 		for (int ships = 1; ships < tempShipArray.length; ships++) {
 			if (playerList.get(playerindex).getShips().get(ships).getIsSunk() == false
-					&& playerList.get(playerindex).getShips().get(ships)
-							.getCurrentReloadTime() == 0) {
-				tempShipArray[ships] = playerList.get(playerindex).getShips()
-						.get(ships).getNumber();
+					&& playerList.get(playerindex).getShips().get(ships).getCurrentReloadTime() == 0) {
+				tempShipArray[ships] = playerList.get(playerindex).getShips().get(ships).getNumber();
 			}
 		}
 		return tempShipArray;

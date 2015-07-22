@@ -7,7 +7,6 @@ import Game.Settings;
 public class AiPlayer extends Player implements Serializable {
 
 	private static final long serialVersionUID = -2046818718759120112L;
-	private boolean isAI;
 	private int aiLastHitOpponentIndex;
 	private String aiLastHitCoordinate;
 
@@ -15,22 +14,6 @@ public class AiPlayer extends Player implements Serializable {
 		super(number, name, gameSettings);
 		setAI(true);
 		setAiLastHitCoordinate(null);
-	}
-
-	/**
-	 * Gibt boolean-Wert zurück, ob Player KI ist.
-	 * @return boolean isAi
-	 */
-	public boolean getIsAI() {
-		return isAI;
-	}
-
-	/**
-	 * Setzt Attribut auf einen boolean Wert
-	 * @param boolean isAI
-	 */
-	public void setAI(boolean isAI) {
-		this.isAI = isAI;
 	}
 	    
 	/**
@@ -143,16 +126,16 @@ public class AiPlayer extends Player implements Serializable {
 	 * @param playerIndex Index des aktuellen Spielers
 	 * @return coordinate Koordinate vom Type String
 	 */
-	public String getAiShootCoordinate(ArrayList<Player> playerList, int playerIndex, int opponentIndex, String lastHitCoordinate) {
+	public String getAiShootCoordinate(ArrayList<Player> playerList, int opponentIndex, String lastHitCoordinate) {
 		boolean error = false;
 		String aiCoordinate = null;
 		if(lastHitCoordinate == null){
 			do {
-				int yCoordinate = getAiIntCoordinate(playerList, playerIndex);
-				int xCoordinate = getAiIntCoordinate(playerList, playerIndex);
+				int yCoordinate = getAiIntCoordinate(playerList, opponentIndex);
+				int xCoordinate = getAiIntCoordinate(playerList, opponentIndex);
 				aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
 				error = false;
-				if (playerList.get(playerIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
+				if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
 					error = true;
 				}
 			} while (error);	
@@ -161,17 +144,16 @@ public class AiPlayer extends Player implements Serializable {
 			int[] lastHitCoordinateArray = splitCoordinate(lastHitCoordinate);
 			int yCoordinate = lastHitCoordinateArray[0];
 			int xCoordinate = lastHitCoordinateArray[1];
-			int range = playerList.get(playerIndex).getPlayfield().getFieldMatrix().length - 1;
+			int range = playerList.get(opponentIndex).getPlayfield().getFieldMatrix().length - 1;
 			error = true;
 			do{
-				//choice aus der Menge {0, 1, 2, 3}
+				//Randomwert aus der Menge {0, 1, 2, 3}
 				int choice = (int) (Math.random() * 4);
 				//Schuss auf die umliegenden Felder
 				switch(choice){ 
 		        case 0: 
 		        	//Entpricht oben
 		        	if(yCoordinate - 1 <= range && yCoordinate - 1 > 0){
-		        		
 		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate - 1][xCoordinate].getIsShot() == false){
 		        			aiCoordinate = Integer.toString(yCoordinate - 1) + "#" + Integer.toString(xCoordinate);
 		        			error = false;
@@ -181,7 +163,6 @@ public class AiPlayer extends Player implements Serializable {
 		        case 1: 
 		        	//Entspricht rechts
 		        	if(xCoordinate + 1 <= range && xCoordinate + 1 > 0){
-		        		
 		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate + 1].getIsShot() == false){
 		        			aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate + 1);
 		        			error = false;
@@ -200,8 +181,10 @@ public class AiPlayer extends Player implements Serializable {
 		        case 3:
 		        	//Entspricht links
 		        	if(xCoordinate - 1 <= range && xCoordinate - 1 > 0){
-		        		aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate - 1);  
-		        		error = false;
+		        		if(playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate - 1].getIsShot() == false){
+			        		aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate - 1);  
+			        		error = false;
+		        		}
 		        	} 
 		            break;	
 				}
@@ -211,7 +194,7 @@ public class AiPlayer extends Player implements Serializable {
 	}
 	
 	/**
-	 * Methode convertier einen Kordinaten-String in ein int-Array
+	 * Methode convertiert einen Kordinaten-String in ein int-Array
 	 * @param stringCoordinate Koordinate mit Typ String
 	 * @return int[] intCoordinates 
 	 */
@@ -230,7 +213,7 @@ public class AiPlayer extends Player implements Serializable {
      * @param shootRange Schussreichweite
      * @param orientation Schussrichtung
      * @param coordinate Koordinate, die beschossen werden soll
-     * @return lastHitCoordinate
+     * @return hitCoordinate Coordinate mit Treffer
      */
     public String aiShootOnPlayField(ArrayList<Player> playerList, int aiOpponentIndex, int shootRange, boolean orientation, String coordinate) {
         int[] hitShips;
@@ -241,7 +224,10 @@ public class AiPlayer extends Player implements Serializable {
         	int[] tempIntCoordinates = splitCoordinate(coordinate);
         	yCoordinate = tempIntCoordinates[0];
         	xCoordinate = tempIntCoordinates[1];
-        }         
+        }
+        else{
+        	coordinate = getAiShootCoordinate(playerList, aiOpponentIndex, coordinate);
+        }
         hitShips = playerList.get(aiOpponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
         playerList.get(aiOpponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
         //Prüft, ob schiffe getroffen wurden und setzt Hitpoints
