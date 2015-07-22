@@ -17,13 +17,12 @@ public class SaveLoad {
 	public static void save(Game game){
 		try{
 			//Erzeugt Datei
-			FileOutputStream createFile = new FileOutputStream("save.txt");
-			ObjectOutputStream writeFile = new ObjectOutputStream(createFile);
-			
+			FileOutputStream fileOut = new FileOutputStream("save.txt");
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			//Schreibt in Datei
-			writeFile.writeObject(game);
+			objectOut.writeObject(game);
 			//Schliesst Datei
-			writeFile.close();
+			objectOut.close();
 		}
 		catch(IOException e){
 			e.printStackTrace();			
@@ -34,20 +33,18 @@ public class SaveLoad {
 		Game game = null;
 		try{
 			//Lädt Datei
-			FileInputStream loadFile = new FileInputStream("save.txt");
+			FileInputStream fileIn = new FileInputStream("save.txt");
 			//Liesst Datei
-			ObjectInputStream readFile = new ObjectInputStream(loadFile);
-			
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 			try {
 				//Gameobjekt aus der Datei wird dem Gameobjekt game zugeordnet
-				game = (Game)readFile.readObject();
-				
+				game = (Game)objectIn.readObject();
 			} 
 			catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			//Schliesst Datei
-			readFile.close();			
+			objectIn.close();			
 		}
 		catch(IOException e){
 			e.printStackTrace();			
@@ -55,5 +52,4 @@ public class SaveLoad {
 		//Gibt Spiel zurück
 		return game;
 	}
-
 }

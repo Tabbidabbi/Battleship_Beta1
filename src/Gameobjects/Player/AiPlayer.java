@@ -10,9 +10,8 @@ public class AiPlayer extends Player implements Serializable {
 	private int aiLastHitOpponentIndex;
 	private String aiLastHitCoordinate;
 
-	public AiPlayer(int number, String name, Settings gameSettings) {
-		super(number, name, gameSettings);
-		setAI(true);
+	public AiPlayer(int number, String name, Settings gameSettings, boolean isAi) {
+		super(number, name, gameSettings, isAi);
 		setAiLastHitCoordinate(null);
 	}
 	    
@@ -26,7 +25,6 @@ public class AiPlayer extends Player implements Serializable {
 
 	/**
 	 * Setzt letzten getroffenen Gegner
-	 * 
 	 * @param int lastHitOpponentNumber
 	 */
 	public void setAiLastHitOpponentIndex(int aiLastHitOpponentIndex) {
@@ -66,7 +64,6 @@ public class AiPlayer extends Player implements Serializable {
             	error = true;
             }
         } while (error);
-        
 		return aiOpponentIndex;
 	}
     
@@ -121,7 +118,6 @@ public class AiPlayer extends Player implements Serializable {
 	/**
 	 * Wählt eine zufällige Koorindate auf dem Spielfeld aus
 	 * Benötigt für das Setzen von Schiffen und zum Schiessen
-	 * 
 	 * @param playerList ArrayList vom Typ Player
 	 * @param playerIndex Index des aktuellen Spielers
 	 * @return coordinate Koordinate vom Type String
@@ -217,17 +213,10 @@ public class AiPlayer extends Player implements Serializable {
      */
     public String aiShootOnPlayField(ArrayList<Player> playerList, int aiOpponentIndex, int shootRange, boolean orientation, String coordinate) {
         int[] hitShips;
-        int yCoordinate = 0;
-        int xCoordinate = 0;
         String hitCoordinate = null;
-        if(coordinate != null){
-        	int[] tempIntCoordinates = splitCoordinate(coordinate);
-        	yCoordinate = tempIntCoordinates[0];
-        	xCoordinate = tempIntCoordinates[1];
-        }
-        else{
-        	coordinate = getAiShootCoordinate(playerList, aiOpponentIndex, coordinate);
-        }
+    	int[] tempIntCoordinates = splitCoordinate(coordinate);
+    	int yCoordinate = tempIntCoordinates[0];
+    	int xCoordinate = tempIntCoordinates[1];
         hitShips = playerList.get(aiOpponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
         playerList.get(aiOpponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
         //Prüft, ob schiffe getroffen wurden und setzt Hitpoints

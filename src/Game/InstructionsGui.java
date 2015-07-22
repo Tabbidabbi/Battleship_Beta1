@@ -17,26 +17,26 @@ import javax.swing.text.Document;
  */
 public class InstructionsGui extends JPanel{
     
-    JLabel header;
+    private JLabel header;
+    private JTextArea instructionsTextArea;
+    private JPanel instructionsPanel;
+    private JButton backButton;
+    private String text;
     
-    JTextArea instructionsTextArea;
-    JPanel instructionsPanel;
-    JButton backButton;
-    
-    public InstructionsGui() {
+    public InstructionsGui(String text) {
+    	setText();
         setPreferredSize(new Dimension(800, 600));
         setLayout(new FlowLayout());
         
         header = new JLabel("Anleitung");
         header.setFont(new Font("Serif",0, 25));
         
-        instructionsTextArea = new JTextArea(text);
+        instructionsTextArea = new JTextArea(this.text);
         instructionsTextArea.setForeground(Color.red);
         instructionsTextArea.setEditable(false);
         
         backButton = new JButton("Hauptmenü");
         backButton.setActionCommand("Instructions-MainMenuButton");
-        
         
         instructionsPanel = new JPanel();
         instructionsPanel.setLayout(new BoxLayout(instructionsPanel, BoxLayout.Y_AXIS));
@@ -49,28 +49,15 @@ public class InstructionsGui extends JPanel{
         
         add(instructionsPanel);
         
-        
-        
-        
-        
-        
-        
-        
-        
         setVisible(true);
-        
-        
-        
-        
-        
-        
-        
     }
     
      public void setListener(ActionListener l) {
         this.backButton.addActionListener(l);
     }
     
-    public static final String text = "";
+    public void setText(){
+    	this.text = "Schiffe versenken Regeln";
+    }
     
 }

@@ -7,28 +7,18 @@ public class Settings {
     
 
     private int amountOfPlayer;
-    
     private String[] playerNames;
-
     private int amountOfKIPlayer;
-    
+    private boolean[] aiArray;
     private int amountOfDestroyer;
-
     private int amountOfFrigate;
-
     private int amountOfCorvette;
-
     private int amountOfSubmarine;
-    
     private int amountOfAllShips;
-
     private int playfieldSize;
+    private SettingsGui gameSettings;
     
-    SettingsGui gameSettings;
-    
-    
-    
-       // Konstanten
+	// Konstanten
     final int SIZE_DESTRIOYER = 5;
     final int SIZE_FRIGATE = 4;
     final int SIZE_CORVETTE = 3;
@@ -36,13 +26,12 @@ public class Settings {
     final int MIN_PLAYFIELD_SIZE = 8;
     final int MAX_PLAYFIELD_SIZE = 26;
     
-    
-
     public Settings(SettingsGui gameGuiSettings) {
         this.gameSettings = gameGuiSettings;
         this.amountOfPlayer = gameGuiSettings.getAmountOfPlayer();
         this.playerNames = gameGuiSettings.getPlayerNames();
         this.amountOfKIPlayer = gameGuiSettings.getAmountOfKIPlayer();
+        this.aiArray = gameGuiSettings.getAiArray();
         this.amountOfDestroyer = gameGuiSettings.getAmountOfDestroyer();
         this.amountOfFrigate = gameGuiSettings.getAmountOfFrigate();
         this.amountOfCorvette = gameGuiSettings.getAmountOfCorvette();
@@ -52,12 +41,9 @@ public class Settings {
 //        calculateMinPlayfieldSize();
     }
     
-
     public int getAmountOfAllShips() {
         return amountOfAllShips;
     }
-
-    
     
     public String[] getPlayerNames() {
         return playerNames;
@@ -66,14 +52,8 @@ public class Settings {
     public void setPlayerNames(String[] playerNames) {
         this.playerNames = playerNames;
     }
-
-
-
-    
     //Instanzvariable ki spieler und im menu ki abfrage
-    
-    
-    
+
     public int getAmountOfPlayer() {
         return amountOfPlayer;
     }
@@ -90,9 +70,15 @@ public class Settings {
         this.amountOfKIPlayer = amountOfKIPlayer;
     }
     
-    
+    public boolean[] getAiArray() {
+		return aiArray;
+	}
 
-    public int getAmountOfDestroyer() {
+	public void setAiArray(boolean[] aiArray) {
+		this.aiArray = aiArray;
+	}
+
+	public int getAmountOfDestroyer() {
         return amountOfDestroyer;
     }
 
@@ -139,13 +125,10 @@ public class Settings {
             this.playfieldSize = MAX_PLAYFIELD_SIZE;
         }
         this.playfieldSize = playfieldSize;
-        
     }
     
     private void calculateMinPlayfieldSize(){
         this.playfieldSize = (int) Math.ceil(Math.sqrt(3*(this.getAmountOfDestroyer() * SIZE_DESTRIOYER + this.getAmountOfFrigate() * SIZE_FRIGATE 
                 + this.getAmountOfCorvette() * SIZE_CORVETTE + this.getAmountOfSubmarine() * SIZE_SUBMARINE)));
-        
-    
-}
+    }
 }

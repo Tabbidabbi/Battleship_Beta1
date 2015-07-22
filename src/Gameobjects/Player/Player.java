@@ -21,20 +21,19 @@ public class Player implements Serializable {
 	private Playfield opponentField;
 	private PlayerPlayfieldGui playerPlayFieldGui;
 	private boolean lost;
-	private boolean isAI;
+	private boolean isAi;
 
 	/**
 	 * Konstruktor für den Spieler
 	 *
-	 * @param number
-	 *            Nummer des Spielers
-	 * @param gameSettings
-	 *            Spieleinstellungen
+	 * @param number Nummer des Spielers
+	 * @param gameSettings spieleinstellungen
 	 */
-	public Player(int number, String name, Settings gameSettings) {
-		this.gameSettings = gameSettings;
-		this.name = name;
+	public Player(int number, String name, Settings gameSettings, boolean isAi) {
 		this.number = number;
+		this.name = name;
+		this.gameSettings = gameSettings;
+		this.isAi = isAi;
 		buildShipArray(gameSettings);
 		this.playerPlayFieldGui = new PlayerPlayfieldGui(gameSettings);
 		// playfield = new
@@ -180,16 +179,16 @@ public class Player implements Serializable {
 	 * Gibt boolean-Wert zurück, ob Player KI ist.
 	 * @return boolean isAi
 	 */
-	public boolean getIsAI() {
-		return isAI;
+	public boolean getIsAi() {
+		return isAi;
 	}
 
 	/**
 	 * Setzt Attribut auf einen boolean Wert
 	 * @param boolean isAI
 	 */
-	public void setAI(boolean isAI) {
-		this.isAI = isAI;
+	public void setAI(boolean isAi) {
+		this.isAi = isAi;
 	}
 
 	/**
@@ -286,6 +285,7 @@ public class Player implements Serializable {
 	 *            Index des Spielers in Player-Array
 	 *
 	 */
+	
 	public int[] listOfAvalableShips(ArrayList<Player> playerList,
 		int playerindex) {
 		int[] tempShipArray;
@@ -309,14 +309,11 @@ public class Player implements Serializable {
 	/**
 	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll
 	 * 
-	 * @param player
-	 *            Spielerarray
-	 * @param playerN
-	 *            Spielernummer
+	 * @param player Spielerarray
+	 * @param playerN Spielernummer
 	 * @return shipIndex
 	 */
-	public int getAvailableShipToShoot(ArrayList<Player> playerList,
-			int playerindex) {
+	public int getAvailableShipToShoot(ArrayList<Player> playerList, int playerindex) {
 		boolean error = true;
 		int shipIndex;
 		int[] tempShipArray;
@@ -339,6 +336,60 @@ public class Player implements Serializable {
 				+ " vom Typ "
 				+ playerList.get(playerindex).getShips().get(shipIndex).getName() + " ausgewaehlt!");
 		return shipIndex;
+	}
+	
+	/**
+	 * Gibt Liste der Gegner aus, die zur Verfügung stehen
+	 *
+	 * @param player Playerarray
+	 * @param playerIndex Index des Spielers in Player-Array
+	 */
+	public int[] listOfAvalableOpponents(ArrayList<Player> playerList, int playerindex) {
+		int[] tempOpponentArray;
+		int arrayLength = 0;
+		for (int opponents = 1; opponents < playerList.size(); opponents++) {
+			if (playerList.get(opponents).getNumber() == playerList.get(playerindex).getNumber()
+					&& playerList.get(opponents).getisLost() == false) {
+				arrayLength = arrayLength++;
+			}
+		}
+		tempOpponentArray = new int[arrayLength];
+		for (int opponents = 1; opponents < playerList.size(); opponents++) {
+			if (playerList.get(opponents).getNumber() == playerList.get(playerindex).getNumber()
+					&& playerList.get(opponents).getisLost() == false) {
+				tempOpponentArray[opponents] = playerList.get(opponents).getNumber();
+			}
+		}
+		return tempOpponentArray;
+	}
+	
+	/**
+	 * Gibt Schiffindex zurück, mit dem angegriffen werden soll
+	 * 
+	 * @param player Spielerarray
+	 * @param playerN Spielernummer
+	 * @return shipIndex
+	 */
+	public int getAvailableOpponentsToShoot(ArrayList<Player> playerList, int playerindex) {		
+		boolean error = true;
+		int opponentIndex;
+		int[] tempOpponentpArray;
+		IO.println("Auf welchen Gegner willst du schiessen?");
+		tempOpponentpArray = listOfAvalableOpponents(playerList, playerindex);
+		IO.println("Gib die Nummer des Schiffs ein: ");
+		do {
+			opponentIndex = IO.readInt() - 1;
+			for (int counter = 0; counter > tempOpponentpArray.length; counter++) {
+				if (tempOpponentpArray[counter] == opponentIndex) {
+					error = false;
+				}
+			}
+		} while (error);
+		IO.println("Sie haben das Schiff mit der Nummer "
+				+ playerList.get(playerindex).getShips().get(opponentIndex).getNumber()
+				+ " vom Typ "
+				+ playerList.get(playerindex).getShips().get(opponentIndex).getName() + " ausgewaehlt!");
+		return opponentIndex;
 	}
 
 }
