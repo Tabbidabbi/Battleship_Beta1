@@ -83,11 +83,7 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
         this.add(windowPanel);
 
         //Dialog location
-        final Toolkit toolkit = Toolkit.getDefaultToolkit();
-        final Dimension screenSize = toolkit.getScreenSize();
-        final int x = (screenSize.width - getWidth()) / 2;
-        final int y = (screenSize.height - getHeight()) / 2;
-        setLocation(x, y);
+        setBounds(400, 250, 100, 100);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         //Setzt Fenstergröße automatisch
@@ -97,14 +93,12 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (this.radioHorizontal.isSelected()) {
-//            System.out.println(e.getActionCommand());
             System.out.println("Das Schiff wurde " + this.radioHorizontal.getText() + " gesetzt!");
             this.result = this.radioHorizontal.getText();
             this.orientation = true;
             setVisible(false);
             dispose();
         } else if (this.radioVertical.isSelected()) {
-//            System.out.println(e.getActionCommand());
             System.out.println("Das Schiff wurde " + this.radioVertical.getText() + " gesetzt!");
             this.result = this.radioHorizontal.getText();
             this.orientation = false;

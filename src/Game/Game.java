@@ -85,19 +85,27 @@ public class Game implements Serializable, ActionListener {
 
     private void initializePlayer(ArrayList<Player> playerList) {
 
-        int amountOfAllShips = playerList.get(player).getShips().size();
+        int amountOfAllShips = 0;
+        int amountOfAllPlayer = 0;
 
+        
         gameGui.addPlayerPlayField(player, playerList);
         gameGui.showPlayerPlayField(player);
         gameGui.showPlayers(playerList);
         gameGui.showPlayerShips(player, playerList);
         addPlayFieldMatrixListener();
+        printPlayerDialog();
 
-        System.out.println("Spieler " + playerList.get(player).getName() + " Sie sind an der Reihe, Bitte setzen Sie "
+        
+
+    }
+    
+    private void printPlayerDialog() {
+        System.out.println("Spieler " + playerList.get(player).getName() + "," + "\n" + "Bitte setzen Sie "
                 + playerList.get(player).getShips().get(ship).getName() + " mit der Groesse " + playerList.get(player).getShips().get(ship).getSize()
                 + ". " + "\n");
         System.out.println("Klicken Sie dazu Bitte auf ein beliebiges Feld!");
-
+        
     }
 
     /**
@@ -255,7 +263,7 @@ public class Game implements Serializable, ActionListener {
                                 // gibt die ganze Methode "false zurück".
                                 if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
                                         .isActive()) {
-                                    System.out.println("Leider nicht möglich, das Schiff muss mindestens 1 Feld Abstand zum nächsten Schiff haben!");
+                                    System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                                     return false;
                                 }
                                 // Falls das Schiff mit der Größe nicht in das
@@ -289,20 +297,20 @@ public class Game implements Serializable, ActionListener {
 
                         }
 
-                        // Deaktiviere Felder um das Schiff herum
-//                        for (int i = (x - 1); i <= playerList.get(player).getShips().get(ship).getSize() + x; i++) {
-//                            for (int j = (y - 1); j < y + 2; j++) {
-//                                try {
-//                                    playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i]
-//                                            .setActive(false);
-//                                    // Tetstweise eingebaut um zu sehen welche
-//                                    // Felder deaktiviert werden
-//                                    // playfield.getPlayField()[j][i].setStatus("F");
-//                                } catch (ArrayIndexOutOfBoundsException ex) {
-//
-//                                }
-//                            }
-//                        }
+//                         Deaktiviere Felder um das Schiff herum
+                        for (int i = (Integer.parseInt(splitted[1]) - 1); i <= playerList.get(player).getShips().get(ship).getSize() + Integer.parseInt(splitted[1]); i++) {
+                            for (int j = (Integer.parseInt(splitted[0]) - 1); j < Integer.parseInt(splitted[0]) + 2; j++) {
+                                try {
+                                    playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i]
+                                            .setActive(false);
+                                    // Tetstweise eingebaut um zu sehen welche
+                                    // Felder deaktiviert werden
+                                     playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i].setText("F");
+                                } catch (ArrayIndexOutOfBoundsException ex) {
+
+                                }
+                            }
+                        }
 //                    }
 //                }
 //            }
@@ -321,7 +329,7 @@ public class Game implements Serializable, ActionListener {
                                 // gibt die ganze Methode "false zurück".
                                 if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                                         .isActive()) {
-                                    IO.println("Leider nicht möglich, das Schiff muss mindestens 1 Feld Abstand zum nächsten Schiff haben!");
+                                    IO.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                                     return false;
                                 }
                                 // Falls das Schiff mit der Größe nicht in das
@@ -355,19 +363,19 @@ public class Game implements Serializable, ActionListener {
                         }
 
                         // Deaktiviere Felder um das Schiff herum
-//                        for (int i = (y - 1); i <= playerList.get(player).getShips().get(ship).getSize() + y; i++) {
-//                            for (int j = (x - 1); j < x + 2; j++) {
-//                                try {
-//                                    playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j]
-//                                            .setActive(false);
-//                                    // Tetstweise eingebaut um zu sehen welche
-//                                    // Felder deaktiviert werden
-//                                    // playfield.getPlayField()[i][j].setStatus("F");
-//                                } catch (ArrayIndexOutOfBoundsException ex) {
-//
-//                                }
-//                            }
-//                        }
+                        for (int i = (Integer.parseInt(splitted[0]) - 1); i <= playerList.get(player).getShips().get(ship).getSize() + Integer.parseInt(splitted[0]); i++) {
+                            for (int j = (Integer.parseInt(splitted[1]) - 1); j < Integer.parseInt(splitted[1]) + 2; j++) {
+                                try {
+                                    playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j]
+                                            .setActive(false);
+                                    // Tetstweise eingebaut um zu sehen welche
+                                    // Felder deaktiviert werden
+                                     playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j].setText("F");
+                                } catch (ArrayIndexOutOfBoundsException exc) {
+
+                                }
+                            }
+                        }
 
 //                    }
 //                }
@@ -506,13 +514,24 @@ public class Game implements Serializable, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        if (shipsNotPlaced) {
-            HelperOrientationDialog dialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
-            shipOrientation = dialog.getOrientation();
-            placeShip(e, shipOrientation, playerList);
-            
+        
+        if (ship < playerList.get(player).getShips().size()) {
+            HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+            shipOrientation = orientationDialog.getOrientation();
+            if(!placeShip(e, shipOrientation, playerList)) {
+                System.out.println("Schiff konnte nicht gesetzt werden," + "\n" + "bitte erneut versuchen.");
+            } else {
+                placeShip(e, shipOrientation, playerList);
+               
+                printPlayerDialog();
+                ship++;
+                
+            }
+        } else {
+            HelperNextPlayerDialog playerDialog = new HelperNextPlayerDialog("Alle Schiffe wurden gesetzt.");
+            ship = 0;
         }
+        
 
     }
 }

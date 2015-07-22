@@ -66,6 +66,7 @@ public class GameGui extends JPanel  {
         playFieldCardLayout = new CardLayout();
         playerPlayFieldPanel.setLayout(playFieldCardLayout);
         playerPlayFieldPanel.setOpaque(false);
+//        playerPlayFieldPanel.setPreferredSize(playerPlayFieldPanel.getPreferredSize());
         
         
         playerListLabel = new JLabel("Spieler: ");

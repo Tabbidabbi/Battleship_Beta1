@@ -23,12 +23,12 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
     JPanel playfieldMatrixPanel;
 
     public PlayerPlayfieldGui(Settings gameSettings) {
+        setLayout(new BorderLayout());
         this.gameSettings = gameSettings;
         playfieldMatrix = new FieldGui[gameSettings.getPlayfieldSize() + 1][gameSettings.getPlayfieldSize() + 1];
 
         playfieldMatrixPanel = new JPanel();
         playfieldMatrixPanel.setLayout(new GridLayout(gameSettings.getPlayfieldSize() + 1, gameSettings.getPlayfieldSize() + 1));
-        playfieldMatrixPanel.setPreferredSize(new Dimension(900, 700));
         for (int i = 0; i < playfieldMatrix.length; i++) {
             for (int j = 0; j < playfieldMatrix[i].length; j++) {
                 playfieldMatrix[i][j] = new FieldGui();
@@ -43,6 +43,9 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
                 playfieldMatrix[0][j].setEnabled(false);
                 playfieldMatrix[0][j].setActive(false);
                 playfieldMatrixPanel.add(playfieldMatrix[i][j]);
+//                if (playfieldMatrix[i][j].isActive()) {
+//                    playfieldMatrix[i][j].setText("a");
+//                }
             }
         }
 

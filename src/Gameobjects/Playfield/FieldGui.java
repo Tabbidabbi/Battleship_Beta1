@@ -21,6 +21,7 @@ public class FieldGui extends JButton {
     private boolean active;
 
     public FieldGui() {
+        
         setVisible(true);
         setText(this.fieldStatusPlayer = "~");
         setText(this.fieldStatusOpponent = "~");
