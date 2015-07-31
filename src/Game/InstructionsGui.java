@@ -23,7 +23,7 @@ public class InstructionsGui extends JPanel{
     private JButton backButton;
     private String text;
     
-    public InstructionsGui(String text) {
+    public InstructionsGui() {
     	setText();
         setPreferredSize(new Dimension(800, 600));
         setLayout(new FlowLayout());

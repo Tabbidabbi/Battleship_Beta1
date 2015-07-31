@@ -60,13 +60,6 @@ public class SettingsGui extends JPanel {
 
     public SettingsGui() {
         setLayout(new FlowLayout());
-        this.amountOfPlayer = 2;
-        this.amountOfKIPlayer = 0;
-        this.amountOfDestroyer = 1;
-        this.amountOfFrigate = 1;
-        this.amountOfCorvette = 2;
-        this.amountOfSubmarine = 2;
-        this.playfieldSize = 8;
         this.amountOfAllShips = amountOfDestroyer + amountOfFrigate + amountOfCorvette + amountOfSubmarine;
 
         headerLabel = new JLabel("Einstellungen");
@@ -112,8 +105,8 @@ public class SettingsGui extends JPanel {
             shipFieldsPanel.add(singleShipPanel[i]);
         }
         setAmmountOfShipsSpinner[0].setModel(new SpinnerNumberModel(1, 0, 2, 1));
-        setAmmountOfShipsSpinner[1].setModel(new SpinnerNumberModel(1, 0, 3, 1));
-        setAmmountOfShipsSpinner[2].setModel(new SpinnerNumberModel(2, 0, 3, 1));
+        setAmmountOfShipsSpinner[1].setModel(new SpinnerNumberModel(0, 0, 3, 1));
+        setAmmountOfShipsSpinner[2].setModel(new SpinnerNumberModel(0, 0, 3, 1));
         setAmmountOfShipsSpinner[3].setModel(new SpinnerNumberModel(2, 0, 4, 1));
 
         playFieldSizeLabel = new JLabel("Spielfeldgröße:");
@@ -331,6 +324,7 @@ public class SettingsGui extends JPanel {
             playerNames[i] = playerTextFields[i].getText();
         }
         //Setzt KI-Spieler in das Array
+        aiArray = new boolean[amountOfPlayer];
         for (int i = 0; i < amountOfPlayer; i++) {
             if (kiCheckboxes[i].isSelected()){
             	aiArray[i] = true;

@@ -56,6 +56,8 @@ public class GameGui extends JPanel  {
     JPanel buttonPanel;
 
     private PrintStream standardOut;
+    
+    
 
     public GameGui(Settings gameSettings) {
         this.gameSettings = gameSettings;
@@ -66,7 +68,6 @@ public class GameGui extends JPanel  {
         playFieldCardLayout = new CardLayout();
         playerPlayFieldPanel.setLayout(playFieldCardLayout);
         playerPlayFieldPanel.setOpaque(false);
-//        playerPlayFieldPanel.setPreferredSize(playerPlayFieldPanel.getPreferredSize());
         
         
         playerListLabel = new JLabel("Spieler: ");
@@ -81,7 +82,6 @@ public class GameGui extends JPanel  {
         PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea),true);
         standardOut = System.out;
         System.setOut(printStream);
-        System.setErr(printStream);
         
 
         textOutputPanel = new JScrollPane(textOutputArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -123,7 +123,7 @@ public class GameGui extends JPanel  {
         gameGuiLayout.setHorizontalGroup(
                 gameGuiLayout.createSequentialGroup()
                 .addComponent(playerPlayFieldPanel, 200, 1250,1350)
-                .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(textOutputPanel,200,350,350)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerListPanel)
@@ -160,8 +160,11 @@ public class GameGui extends JPanel  {
 
     public void showPlayerShips(int playerNumber, ArrayList<Player> playerList) {
         shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
+        Dimension maxButtonSize;
         for (int i = 0; i < shipListButtons.length; i++) {
             shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
+            maxButtonSize = shipListButtons[0].getMaximumSize();
+            shipListButtons[i].setMaximumSize(maxButtonSize);
             shipListPanel.add(shipListButtons[i]);
         }
         repaint();

@@ -6,6 +6,7 @@
 package Helper;
 
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -58,19 +59,21 @@ public class HelperNextPlayerDialog extends JDialog{
         windowPanel.add(messagePanel);
 
         //Button
-        nextPlayerButton = new JButton("Weiter");
+        nextPlayerButton = new JButton("Nächster Spieler");
+        nextPlayerButton.setActionCommand("Helper-NextPlayer");
         buttonPanel.add(nextPlayerButton);
         windowPanel.add(buttonPanel);
 
         this.add(windowPanel);
 
         //Dialog location
-        setBounds(400, 250, 100, 100);
+//        setBounds(400, 250, 300, 300);
+        setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         //Setzt Fenstergröße automatisch
         pack();
-        setVisible(true);
+        setVisible(false);
     }
 
      public void setActionListener(ActionListener l) {
