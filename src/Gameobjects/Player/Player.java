@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import Gameobjects.Playfield.PlayerPlayfieldGui;
 
-public class Player implements Serializable {
+public  abstract class Player implements Serializable {
 
 	private static final long serialVersionUID = -3542755719003023085L;
 	private Settings gameSettings;
@@ -388,5 +388,6 @@ public class Player implements Serializable {
 				+ playerList.get(playerindex).getShips().get(opponentIndex).getName() + " ausgewaehlt!");
 		return opponentIndex;
 	}
+
 
 }

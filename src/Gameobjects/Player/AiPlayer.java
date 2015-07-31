@@ -119,7 +119,7 @@ public class AiPlayer extends Player implements Serializable {
 	 * @return int Integer-Coordinate
 	 */
 	public int getAiCount(ArrayList<Player> playerList, int playerIndex) {
-		int pool = playerList.get(playerIndex).getPlayfield().getFieldMatrix().length - 1;
+		int pool = playerList.get(playerIndex).getPlayerPlayFieldGui().getPlayfieldMatrix().length - 1;
 		return (int) (Math.random() * pool) + 1;
 	}
 
