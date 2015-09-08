@@ -118,7 +118,7 @@ public class AiPlayer extends Player implements Serializable {
 	 * @param int playerIndex
 	 * @return int Integer-Coordinate
 	 */
-	public int getAiCount(ArrayList<Player> playerList, int playerIndex) {
+	public int getAiRandomNumber(ArrayList<Player> playerList, int playerIndex) {
 		int pool = playerList.get(playerIndex).getPlayfield().getFieldMatrix().length - 1;
 		return (int) (Math.random() * pool) + 1;
 	}
@@ -186,8 +186,8 @@ public class AiPlayer extends Player implements Serializable {
 		boolean error;
 		String aiCoordinate;
 		do {
-			int yCoordinate = getAiCount(playerList, opponentIndex);
-			int xCoordinate = getAiCount(playerList, opponentIndex);
+			int yCoordinate = getAiRandomNumber(playerList, opponentIndex);
+			int xCoordinate = getAiRandomNumber(playerList, opponentIndex);
 			aiCoordinate = Integer.toString(yCoordinate) + "#" + Integer.toString(xCoordinate);
 			error = false;
 			if (playerList.get(opponentIndex).getPlayfield().getFieldMatrix()[yCoordinate][xCoordinate].getIsHit() == true) {
