@@ -76,7 +76,7 @@ public class AiPlayer extends Player implements Serializable {
 	}
     
     /**
-     * Gibt eine belibige Schiffsindex zurück
+     * Gibt eine belibige Schiffsindex zurück. Schiff darf nicht gesunken sein oder nachladen.
      * @param playerList
      * @param playerIndex, der an der Reihe ist.
      * @return Schiffsindex
@@ -199,7 +199,7 @@ public class AiPlayer extends Player implements Serializable {
 	
 	
 	/**
-	 * Methode convertiert einen Kordinaten-String in ein int-Array
+	 * Methode convertiert einen Kordinaten-String in ein int-Array.
 	 * @param stringCoordinate Koordinate mit Typ String
 	 * @return int[] intCoordinates 
 	 */
