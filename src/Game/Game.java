@@ -27,32 +27,19 @@ public class Game implements Serializable, ActionListener {
      *
      */
     private static final long serialVersionUID = -4356896699088096722L;
-
     private ArrayList<Player> playerList;
-
     private ArrayList<Ship> shipList;
-
-    private int input;
-
-    private String coordinateInput;
-
+    private GameGui gameGui;
     private Settings gameSettings;
-
     private Settings currentGameSettings;
-
+    private String coordinateInput;
     private boolean error;
-
+    private boolean shipsNotPlaced = true;
     private boolean shipOrientation;
-
+    private int input;
+    private int player = 0;
     private int roundNumber = 1;
-
-    int player = 0;
-
-    int ship = 0;
-
-    boolean shipsNotPlaced = true;
-
-    GameGui gameGui;
+    private int ship = 0;
 
     /**
      * Konstruktor der Klasse Game
@@ -72,7 +59,7 @@ public class Game implements Serializable, ActionListener {
 
     private void initializeGame() {
 
-        System.out.println("Willkommen bei Schiffeversenken Alpha 3!!!" + "\n");
+        System.out.println("Willkommen bei Schiffeversenken Alpha 4!!!" + "\n");
 
         initializePlayer(playerList);
 
@@ -431,13 +418,19 @@ public class Game implements Serializable, ActionListener {
                                 }
 
                                 // 2. Auswahl eines Gegners.
-                                int aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter);
-                                IO.println("Spielfeld vom Gegner: " + playerList.get(aiOpponentIndex).getName());
-                                playerList.get(aiOpponentIndex).getOpponentField().printOpponentField();
+                                int aiOpponentIndex;
+                                if(((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex() == 9){
+                                	aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter); 
+                                } else{
+                                	aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex();
+                                }
+                                //IO.println("Spielfeld vom Gegner: " + playerList.get(aiOpponentIndex).getName());
+                                //playerList.get(aiOpponentIndex).getOpponentField().printOpponentField();
 								// Koordinate wird gewählt
 
                                 // 3. Koordinate auf dem Spielfeld auswählen.
-                                String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, playerCounter, null);
+                                
+                                String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
 								//String aiCoordinateToShoot = Helper.aiChooseCoordinate(playerList, playerCounter, playerList.get(playerCounter).getAiLastHitCoordinate());
 
                                 // 4.Schiessen
