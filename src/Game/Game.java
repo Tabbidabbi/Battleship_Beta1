@@ -37,13 +37,11 @@ public class Game implements Serializable, ActionListener {
     private boolean error;
     private boolean shipsNotPlaced = true;
     private boolean shipOrientation;
-    private int input;
+//    private int input;
     private int player = 0;
     private int roundNumber = 1;
 
-
     private int shipsPlaced = 0;
-
 
     HelperNextPlayerDialog playerDialog;
 
@@ -177,23 +175,45 @@ public class Game implements Serializable, ActionListener {
 
         String[] splitted = input.split("\\#");
 
-        for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-            try {
-                    // Abfrage, welche prüft ob das Feld auf der das
-                // Schiff gesetzt werden soll, deaktiviert ist.
-                // Falls ja:
-                // gibt die ganze Methode "false zurück".
-                if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
-                        .isActive()) {
-                    System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
+        if (shipOrientation == true) {
+            for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
+                try {
+                // Abfrage, welche prüft ob das Feld auf der das
+                    // Schiff gesetzt werden soll, deaktiviert ist.
+                    // Falls ja:
+                    // gibt die ganze Methode "false zurück".
+                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
+                            .isActive()) {
+                        System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
+                        return false;
+                    }
+                // Falls das Schiff mit der Größe nicht in das
+                    // Array passt, fange die Fehlermeldung ab und
+                    // gib folgendes aus...
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
                     return false;
                 }
-                    // Falls das Schiff mit der Größe nicht in das
-                // Array passt, fange die Fehlermeldung ab und
-                // gib folgendes aus...
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
-                return false;
+            }
+        } else {
+            for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
+                try {
+                // Abfrage, welche prüft ob das Feld auf der das
+                    // Schiff gesetzt werden soll, deaktiviert ist.
+                    // Falls ja:
+                    // gibt die ganze Methode "false zurück".
+                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0] + i)][Integer.parseInt(splitted[1])]
+                            .isActive()) {
+                        System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
+                        return false;
+                    }
+                // Falls das Schiff mit der Größe nicht in das
+                    // Array passt, fange die Fehlermeldung ab und
+                    // gib folgendes aus...
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
+                    return false;
+                }
             }
         }
         return true;
@@ -237,7 +257,7 @@ public class Game implements Serializable, ActionListener {
                                 .setActive(false);
                         // Tetstweise eingebaut um zu sehen welche
                         // Felder deaktiviert werden
-                        playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i].setText("D");
+//                        playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i].setText("D");
                     } catch (ArrayIndexOutOfBoundsException ex) {
 
                     }
@@ -279,7 +299,7 @@ public class Game implements Serializable, ActionListener {
                                 .setActive(false);
                         // Tetstweise eingebaut um zu sehen welche
                         // Felder deaktiviert werden
-                        playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j].setText("D");
+//                        playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j].setText("D");
                     } catch (ArrayIndexOutOfBoundsException exc) {
 
                     }
@@ -301,8 +321,7 @@ public class Game implements Serializable, ActionListener {
         int yCoordinate = ((AiPlayer) playerList.get(player)).getAiRandomNumber(playerList, player);
         // true = horizontal
         if (orientation == true) {
-            // 1. ALLE Felder sind active
-            // Alle Felder liegen innerhalb des playfields
+
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
                     // Abfrage, welche prüft ob das Feld auf der das
@@ -311,7 +330,6 @@ public class Game implements Serializable, ActionListener {
                     // gibt die ganze Methode "false zurück".
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i]
                             .isActive()) {
-                        System.out.println("HORIZONTAL");
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
                     }
@@ -323,8 +341,10 @@ public class Game implements Serializable, ActionListener {
                     return false;
                 }
             }
-            // Setze Schiff
 
+            // 1. ALLE Felder sind active
+            // Alle Felder liegen innerhalb des playfields
+            // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i]
                         .setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
@@ -378,7 +398,7 @@ public class Game implements Serializable, ActionListener {
                     // gibt die ganze Methode "false zurück".
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate]
                             .isActive()) {
-                        IO.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
+                        System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
                     }
                     // Falls das Schiff mit der Größe nicht in das
@@ -388,6 +408,7 @@ public class Game implements Serializable, ActionListener {
                     IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
                     return false;
                 }
+                return true;
             }
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
@@ -478,17 +499,16 @@ public class Game implements Serializable, ActionListener {
 
                                 // 2. Auswahl eines Gegners.
                                 int aiOpponentIndex;
-                                if(((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex() == 9){
-                                	aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter); 
-                                } else{
-                                	aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex();
+                                if (((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex() == 9) {
+                                    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter);
+                                } else {
+                                    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex();
                                 }
                                 //IO.println("Spielfeld vom Gegner: " + playerList.get(aiOpponentIndex).getName());
                                 //playerList.get(aiOpponentIndex).getOpponentField().printOpponentField();
-								// Koordinate wird gewählt
+                                // Koordinate wird gewählt
 
                                 // 3. Koordinate auf dem Spielfeld auswählen.
-                                
                                 String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
 								//String aiCoordinateToShoot = Helper.aiChooseCoordinate(playerList, playerCounter, playerList.get(playerCounter).getAiLastHitCoordinate());
 
@@ -508,7 +528,7 @@ public class Game implements Serializable, ActionListener {
                                 }
                             } else {
                                 IO.println("Spieler " + playerList.get(playerCounter).getNumber()
-                                        + ": " + playerList.get(playerCounter).getName()                                        + " ist am Zug!");
+                                        + ": " + playerList.get(playerCounter).getName() + " ist am Zug!");
                                 playerList.get(playerCounter).getPlayfield().printPlayField();
 
                                 // 1. Auswahl eines verfuegbaren Schiffes.
@@ -516,7 +536,7 @@ public class Game implements Serializable, ActionListener {
                                 int shootRange = playerList.get(playerCounter).getShips().get(shipIndex).getShootRange();
                                 boolean orientation = false;
                                 if (shootRange > 1) {
-                                	HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung ein");
+                                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung ein");
                                     orientation = orientationDialog.getOrientation();
                                 }
 
