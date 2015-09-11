@@ -48,6 +48,8 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
                 playfieldMatrixPanel.add(playfieldMatrix[i][j]);
 //                if (playfieldMatrix[i][j].isActive()) {
 //                    playfieldMatrix[i][j].setText("a");
+//                } else { 
+//                    playfieldMatrix[i][j].setText("d");
 //                }
             }
         }

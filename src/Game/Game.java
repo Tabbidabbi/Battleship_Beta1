@@ -37,7 +37,7 @@ public class Game implements Serializable, ActionListener {
     private boolean error;
     private boolean shipsNotPlaced = true;
     private boolean shipOrientation;
-//    private int input;
+    private int input;
     private int player = 0;
     private int roundNumber = 1;
 
@@ -196,13 +196,13 @@ public class Game implements Serializable, ActionListener {
                 }
             }
         } else {
-            for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
+                       for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
                 // Abfrage, welche prüft ob das Feld auf der das
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
-                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0] + i)][Integer.parseInt(splitted[1])]
+                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
@@ -408,7 +408,6 @@ public class Game implements Serializable, ActionListener {
                     IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
                     return false;
                 }
-                return true;
             }
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
