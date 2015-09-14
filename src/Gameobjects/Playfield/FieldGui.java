@@ -35,13 +35,15 @@ public class FieldGui extends JButton implements Serializable {
     private String fieldStatusOpponent;
     private String fieldNumber;
 
+    /**
+     * Konstruktor
+     */
     public FieldGui() {
         setFont(new Font("Serif", Font.BOLD, 30 ));
         setBorder(new LineBorder(new Color(200, 214, 222)));
         setVisible(true);
         setBackground(new Color(64, 164, 223));
         this.active = true;
-        
     }
 
     public boolean isActive() {

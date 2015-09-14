@@ -31,6 +31,7 @@ public class Game implements Serializable, ActionListener {
     private ArrayList<Player> playerList;
     private ArrayList<Ship> shipList;
     private GameGui gameGui;
+    private HelperNextPlayerDialog playerDialog;
     private Settings gameSettings;
     private Settings currentGameSettings;
     private String coordinateInput;
@@ -40,10 +41,7 @@ public class Game implements Serializable, ActionListener {
     private int input;
     private int player = 0;
     private int roundNumber = 1;
-
     private int shipsPlaced = 0;
-
-    HelperNextPlayerDialog playerDialog;
 
     /**
      * Konstruktor der Klasse Game
@@ -56,13 +54,11 @@ public class Game implements Serializable, ActionListener {
         this.gameGui = new GameGui(gameSettings);
         gamePreperation();
     }
-
     
     /**
      * Vorbereitung des Spiels und Prüfung ob ein Ki Spieler vorhanden ist.
      */
     private void gamePreperation() {
-
         System.out.println("Willkommen bei Schiffeversenken Alpha 4!!!" + "\n");
         addGameGui();
         addPlayerToGameGui(playerList);
@@ -74,7 +70,6 @@ public class Game implements Serializable, ActionListener {
                     placeAiShip(player);
                     shipsPlaced++;
                     i++;
-
                 }
             }
             player++;
@@ -82,7 +77,6 @@ public class Game implements Serializable, ActionListener {
             interactWithPlayer(playerList);
             addPlayFieldMatrixListener();
         }
-
     }
 
     /**
@@ -135,7 +129,6 @@ public class Game implements Serializable, ActionListener {
      */
     private void nextShipDialog() {
         System.out.println("Klicken Sie auf das Spielfeld um das Schiff " + playerList.get(player).getShips().get(shipsPlaced).getName() + " zu setzen: ");
-
     }
 
     /**
@@ -238,7 +231,13 @@ public class Game implements Serializable, ActionListener {
         }
         return true;
     }
-
+    /**
+     * 
+     * @param e
+     * @param orientation
+     * @param playerList
+     * @return
+     */
     public boolean placeShip(ActionEvent e, boolean orientation,
             ArrayList<Player> playerList) {
 
@@ -567,7 +566,6 @@ public class Game implements Serializable, ActionListener {
                     playerNumber = 0;
 
                 }
-
             }
             //Rundennummer wird einen hochgesetzt
             this.roundNumber++;
@@ -583,7 +581,6 @@ public class Game implements Serializable, ActionListener {
         for (Player player : playerList) {
             player.getPlayerPlayFieldGui().setFieldButtonListener(this);
         }
-
     }
 
     private void addNextPlayerDialogListener() {
@@ -602,7 +599,6 @@ public class Game implements Serializable, ActionListener {
             shipOrientation = orientationDialog.getOrientation();
             if (!checkShipPlacement(e)) {
                 System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
-
             } else {
                 placeShip(e, shipOrientation, playerList);
                 shipsPlaced++;
@@ -615,7 +611,6 @@ public class Game implements Serializable, ActionListener {
                         System.out.println("Runde beginnt");
                     }
                 }
-
             }
         } else {
             shipsPlaced = 0;
@@ -626,8 +621,6 @@ public class Game implements Serializable, ActionListener {
             playerDialog.dispose();
             player++;
             addPlayerToGameGui(playerList);
-
         }
-
     }
 }

@@ -91,9 +91,9 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
             }
         }
 
-        add(opponentfieldMatrixPanel);
-        setOpaque(false);
-        setVisible(false);
+        //add(opponentfieldMatrixPanel);
+        //setOpaque(false);
+        //setVisible(false);
 
     }
 
