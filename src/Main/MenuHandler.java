@@ -38,7 +38,6 @@ public class MenuHandler extends JPanel implements ActionListener {
 
     Game newGame;
 
-
     public MenuHandler() {
 
         setOpaque(false);

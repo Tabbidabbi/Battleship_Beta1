@@ -57,9 +57,10 @@ public class SettingsGui extends JPanel {
     JPanel buttonPanel;
     MainMenuGui mainMenuGUI;
     Settings gameSettings;
+    
 
     public SettingsGui() {
-        setLayout(new FlowLayout());
+        setLayout(new GridLayout());
         this.amountOfAllShips = amountOfDestroyer + amountOfFrigate + amountOfCorvette + amountOfSubmarine;
 
         headerLabel = new JLabel("Einstellungen");
@@ -147,7 +148,7 @@ public class SettingsGui extends JPanel {
         buttonPanel.add(Box.createHorizontalGlue());
 
         backPanel = new JPanel();
-        backPanel.setPreferredSize(getMinimumSize());
+//        backPanel.setPreferredSize(new Dimension(800, 600));
         backPanel.setLayout(new BoxLayout(backPanel, BoxLayout.Y_AXIS));
         backPanel.add(headerPanel);
         backPanel.add(categoriePanel);
@@ -155,7 +156,8 @@ public class SettingsGui extends JPanel {
         backPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         backPanel.add(buttonPanel);
         backPanel.add(Box.createRigidArea(new Dimension(0, 80)));
-
+        setBackground(Color.red);
+        setPreferredSize(new Dimension(1024, 768));
         add(backPanel);
 
     }
