@@ -58,12 +58,15 @@ public class GameGui extends JPanel  {
     private PrintStream standardOut;
     
     
+    
+    
+    
 
     public GameGui(Settings gameSettings) {
         this.gameSettings = gameSettings;
         setOpaque(false);
         GroupLayout gameGuiLayout = new GroupLayout(this);
-
+        
         playerPlayFieldPanel = new JPanel();
         playFieldCardLayout = new CardLayout();
         playerPlayFieldPanel.setLayout(playFieldCardLayout);
@@ -85,7 +88,6 @@ public class GameGui extends JPanel  {
         
 
         textOutputPanel = new JScrollPane(textOutputArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
         shipListLabel = new JLabel("Schiffe: ");
         shipListPanel = new JPanel();
         shipListPanel.add(shipListLabel);
@@ -110,9 +112,9 @@ public class GameGui extends JPanel  {
         gameGuiLayout.setVerticalGroup(
                 gameGuiLayout.createSequentialGroup()
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(playerPlayFieldPanel,200,1200,1200)
+                        .addComponent(playerPlayFieldPanel,0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
                         .addGroup(gameGuiLayout.createSequentialGroup()
-                                .addComponent(textOutputPanel, 200,350,750)
+                                .addComponent(textOutputPanel, 0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
                                 .addGroup(gameGuiLayout.createParallelGroup()
                                         .addComponent(playerListPanel)
                                         .addComponent(shipListPanel))
@@ -122,9 +124,9 @@ public class GameGui extends JPanel  {
         );
         gameGuiLayout.setHorizontalGroup(
                 gameGuiLayout.createSequentialGroup()
-                .addComponent(playerPlayFieldPanel, 200, 1250,1350)
+                .addComponent(playerPlayFieldPanel, 0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(textOutputPanel,200,350,350)
+                        .addComponent(textOutputPanel,0,GroupLayout.DEFAULT_SIZE,350)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerListPanel)
                                 .addComponent(shipListPanel))

@@ -24,9 +24,14 @@ public class BattleshipGui extends JFrame {
 
     MenuHandler menuHandler;
 
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+    int taskBarSize = scnMax.bottom;
+
     public BattleshipGui() {
         setTitle("Battleship");
-        setExtendedState(MAXIMIZED_BOTH);
+        setSize(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
+//        setExtendedState(MAXIMIZED_BOTH);
         setContentPane(backgroundImagePanel = new BackgroundImagePanel("G:\\hs\\Prog2\\Battleship_Alpha2\\Images\\background.jpg"));
 
         menuHandler = new MenuHandler();

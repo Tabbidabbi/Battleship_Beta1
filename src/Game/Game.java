@@ -29,15 +29,10 @@ public class Game implements Serializable, ActionListener {
      */
     private static final long serialVersionUID = -4356896699088096722L;
     private ArrayList<Player> playerList;
-    private ArrayList<Ship> shipList;
     private GameGui gameGui;
     private Settings gameSettings;
-    private Settings currentGameSettings;
-    private String coordinateInput;
-    private boolean error;
     private boolean shipsNotPlaced = true;
     private boolean shipOrientation;
-    private int input;
     private int player = 0;
     private int roundNumber = 1;
 
@@ -57,7 +52,6 @@ public class Game implements Serializable, ActionListener {
         gamePreperation();
     }
 
-    
     /**
      * Vorbereitung des Spiels und Prüfung ob ein Ki Spieler vorhanden ist.
      */
@@ -67,17 +61,18 @@ public class Game implements Serializable, ActionListener {
         addGameGui();
         addPlayerToGameGui(playerList);
         if (playerList.get(player) instanceof AiPlayer) {
-            for (int i = 0; i < playerList.get(player).getShips().size();) {
-                if (!placeAiShip(player)) {
-                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut setzen!");
-                } else {
-                    placeAiShip(player);
-                    shipsPlaced++;
-                    i++;
+                for (int j = 0; j < playerList.get(player).getShips().size();) {
+                    if (!placeAiShip(player)) {
+                        System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut setzen!");
+                    } else {
+                        placeAiShip(player);
+                        shipsPlaced++;
+                        j++;
 
+                    }
                 }
-            }
-            player++;
+                player++;
+                System.out.println("Nächster Spieler");
         } else {
             interactWithPlayer(playerList);
             addPlayFieldMatrixListener();
@@ -100,18 +95,19 @@ public class Game implements Serializable, ActionListener {
 
     /**
      * Der GameGui wird das Spieldfeld des Spielers hinzugefügt und angezeigt.
-     * @param playerList 
+     *
+     * @param playerList
      */
     private void addPlayerToGameGui(ArrayList<Player> playerList) {
         gameGui.addPlayerPlayField(player, playerList);
         gameGui.showPlayerPlayField(player);
 
     }
-    
-    /**
-     * Der GameGui wird die Spieler- und die Schiffsliste hinzugefügt und angezeigt.
-     */
 
+    /**
+     * Der GameGui wird die Spieler- und die Schiffsliste hinzugefügt und
+     * angezeigt.
+     */
     private void addGameGui() {
         gameGui.showPlayers(playerList);
         gameGui.showPlayerShips(player, playerList);
@@ -121,9 +117,9 @@ public class Game implements Serializable, ActionListener {
 
     /**
      * Textinteraktion mit dem Spieler
-     * @param playerList 
+     *
+     * @param playerList
      */
-    
     private void interactWithPlayer(ArrayList<Player> playerList) {
         System.out.println("Spieler " + playerList.get(player).getName() + ", " + "Sie sind am Zug.");
         System.out.println("Setzen Sie Bitte alle vefuegbaren Schiffe." + "\n");
@@ -198,7 +194,7 @@ public class Game implements Serializable, ActionListener {
         if (shipOrientation == true) {
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
-                // Abfrage, welche prüft ob das Feld auf der das
+                    // Abfrage, welche prüft ob das Feld auf der das
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
@@ -207,7 +203,7 @@ public class Game implements Serializable, ActionListener {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
                     }
-                // Falls das Schiff mit der Größe nicht in das
+                    // Falls das Schiff mit der Größe nicht in das
                     // Array passt, fange die Fehlermeldung ab und
                     // gib folgendes aus...
                 } catch (ArrayIndexOutOfBoundsException ex) {
@@ -216,9 +212,9 @@ public class Game implements Serializable, ActionListener {
                 }
             }
         } else {
-                       for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
+            for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
-                // Abfrage, welche prüft ob das Feld auf der das
+                    // Abfrage, welche prüft ob das Feld auf der das
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
@@ -227,7 +223,7 @@ public class Game implements Serializable, ActionListener {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
                     }
-                // Falls das Schiff mit der Größe nicht in das
+                    // Falls das Schiff mit der Größe nicht in das
                     // Array passt, fange die Fehlermeldung ab und
                     // gib folgendes aus...
                 } catch (ArrayIndexOutOfBoundsException ex) {

@@ -21,7 +21,7 @@ import javax.swing.*;
  * @author Tobias
  */
 public class MenuHandler extends JPanel implements ActionListener {
-    
+
     JPanel panelContainer;
     MainMenuGui mainMenuGui;
     SettingsGui settingsGui;
@@ -33,29 +33,29 @@ public class MenuHandler extends JPanel implements ActionListener {
     GridBagConstraints gridBagConstraints;
 
     CardLayout cardLayout;
-    
+
     Settings gameSettings;
-    
+
     Game newGame;
-    
-    
+
+
     public MenuHandler() {
-        
-        
+
         setOpaque(false);
         setBackground(Color.red);
-        setPreferredSize(new Dimension(1500, 800));
+//        setPreferredSize(new Dimension(1500, 800));
         cardLayout = new CardLayout();
         setLayout(cardLayout);
         mainMenuGui = new MainMenuGui();
         mainMenuGui.setOpaque(false);
-        
+
         add(mainMenuGui, "menu");
 
         cardLayout.show(this, "menu");
 
         addMenuListener();
 
+        
         setVisible(true);
 
     }
@@ -67,10 +67,11 @@ public class MenuHandler extends JPanel implements ActionListener {
     private void addSettingsGuiListener() {
         this.settingsGui.setListener(this);
     }
+
     private void addInstructionGuiListener() {
         this.instructionsGui.setListener(this);
     }
-    
+
     private void addGameGuiListener() {
         this.newGame.getGameGui().setGameButtonListener(this);
     }
@@ -96,23 +97,23 @@ public class MenuHandler extends JPanel implements ActionListener {
                 cardLayout.show(this, "instructions");
                 break;
             case "Menu-ExitGame":
-                    System.exit(0);
+                System.exit(0);
                 break;
             case "Settings-MainMenu":
-                    cardLayout.show(this, "menu");
+                cardLayout.show(this, "menu");
                 break;
             case "Settings-StartGame":
                 settingsGui.setSettings();
                 this.gameSettings = new Settings(settingsGui);
-                this.newGame =   new Game(gameSettings);
-                    add(newGame.getGameGui(), "newGame");
-                    cardLayout.show(this, "newGame");
-                    addGameGuiListener();
-                    break;
-            case "Instructions-MainMenuButton":
-                    cardLayout.show(this, "menu");
+                this.newGame = new Game(gameSettings);
+                add(newGame.getGameGui(), "newGame");
+                cardLayout.show(this, "newGame");
+                addGameGuiListener();
                 break;
-            case "Game-MainMenu": 
+            case "Instructions-MainMenuButton":
+                cardLayout.show(this, "menu");
+                break;
+            case "Game-MainMenu":
                 cardLayout.show(this, "menu");
                 break;
 
