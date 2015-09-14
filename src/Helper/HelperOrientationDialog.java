@@ -83,7 +83,6 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
         this.add(windowPanel);
 
         //Dialog location
-//        setBounds(400, 250, 100, 100);
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

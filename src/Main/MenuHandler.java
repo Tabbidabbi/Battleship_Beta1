@@ -43,7 +43,6 @@ public class MenuHandler extends JPanel implements ActionListener {
 
         setOpaque(false);
         setBackground(Color.red);
-//        setPreferredSize(new Dimension(1500, 800));
         cardLayout = new CardLayout();
         setLayout(cardLayout);
         mainMenuGui = new MainMenuGui();
