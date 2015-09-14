@@ -154,7 +154,7 @@ public class GameGui extends JPanel  {
             playerButton[i] = new JButton(playerList.get(i).getName());
             playerListPanel.add(playerButton[i]);
         }
-        repaint();
+        revalidate();
 
     }
 
@@ -167,7 +167,7 @@ public class GameGui extends JPanel  {
             shipListButtons[i].setMaximumSize(maxButtonSize);
             shipListPanel.add(shipListButtons[i]);
         }
-        repaint();
+        revalidate();
     }
     
 

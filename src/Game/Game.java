@@ -54,14 +54,18 @@ public class Game implements Serializable, ActionListener {
         this.gameSettings = gameSettings;
         this.playerList = buildPlayerArray(gameSettings);
         this.gameGui = new GameGui(gameSettings);
-        initializeGame();
+        gamePreperation();
     }
 
-    private void initializeGame() {
+    
+    /**
+     * Vorbereitung des Spiels und Prüfung ob ein Ki Spieler vorhanden ist.
+     */
+    private void gamePreperation() {
 
         System.out.println("Willkommen bei Schiffeversenken Alpha 4!!!" + "\n");
-        setUpGameGuiContent();
-        setUpPlayer(playerList);
+        addGameGui();
+        addPlayerToGameGui(playerList);
         if (playerList.get(player) instanceof AiPlayer) {
             for (int i = 0; i < playerList.get(player).getShips().size();) {
                 if (!placeAiShip(player)) {
@@ -75,7 +79,7 @@ public class Game implements Serializable, ActionListener {
             }
             player++;
         } else {
-            playerPreparation(playerList);
+            interactWithPlayer(playerList);
             addPlayFieldMatrixListener();
         }
 
@@ -94,25 +98,41 @@ public class Game implements Serializable, ActionListener {
 
     }
 
-    private void setUpPlayer(ArrayList<Player> playerList) {
+    /**
+     * Der GameGui wird das Spieldfeld des Spielers hinzugefügt und angezeigt.
+     * @param playerList 
+     */
+    private void addPlayerToGameGui(ArrayList<Player> playerList) {
         gameGui.addPlayerPlayField(player, playerList);
         gameGui.showPlayerPlayField(player);
 
     }
+    
+    /**
+     * Der GameGui wird die Spieler- und die Schiffsliste hinzugefügt und angezeigt.
+     */
 
-    private void setUpGameGuiContent() {
+    private void addGameGui() {
         gameGui.showPlayers(playerList);
         gameGui.showPlayerShips(player, playerList);
         playerDialog = new HelperNextPlayerDialog("Alle Schiffe wurden gesetzt.");
         addNextPlayerDialogListener();
     }
 
-    private void playerPreparation(ArrayList<Player> playerList) {
+    /**
+     * Textinteraktion mit dem Spieler
+     * @param playerList 
+     */
+    
+    private void interactWithPlayer(ArrayList<Player> playerList) {
         System.out.println("Spieler " + playerList.get(player).getName() + ", " + "Sie sind am Zug.");
         System.out.println("Setzen Sie Bitte alle vefuegbaren Schiffe." + "\n");
         System.out.println("Klicken Sie auf das Spielfeld um das Schiff " + playerList.get(player).getShips().get(shipsPlaced).getName() + " zu setzen: ");
     }
 
+    /**
+     * Textinteraktion mit dem Spieler
+     */
     private void nextShipDialog() {
         System.out.println("Klicken Sie auf das Spielfeld um das Schiff " + playerList.get(player).getShips().get(shipsPlaced).getName() + " zu setzen: ");
 
@@ -625,7 +645,7 @@ public class Game implements Serializable, ActionListener {
             playerDialog.setVisible(false);
             playerDialog.dispose();
             player++;
-            setUpPlayer(playerList);
+            addPlayerToGameGui(playerList);
 
         }
 
