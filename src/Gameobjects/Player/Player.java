@@ -20,6 +20,7 @@ public  abstract class Player implements Serializable {
 	private Playfield playfield;
 	private Playfield opponentField;
 	private PlayerPlayfieldGui playerPlayFieldGui;
+	private PlayerPlayfieldGui opponentPlayFieldGui;
 	private boolean lost;
 	private boolean isAi;
 
@@ -36,6 +37,7 @@ public  abstract class Player implements Serializable {
 		this.isAi = isAi;
 		buildShipArray(gameSettings);
 		this.playerPlayFieldGui = new PlayerPlayfieldGui(gameSettings);
+		this.opponentPlayFieldGui = new PlayerPlayfieldGui(gameSettings);
 		// playfield = new
 		// Playfield(gameSettings.getPlayfieldSize(),gameSettings.getPlayfieldSize());
 		// playfield.printPlayField();
@@ -154,6 +156,25 @@ public  abstract class Player implements Serializable {
 	 */
 	public void setPlayerPlayFieldGui(PlayerPlayfieldGui playerPlayFieldGui) {
 		this.playerPlayFieldGui = playerPlayFieldGui;
+	}
+	
+	/**
+	 * Gibt GegnerGUI zurück
+	 *
+	 * @return playerPlayFieldGui GegnerGui
+	 */
+	public PlayerPlayfieldGui getOpponentPlayFieldGui() {
+		return opponentPlayFieldGui;
+	}
+
+	/**
+	 * Setzt GegnerGUI
+	 *
+	 * @param playerPlayFieldGui
+	 *            GegnerGUI
+	 */
+	public void setOpponentPlayFieldGui(PlayerPlayfieldGui opponentPlayFieldGui) {
+		this.opponentPlayFieldGui = opponentPlayFieldGui;
 	}
 	
 	/**

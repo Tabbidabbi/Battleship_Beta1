@@ -333,18 +333,21 @@ public class Game implements Serializable, ActionListener {
         return true;
     }
 
+    /**
+     * Platziert KI-Schiffe
+     * @param player Spielerindex
+     * @return Gibt Booleanwert zurück, ob das Schiff gesetzt werden kann
+     */
     private boolean placeAiShip(int player) {
 
         boolean orientation = ((AiPlayer) playerList.get(player)).getAiOrientation();
-
         int xCoordinate = ((AiPlayer) playerList.get(player)).getAiRandomNumber(playerList, player);
         int yCoordinate = ((AiPlayer) playerList.get(player)).getAiRandomNumber(playerList, player);
         // true = horizontal
         if (orientation == true) {
-
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
-                    // Abfrage, welche prüft ob das Feld auf der das
+                    // Abfrage, welche prüft ob das Feld, auf der das
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
@@ -366,50 +369,44 @@ public class Game implements Serializable, ActionListener {
             // Alle Felder liegen innerhalb des playfields
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i]
-                        .setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-//                            playfield.getFieldMatrix()[y][x + i]
-//                                    .setOpponentStatus(shipsPlaced.getSign());
-//                            playfield.getFieldMatrix()[y][x + i]
-//                                    .setIsWater(false);
-//                            playfield.getFieldMatrix()[y][x + i]
-//                                    .setHasShip(true);
-//                            playfield.getFieldMatrix()[y][x + i]
-//                                    .setShipNumber(shipsPlaced.getNumber());
-//
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setIsWater(false);
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setHasShip(true);
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setShipNumber(shipsPlaced.getNumber());
-
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i].setIsWater(false);
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i].setHasShip(true);
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate][xCoordinate + i].setIsWater(true);
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate][xCoordinate + i].setHasShip(true);
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
             }
 
-//                         Deaktiviere Felder um das Schiff herum
+            // Deaktiviere Felder um das Schiff herum für Spieleransicht/ -matrix
             for (int i = (xCoordinate - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + xCoordinate; i++) {
                 for (int j = (yCoordinate - 1); j < yCoordinate + 2; j++) {
                     try {
                         playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i]
                                 .setActive(false);
-                        // Tetstweise eingebaut um zu sehen welche
-                        // Felder deaktiviert werden
-//                                     playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[j][i].setText("F");
                     } catch (ArrayIndexOutOfBoundsException ex) {
 
                     }
                 }
             }
-//                    }
-//                }
-//            }
+            
+         //Deaktiviere Felder um das Schiff herum für Gegneransicht/ -matrix
+         for (int i = (xCoordinate - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + xCoordinate; i++) {
+             for (int j = (yCoordinate - 1); j < yCoordinate + 2; j++) {
+                 try {
+                     playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[j][i].setActive(false);
+                 } catch (ArrayIndexOutOfBoundsException ex) {
 
-        } // false = vertikal
+                 }
+             }
+         }
+        } 
+        // false = vertikal
         else {
-//            for (int y = 0; y < playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix().length; y++) {
-//                for (int x = 0; x < playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[y].length; x++) {
-//                    if (input.equals(playfield.getFieldMatrix()[y][x]
-//                            .getFieldNumber())) {
+			//            for (int y = 0; y < playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix().length; y++) {
+			//                for (int x = 0; x < playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[y].length; x++) {
+			//                    if (input.equals(playfield.getFieldMatrix()[y][x]
+			//                            .getFieldNumber())) {
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
                 try {
                     // Abfrage, welche prüft ob das Feld auf der das
@@ -431,24 +428,13 @@ public class Game implements Serializable, ActionListener {
             }
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate]
-                        .setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-//                            playfield.getFieldMatrix()[y + i][x]
-//                                    .setOpponentStatus(shipsPlaced.getSign());
-//                            playfield.getFieldMatrix()[y + i][x]
-//                                    .setIsWater(false);
-//                            playfield.getFieldMatrix()[y + i][x]
-//                                    .setHasShip(true);
-//                            playfield.getFieldMatrix()[y + i][x]
-//                                    .setShipNumber(shipsPlaced.getNumber());
-//
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setIsWater(false);
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setHasShip(true);
-//                            opponentfield.getFieldMatrix()[y][x + i]
-//                                    .setShipNumber(shipsPlaced.getNumber());
-//
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate].setIsWater(false);
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate].setHasShip(true);
+                playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate + i][xCoordinate].setIsWater(false);
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate + i][xCoordinate].setHasShip(true);
+                playerList.get(player).getOpponentPlayFieldGui().getOpponentfieldMatix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
             }
 
             // Deaktiviere Felder um das Schiff herum
@@ -459,19 +445,13 @@ public class Game implements Serializable, ActionListener {
                                 .setActive(false);
                         // Tetstweise eingebaut um zu sehen welche
                         // Felder deaktiviert werden
-//                                     playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j].setText("F");
+                        // playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[i][j].setText("F");
                     } catch (ArrayIndexOutOfBoundsException exc) {
-
                     }
                 }
             }
-
-//                    }
-//                }
-//            }
         }
         return true;
-
     }
 
     /**
