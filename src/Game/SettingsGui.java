@@ -147,7 +147,7 @@ public class SettingsGui extends JPanel {
         buttonPanel.add(Box.createHorizontalGlue());
 
         backPanel = new JPanel();
-        backPanel.setPreferredSize(new Dimension(1200, 800));
+        backPanel.setPreferredSize(getMinimumSize());
         backPanel.setLayout(new BoxLayout(backPanel, BoxLayout.Y_AXIS));
         backPanel.add(headerPanel);
         backPanel.add(categoriePanel);
