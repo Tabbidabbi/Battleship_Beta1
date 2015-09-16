@@ -53,7 +53,7 @@ public class SettingsGui extends JPanel {
     JPanel playFieldSizePanel;
     JPanel categoriePanel;
     JPanel backPanel;
-    JButton backButton, resetSettingsButton, StartGameButton;
+    JButton backButton, resetSettingsButton, SaveSettingsButton;
     JPanel buttonPanel;
     MainMenuGui mainMenuGUI;
     Settings gameSettings;
@@ -132,32 +132,28 @@ public class SettingsGui extends JPanel {
         backButton.setFont(new Font("Serif", 10, 13));
         backButton.setBackground(Color.white);
         backButton.setForeground(Color.black);
-        StartGameButton = new JButton("Spiel Starten");
-        StartGameButton.setActionCommand("Settings-StartGame");
+        SaveSettingsButton = new JButton("Speichern");
+        SaveSettingsButton.setActionCommand("Settings-SaveSettings");
 
-        StartGameButton.setFont(new Font("Serif", 10, 13));
-        StartGameButton.setBackground(Color.white);
-        StartGameButton.setForeground(Color.black);
+        SaveSettingsButton.setFont(new Font("Serif", 10, 13));
+        SaveSettingsButton.setBackground(Color.white);
+        SaveSettingsButton.setForeground(Color.black);
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(backButton);
         buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(StartGameButton);
+        buttonPanel.add(SaveSettingsButton);
         buttonPanel.add(Box.createHorizontalGlue());
 
         backPanel = new JPanel();
-//        backPanel.setPreferredSize(new Dimension(800, 600));
         backPanel.setLayout(new BoxLayout(backPanel, BoxLayout.Y_AXIS));
         backPanel.add(headerPanel);
         backPanel.add(categoriePanel);
-//        backPanel.add(textFieldP);
         backPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         backPanel.add(buttonPanel);
         backPanel.add(Box.createRigidArea(new Dimension(0, 80)));
-        setBackground(Color.red);
-        setPreferredSize(new Dimension(1024, 768));
         add(backPanel);
 
     }
@@ -240,7 +236,7 @@ public class SettingsGui extends JPanel {
 
     public void setListener(ActionListener l) {
         this.backButton.addActionListener(l);
-        this.StartGameButton.addActionListener(l);
+        this.SaveSettingsButton.addActionListener(l);
     }
 
 

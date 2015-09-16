@@ -53,7 +53,7 @@ public class MenuHandler extends JPanel implements ActionListener {
 
         addMenuListener();
 
-        
+        setPreferredSize(null);
         setVisible(true);
 
     }
@@ -83,6 +83,7 @@ public class MenuHandler extends JPanel implements ActionListener {
             case "Menu-NewGame":
                 this.settingsGui = new SettingsGui();
                 add(settingsGui, "settings");
+                settingsGui.setPreferredSize(new Dimension(1024, 768));
                 addSettingsGuiListener();
                 cardLayout.show(this, "settings");
                 break;
@@ -100,10 +101,11 @@ public class MenuHandler extends JPanel implements ActionListener {
             case "Settings-MainMenu":
                 cardLayout.show(this, "menu");
                 break;
-            case "Settings-StartGame":
+            case "Settings-SaveSettings":
                 settingsGui.setSettings();
                 this.gameSettings = new Settings(settingsGui);
                 this.newGame = new Game(gameSettings);
+                remove(settingsGui);
                 add(newGame.getGameGui(), "newGame");
                 cardLayout.show(this, "newGame");
                 addGameGuiListener();
@@ -113,6 +115,9 @@ public class MenuHandler extends JPanel implements ActionListener {
                 break;
             case "Game-MainMenu":
                 cardLayout.show(this, "menu");
+                break;
+            case "Game-SaveGame":
+                System.out.println("Halllo");
                 break;
 
         }

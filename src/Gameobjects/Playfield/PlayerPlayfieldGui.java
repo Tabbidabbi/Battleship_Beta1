@@ -25,28 +25,27 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
     private JPanel opponentfieldMatrixPanel;
 
     public PlayerPlayfieldGui(Settings gameSettings) {
-    	//1. Spieleransicht
+        //1. Spieleransicht
         setLayout(new BorderLayout());
         this.gameSettings = gameSettings;
         playfieldMatrix = new FieldGui[gameSettings.getPlayfieldSize() + 1][gameSettings.getPlayfieldSize() + 1];
 
         playfieldMatrixPanel = new JPanel();
+        
         playfieldMatrixPanel.setLayout(new GridLayout(gameSettings.getPlayfieldSize() + 1, gameSettings.getPlayfieldSize() + 1));
         for (int i = 0; i < playfieldMatrix.length; i++) {
             for (int j = 0; j < playfieldMatrix[i].length; j++) {
                 playfieldMatrix[i][j] = new FieldGui();
-                playfieldMatrix[i][j].setActionCommand("" + i +"#"+ j);
+                playfieldMatrix[i][j].setActionCommand("" + i + "#" + j);
                 playfieldMatrix[i][j].addActionListener(this);
                 playfieldMatrix[i][0].setText("" + i);
-                playfieldMatrix[i][0].setBackground(Color.white);
-                playfieldMatrix[i][0].setEnabled(false);
                 playfieldMatrix[i][0].setActive(false);
                 playfieldMatrix[0][j].setText("" + j);
-                playfieldMatrix[0][j].setEnabled(false);
                 playfieldMatrix[0][j].setActive(false);
-                playfieldMatrix[0][j].setBackground(Color.white);
                 playfieldMatrix[0][0].setText("Y  /  X");
-                playfieldMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10 ));
+                playfieldMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10));
+                playfieldMatrix[i][j].setBackground(Color.gray);
+                playfieldMatrix[i][j].setEnabled(false);
                 playfieldMatrixPanel.add(playfieldMatrix[i][j]);
 //                if (playfieldMatrix[i][j].isActive()) {
 //                    playfieldMatrix[i][j].setText("a");
@@ -59,7 +58,7 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
         add(playfieldMatrixPanel);
         setOpaque(false);
         setVisible(true);
-        
+
         //2. Gegneransicht
         //setLayout(new BorderLayout());
         //this.gameSettings = gameSettings;
@@ -69,20 +68,20 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
         opponentfieldMatrixPanel.setLayout(new GridLayout(gameSettings.getPlayfieldSize() + 1, gameSettings.getPlayfieldSize() + 1));
         for (int i = 0; i < opponentfieldMatrix.length; i++) {
             for (int j = 0; j < opponentfieldMatrix[i].length; j++) {
-            	opponentfieldMatrix[i][j] = new FieldGui();
-            	opponentfieldMatrix[i][j].setActionCommand("" + i +"#"+ j);
-            	opponentfieldMatrix[i][j].addActionListener(this);
-            	opponentfieldMatrix[i][0].setText("" + i);
-            	opponentfieldMatrix[i][0].setBackground(Color.white);
-            	opponentfieldMatrix[i][0].setEnabled(false);
-            	opponentfieldMatrix[i][0].setActive(false);
-            	opponentfieldMatrix[0][j].setText("" + j);
-            	opponentfieldMatrix[0][j].setEnabled(false);
-            	opponentfieldMatrix[0][j].setActive(false);
-            	opponentfieldMatrix[0][j].setBackground(Color.white);
-            	opponentfieldMatrix[0][0].setText("Y  /  X");
-            	opponentfieldMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10 ));
-            	opponentfieldMatrixPanel.add(opponentfieldMatrix[i][j]);
+                opponentfieldMatrix[i][j] = new FieldGui();
+                opponentfieldMatrix[i][j].setActionCommand("" + i + "#" + j);
+                opponentfieldMatrix[i][j].addActionListener(this);
+                opponentfieldMatrix[i][0].setText("" + i);
+                opponentfieldMatrix[i][0].setBackground(Color.white);
+                opponentfieldMatrix[i][0].setEnabled(false);
+                opponentfieldMatrix[i][0].setActive(false);
+                opponentfieldMatrix[0][j].setText("" + j);
+                opponentfieldMatrix[0][j].setEnabled(false);
+                opponentfieldMatrix[0][j].setActive(false);
+                opponentfieldMatrix[0][j].setBackground(Color.white);
+                opponentfieldMatrix[0][0].setText("Y  /  X");
+                opponentfieldMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10));
+                opponentfieldMatrixPanel.add(opponentfieldMatrix[i][j]);
 //                if (playfieldMatrix[i][j].isActive()) {
 //                    playfieldMatrix[i][j].setText("a");
 //                } else { 
@@ -94,7 +93,6 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
         //add(opponentfieldMatrixPanel);
         //setOpaque(false);
         //setVisible(false);
-
     }
 
     public FieldGui getPlayfieldButton() {
@@ -118,9 +116,25 @@ public class PlayerPlayfieldGui extends JPanel implements ActionListener {
     public FieldGui[][] getPlayfieldMatrix() {
         return playfieldMatrix;
     }
-    
-    public FieldGui[][] getOpponentfieldMatix(){
-    	return opponentfieldMatrix;
+
+    public FieldGui[][] getOpponentfieldMatix() {
+        return opponentfieldMatrix;
+    }
+
+    public void enablePlayfield() {
+        for (int i = 0; i < playfieldMatrix.length; i++) {
+            for (int j = 0; j < playfieldMatrix[i].length; j++) {
+                playfieldMatrix[i][j].setEnabled(true);
+                playfieldMatrix[i][j].setBackground(new Color(64, 164, 223));
+                playfieldMatrix[i][0].setBackground(Color.white);
+                playfieldMatrix[0][j].setBackground(Color.white);
+                playfieldMatrix[i][0].setEnabled(false);
+                playfieldMatrix[0][j].setEnabled(false);
+                repaint();
+
+            }
+        }
+
     }
 
     @Override

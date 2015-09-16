@@ -33,7 +33,7 @@ public class MainMenuGui extends JPanel {
 
     public MainMenuGui() {
         
-        headerLabel = new JLabel("Schiffeversenken Alpha_4");
+        headerLabel = new JLabel("Schiffeversenken Alpha_5");
         headerLabel.setFont(new Font("Serif", 25, 25));
         headerPanel = new JPanel();
         headerPanel.add(headerLabel);

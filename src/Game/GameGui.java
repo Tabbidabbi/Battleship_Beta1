@@ -27,7 +27,7 @@ import javax.swing.GroupLayout.SequentialGroup;
  *
  * @author Tobias
  */
-public class GameGui extends JPanel  {
+public class GameGui extends JPanel {
 
     BoxLayout boxLayout;
 
@@ -52,27 +52,21 @@ public class GameGui extends JPanel  {
 
     JPanel componentPanel;
 
-    JButton menuButton, saveGameButton;
+    JButton menuButton, saveGameButton, startGameButton;
     JPanel buttonPanel;
 
     private PrintStream standardOut;
-    
-    
-    
-    
-    
 
     public GameGui(Settings gameSettings) {
         this.gameSettings = gameSettings;
         setOpaque(false);
         GroupLayout gameGuiLayout = new GroupLayout(this);
-        
+
         playerPlayFieldPanel = new JPanel();
         playFieldCardLayout = new CardLayout();
         playerPlayFieldPanel.setLayout(playFieldCardLayout);
         playerPlayFieldPanel.setOpaque(false);
-        
-        
+
         playerListLabel = new JLabel("Spieler: ");
         playerListPanel = new JPanel();
         playerListPanel.add(playerListLabel);
@@ -82,17 +76,21 @@ public class GameGui extends JPanel  {
         textOutputArea.setEditable(false);
         textOutputArea.setLineWrap(true);
         textOutputArea.setFont(new Font("Serif", Font.BOLD, 12));
-        PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea),true);
+        PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea), true);
         standardOut = System.out;
         System.setOut(printStream);
-        
 
-        textOutputPanel = new JScrollPane(textOutputArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        textOutputPanel = new JScrollPane(textOutputArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         shipListLabel = new JLabel("Schiffe: ");
         shipListPanel = new JPanel();
         shipListPanel.add(shipListLabel);
         shipListPanel.setLayout(new BoxLayout(shipListPanel, BoxLayout.Y_AXIS));
 
+        startGameButton = new JButton("Spiel-Starten");
+        startGameButton.setActionCommand("Game-StartGame");
+        startGameButton.setFont(new Font("Serif", 10, 13));
+        startGameButton.setBackground(Color.white);
+        startGameButton.setForeground(Color.black);
         menuButton = new JButton("Hauptmenü");
         menuButton.setActionCommand("Game-MainMenu");
         menuButton.setFont(new Font("Serif", 10, 13));
@@ -112,9 +110,11 @@ public class GameGui extends JPanel  {
         gameGuiLayout.setVerticalGroup(
                 gameGuiLayout.createSequentialGroup()
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(playerPlayFieldPanel,0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
                         .addGroup(gameGuiLayout.createSequentialGroup()
-                                .addComponent(textOutputPanel, 0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
+                                .addComponent(playerPlayFieldPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(startGameButton))
+                        .addGroup(gameGuiLayout.createSequentialGroup()
+                                .addComponent(textOutputPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(gameGuiLayout.createParallelGroup()
                                         .addComponent(playerListPanel)
                                         .addComponent(shipListPanel))
@@ -124,9 +124,11 @@ public class GameGui extends JPanel  {
         );
         gameGuiLayout.setHorizontalGroup(
                 gameGuiLayout.createSequentialGroup()
-                .addComponent(playerPlayFieldPanel, 0,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(textOutputPanel,0,GroupLayout.DEFAULT_SIZE,350)
+                        .addComponent(playerPlayFieldPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(startGameButton))
+                .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(textOutputPanel, 0, GroupLayout.DEFAULT_SIZE, 350)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerListPanel)
                                 .addComponent(shipListPanel))
@@ -135,7 +137,8 @@ public class GameGui extends JPanel  {
 
         gameGuiLayout.setAutoCreateGaps(true);
         gameGuiLayout.setAutoCreateContainerGaps(true);
-
+        
+        setPreferredSize(new Dimension(1024, 768));
         setVisible(true);
     }
 
@@ -147,6 +150,7 @@ public class GameGui extends JPanel  {
 
     public void showPlayerPlayField(int playerNumber) {
         playFieldCardLayout.show(playerPlayFieldPanel, "Player" + playerNumber);
+//        repaint();
 
     }
 
@@ -156,7 +160,7 @@ public class GameGui extends JPanel  {
             playerButton[i] = new JButton(playerList.get(i).getName());
             playerListPanel.add(playerButton[i]);
         }
-        revalidate();
+//        revalidate();
 
     }
 
@@ -169,16 +173,20 @@ public class GameGui extends JPanel  {
             shipListButtons[i].setMaximumSize(maxButtonSize);
             shipListPanel.add(shipListButtons[i]);
         }
-        revalidate();
+//        revalidate();
     }
-    
-
 
     public void setGameButtonListener(ActionListener l) {
         this.menuButton.addActionListener(l);
         this.saveGameButton.addActionListener(l);
     }
-
+    public void setStartGameButtonListener(ActionListener l) {
+        this.startGameButton.addActionListener(l);
+    }
+    
+    public void disableButton() {
+        this.startGameButton.setVisible(false);
+    }
 
     public class CustomOutputStream extends OutputStream {
 
