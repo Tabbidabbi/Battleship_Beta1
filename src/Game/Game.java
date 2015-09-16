@@ -88,10 +88,10 @@ public class Game implements Serializable, ActionListener {
     private void addGameGui() {
         addPlayFieldMatrixListener();
         addStartGameListener();
-        nextPlayerDialog = new HelperNextPlayerDialog("Alle Schiffe wurden gesetzt.");
-        addNextPlayerDialogListener();
         gameGui.showPlayers(playerList);
         gameGui.showPlayerShips(player, playerList);
+        nextPlayerDialog = new HelperNextPlayerDialog("Alle Schiffe wurden gesetzt.");
+        addNextPlayerDialogListener();
     }
 
     /**
@@ -179,8 +179,6 @@ public class Game implements Serializable, ActionListener {
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                                                System.out.println("TEST");
-
                         return false;
                     }
                     // Falls das Schiff mit der Größe nicht in das
@@ -201,7 +199,6 @@ public class Game implements Serializable, ActionListener {
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                        System.out.println("TEST");
                         return false;
                     }
                     // Falls das Schiff mit der Größe nicht in das
@@ -596,54 +593,13 @@ public class Game implements Serializable, ActionListener {
 
     private void addPlayFieldMatrixListener() {
 
-        for (Player p : playerList) {
-            p.getPlayerPlayFieldGui().setFieldButtonListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (!checkShipPlacement(e)) {
-                        System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
-
-                    } else {
-                        HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
-                        shipOrientation = orientationDialog.getOrientation();
-                        placeShip(e, shipOrientation, playerList);
-                        shipsPlaced++;
-                        if (shipsPlaced < playerList.get(player).getShips().size()) {
-                            nextShipDialog();
-                        } else {
-                            shipsPlaced = 0;
-                            showNextPlayerDialog();
-                        }
-
-                    }
-                }
-            });
+        for (Player player : playerList) {
+            player.getPlayerPlayFieldGui().setFieldButtonListener(this);
         }
     }
 
     private void addNextPlayerDialogListener() {
-        nextPlayerDialog.setActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (player < playerList.size() - 1) {
-                    nextPlayerDialog.setVisible(false);
-                    player++;
-                    addPlayerToGameGui(playerList);
-                    playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
-                    if (playerList.get(player) instanceof AiPlayer) {
-                        placeAiShip(player, shipsPlaced);
-                        showNextPlayerDialog();
-                    } else {
-                        interactWithPlayer(playerList);
-                        addPlayFieldMatrixListener();
-
-                    }
-
-                }
-            }
-        });
+        nextPlayerDialog.setActionListener(this);
     }
 
     private void addStartGameDialogListener() {
@@ -651,33 +607,11 @@ public class Game implements Serializable, ActionListener {
     }
 
     private void showNextPlayerDialog() {
-        if (player < playerList.size() - 1) {
-            nextPlayerDialog.setVisible(true);
-        } else {
-            
-            System.out.println("Runde beginnt");
-        }
+        nextPlayerDialog.setVisible(true);
     }
 
     private void addStartGameListener() {
-        gameGui.setStartGameButtonListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
-                gameGui.disableButton();
-                if (playerList.get(player) instanceof AiPlayer) {
-                    placeAiShip(player, shipsPlaced);
-                    showNextPlayerDialog();
-
-                } else {
-                    interactWithPlayer(playerList);
-
-                }
-
-//            validatePlayerType();
-            }
-        });
+        gameGui.setStartGameButtonListener(this);
     }
 
     private void validatePlayerType() {
@@ -702,51 +636,51 @@ public class Game implements Serializable, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getActionCommand().equals("Game-StartGame")) {
+            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+            gameGui.disableButton();
+            validatePlayerType();
+        }
+
 //
-//        if (e.getActionCommand().equals("Game-StartGame")) {
-//            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
-//            gameGui.disableButton();
-//            validatePlayerType();
-//        }
-//
-////
-//        if (!e.getActionCommand().equals("Game-StartGame") && !e.getActionCommand().equals("Helper-NextPlayer")) {
-//            if (shipsPlaced < playerList.get(player).getShips().size()) {
-//                if (!checkShipPlacement(e)) {
-//                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
-//                } else {
-//                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
-//                    shipOrientation = orientationDialog.getOrientation();
-//                    placeShip(e, shipOrientation, playerList);
-//                    shipsPlaced++;
-//                    if (shipsPlaced < playerList.get(player).getShips().size()) {
-//                        nextShipDialog();
-//                    } else {
-//                        shipsPlaced = 0;
-//                        showNextPlayerDialog();
-////                        if (player < playerList.size() - 1) {
-////                            showNextPlayerDialog();
-////                        } else {
-////                            System.out.println("Runde beginnt human");
-////                        }
-//                    }
-//                }
-//            } 
-//                
-//        }
-//
-//        if (e.getActionCommand().equals("Helper-NextPlayer")) {
-//            System.out.println(player);
-//            player++;
-//            System.out.println(player);
-//            validatePlayerType();
-//            addPlayerToGameGui(playerList);
-//            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
-//            if (player == playerList.size() - 1) {
-//                nextPlayerDialog.setVisible(false);
-//                nextPlayerDialog.dispose();
-//
-//            }
-//        }
+        if (!e.getActionCommand().equals("Game-StartGame") && !e.getActionCommand().equals("Helper-NextPlayer")) {
+            if (shipsPlaced < playerList.get(player).getShips().size()) {
+                if (!checkShipPlacement(e)) {
+                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+                } else {
+                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+                    shipOrientation = orientationDialog.getOrientation();
+                    placeShip(e, shipOrientation, playerList);
+                    shipsPlaced++;
+                    if (shipsPlaced < playerList.get(player).getShips().size()) {
+                        nextShipDialog();
+                    } else {
+                        showNextPlayerDialog();
+//                        if (player < playerList.size() - 1) {
+//                            showNextPlayerDialog();
+//                        } else {
+//                            System.out.println("Runde beginnt human");
+//                        }
+                    }
+                }
+            } else {
+                shipsPlaced = 0;
+            }
+        }
+
+        if (e.getActionCommand().equals("Helper-NextPlayer")) {
+            System.out.println(player);
+            player++;
+            System.out.println(player);
+            validatePlayerType();
+            addPlayerToGameGui(playerList);
+            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+            if (player == playerList.size() - 1) {
+                nextPlayerDialog.setVisible(false);
+                nextPlayerDialog.dispose();
+
+            }
+        }
     }
 }
