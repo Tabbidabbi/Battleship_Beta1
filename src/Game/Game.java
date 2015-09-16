@@ -163,7 +163,7 @@ public class Game implements Serializable, ActionListener {
      * @param opponentfield playfield Spielfeld des auf Sicht des Gegners
      * @return boolean, ob Schiff gesetzt werden konnte
      */
-    private boolean checkShipPlacement(ActionEvent e) {
+    private boolean checkShipPlacement(ActionEvent e, boolean orientation) {
 
         String input = e.getActionCommand();
 
@@ -179,7 +179,7 @@ public class Game implements Serializable, ActionListener {
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                                                System.out.println("TEST");
+                                                System.out.println("Horizontal");
 
                         return false;
                     }
@@ -201,7 +201,7 @@ public class Game implements Serializable, ActionListener {
                     if (!playerList.get(player).getPlayerPlayFieldGui().getPlayfieldMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                        System.out.println("TEST");
+                        System.out.println("Vertikal");
                         return false;
                     }
                     // Falls das Schiff mit der Größe nicht in das
@@ -596,17 +596,17 @@ public class Game implements Serializable, ActionListener {
 
     private void addPlayFieldMatrixListener() {
 
-        for (Player p : playerList) {
-            p.getPlayerPlayFieldGui().setFieldButtonListener(new ActionListener() {
+//        for (Player p : playerList) {
+            playerList.get(player).getPlayerPlayFieldGui().setFieldButtonListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (!checkShipPlacement(e)) {
-                        System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
-
-                    } else {
                         HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
                         shipOrientation = orientationDialog.getOrientation();
+                    if (!checkShipPlacement(e, shipOrientation)) {
+                        System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+//                        System.out.println("TESTING" + shipsPlaced);
+                    } else {
                         placeShip(e, shipOrientation, playerList);
                         shipsPlaced++;
                         if (shipsPlaced < playerList.get(player).getShips().size()) {
@@ -619,7 +619,7 @@ public class Game implements Serializable, ActionListener {
                     }
                 }
             });
-        }
+//        }
     }
 
     private void addNextPlayerDialogListener() {
