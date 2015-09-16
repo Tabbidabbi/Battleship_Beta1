@@ -154,26 +154,44 @@ public class GameGui extends JPanel {
 
     }
 
-    public void showPlayers(ArrayList<Player> playerList) {
+    public void addPlayersToGameGui(ArrayList<Player> playerList) {
         playerButton = new JButton[playerList.size()];
         for (int i = 0; i < playerButton.length; i++) {
             playerButton[i] = new JButton(playerList.get(i).getName());
+            playerButton[i].setEnabled(false);
             playerListPanel.add(playerButton[i]);
+            
         }
-//        revalidate();
 
     }
+    
+    public void activatePlayerButton(int player) {
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i].setEnabled(false);
+            playerButton[player].setEnabled(true);
+        }
+    }
+    
+    
 
-    public void showPlayerShips(int playerNumber, ArrayList<Player> playerList) {
+    public void addShipsToGameGui(int playerNumber, ArrayList<Player> playerList) {
         shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
         Dimension maxButtonSize;
         for (int i = 0; i < shipListButtons.length; i++) {
             shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
             maxButtonSize = shipListButtons[0].getMaximumSize();
+            shipListButtons[i].setEnabled(false);
             shipListButtons[i].setMaximumSize(maxButtonSize);
             shipListPanel.add(shipListButtons[i]);
         }
 //        revalidate();
+    }
+    
+    public void activateShipButtons(int ship) {
+          for (int i = 0; i < shipListButtons.length; i++) {
+              shipListButtons[i].setEnabled(false);
+              shipListButtons[ship].setEnabled(true);
+        }
     }
 
     public void setGameButtonListener(ActionListener l) {
