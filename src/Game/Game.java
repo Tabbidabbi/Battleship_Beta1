@@ -703,5 +703,94 @@ public class Game implements Serializable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 //
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        if (!e.getActionCommand().equals("Game-StartGame") && !e.getActionCommand().equals("Helper-NextPlayer")) {
+            if (shipsPlaced < playerList.get(player).getShips().size()) {
+                if (!checkShipPlacement(e)) {
+                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+                } else {
+                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+                    shipOrientation = orientationDialog.getOrientation();
+                    placeShip(e, shipOrientation, playerList);
+                    shipsPlaced++;
+                    if (shipsPlaced < playerList.get(player).getShips().size()) {
+                        nextShipDialog();
+                    } else {
+                        showNextPlayerDialog();
+//                        if (player < playerList.size() - 1) {
+//                            showNextPlayerDialog();
+//                        } else {
+//                            System.out.println("Runde beginnt human");
+//                        }
+                    }
+                }
+            } else {
+                shipsPlaced = 0;
+            }
+        }
+
+        if (e.getActionCommand().equals("Helper-NextPlayer")) {
+            System.out.println(player);
+            player++;
+            System.out.println(player);
+            validatePlayerType();
+            addPlayerToGameGui(playerList);
+            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+            if (player == playerList.size() - 1) {
+                nextPlayerDialog.setVisible(false);
+                nextPlayerDialog.dispose();
+
+            }
+        }
+=======
+//        if (e.getActionCommand().equals("Game-StartGame")) {
+//            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+//            gameGui.disableButton();
+//            validatePlayerType();
+//        }
+//
+////
+//        if (!e.getActionCommand().equals("Game-StartGame") && !e.getActionCommand().equals("Helper-NextPlayer")) {
+//            if (shipsPlaced < playerList.get(player).getShips().size()) {
+//                if (!checkShipPlacement(e)) {
+//                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+//                } else {
+//                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+//                    shipOrientation = orientationDialog.getOrientation();
+//                    placeShip(e, shipOrientation, playerList);
+//                    shipsPlaced++;
+//                    if (shipsPlaced < playerList.get(player).getShips().size()) {
+//                        nextShipDialog();
+//                    } else {
+//                        shipsPlaced = 0;
+//                        showNextPlayerDialog();
+////                        if (player < playerList.size() - 1) {
+////                            showNextPlayerDialog();
+////                        } else {
+////                            System.out.println("Runde beginnt human");
+////                        }
+//                    }
+//                }
+//            } 
+//                
+//        }
+//
+//        if (e.getActionCommand().equals("Helper-NextPlayer")) {
+//            System.out.println(player);
+//            player++;
+//            System.out.println(player);
+//            validatePlayerType();
+//            addPlayerToGameGui(playerList);
+//            playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+//            if (player == playerList.size() - 1) {
+//                nextPlayerDialog.setVisible(false);
+//                nextPlayerDialog.dispose();
+//
+//            }
+//        }
+>>>>>>> x
+>>>>>>> origin/master
     }
 }
