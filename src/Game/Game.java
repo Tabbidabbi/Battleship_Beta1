@@ -616,17 +616,22 @@ public class Game implements Serializable, ActionListener {
 
     private void validatePlayerType() {
 //      
-        if (playerList.get(player) instanceof AiPlayer) {
-            placeAiShip(player, shipsPlaced);
-            shipsPlaced = 0;
-        } else {
-            interactWithPlayer(playerList);
-        }
         if (player < playerList.size() - 1) {
-            showNextPlayerDialog();
+            if (playerList.get(player) instanceof AiPlayer) {
+                placeAiShip(player, shipsPlaced);
+                shipsPlaced = 0;
+                showNextPlayerDialog();
+            } else {
+                interactWithPlayer(playerList);
+            }
         } else {
-            System.out.println("Runde beginnt");
+            System.out.println("vadsf");
         }
+//        if (player < playerList.size() - 1 && playerList.get(player) instanceof AiPlayer ) {
+//            showNextPlayerDialog();
+//        } else if (player == playerList.size() - 1){
+//            System.out.println("Runde beginnt");
+//        }
     }
 
     @Override
@@ -640,7 +645,6 @@ public class Game implements Serializable, ActionListener {
 
 //
         if (!e.getActionCommand().equals("Game-StartGame") && !e.getActionCommand().equals("Helper-NextPlayer")) {
-            System.out.println("Juhu");
             if (shipsPlaced < playerList.get(player).getShips().size()) {
                 if (!checkShipPlacement(e)) {
                     System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
@@ -652,11 +656,12 @@ public class Game implements Serializable, ActionListener {
                     if (shipsPlaced < playerList.get(player).getShips().size()) {
                         nextShipDialog();
                     } else {
-                        if (player < playerList.size() - 1) {
-                            showNextPlayerDialog();
-                        } else {
-                            System.out.println("Runde beginnt");
-                        }
+                        showNextPlayerDialog();
+//                        if (player < playerList.size() - 1) {
+//                            showNextPlayerDialog();
+//                        } else {
+//                            System.out.println("Runde beginnt human");
+//                        }
                     }
                 }
             } else {
@@ -665,8 +670,9 @@ public class Game implements Serializable, ActionListener {
         }
 
         if (e.getActionCommand().equals("Helper-NextPlayer")) {
+            System.out.println(player);
             player++;
-            System.out.println(playerList.get(player).getName());
+            System.out.println(player);
             validatePlayerType();
             addPlayerToGameGui(playerList);
             playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
