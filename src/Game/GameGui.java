@@ -31,6 +31,9 @@ public class GameGui extends JPanel {
 
     BoxLayout boxLayout;
 
+    private FieldGui[][] emptyMatrix;
+    private JPanel emptyMatrixPanel;
+
     CardLayout playFieldCardLayout;
 
     JPanel playerPlayFieldPanel;
@@ -52,7 +55,7 @@ public class GameGui extends JPanel {
 
     JPanel componentPanel;
 
-    JButton menuButton, saveGameButton, startGameButton;
+    JButton menuButton, saveGameButton, startGameButton, nextPlayerButton, startRoundButton;
     JPanel buttonPanel;
 
     private PrintStream standardOut;
@@ -91,6 +94,18 @@ public class GameGui extends JPanel {
         startGameButton.setFont(new Font("Serif", 10, 13));
         startGameButton.setBackground(Color.white);
         startGameButton.setForeground(Color.black);
+        nextPlayerButton = new JButton("Nächster-Spieler");
+        nextPlayerButton.setActionCommand("Game-NextPlayerPlaceShip");
+        nextPlayerButton.setFont(new Font("Serif", 10, 13));
+        nextPlayerButton.setBackground(Color.white);
+        nextPlayerButton.setForeground(Color.black);
+        nextPlayerButton.setVisible(false);
+        startRoundButton = new JButton("Runde-Starten");
+        startRoundButton.setActionCommand("Game-StartRound");
+        startRoundButton.setFont(new Font("Serif", 10, 13));
+        startRoundButton.setBackground(Color.white);
+        startRoundButton.setForeground(Color.black);
+        startRoundButton.setVisible(false);
         menuButton = new JButton("Hauptmenü");
         menuButton.setActionCommand("Game-MainMenu");
         menuButton.setFont(new Font("Serif", 10, 13));
@@ -106,13 +121,36 @@ public class GameGui extends JPanel {
         buttonPanel.add(menuButton);
         buttonPanel.add(saveGameButton);
 
+        emptyMatrix = new FieldGui[gameSettings.getPlayfieldSize() + 1][gameSettings.getPlayfieldSize() + 1];
+        emptyMatrixPanel = new JPanel();
+
+        emptyMatrixPanel.setLayout(new GridLayout(gameSettings.getPlayfieldSize() + 1, gameSettings.getPlayfieldSize() + 1));
+
+        for (int i = 0; i < emptyMatrix.length; i++) {
+            for (int j = 0; j < emptyMatrix[i].length; j++) {
+                emptyMatrix[i][j] = new FieldGui();
+                emptyMatrix[i][0].setText("" + i);
+                emptyMatrix[i][0].setActive(false);
+                emptyMatrix[0][j].setText("" + j);
+                emptyMatrix[0][j].setActive(false);
+                emptyMatrix[0][0].setText("Y  /  X");
+                emptyMatrix[0][0].setFont(new Font("Serif", Font.BOLD, 10));
+                emptyMatrix[i][j].setBackground(Color.gray);
+                emptyMatrix[i][j].setEnabled(false);
+                emptyMatrixPanel.add(emptyMatrix[i][j]);
+            }
+
+        }
+
         setLayout(gameGuiLayout);
-        gameGuiLayout.setVerticalGroup(
-                gameGuiLayout.createSequentialGroup()
+        gameGuiLayout.setVerticalGroup(gameGuiLayout.createSequentialGroup()
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerPlayFieldPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(startGameButton))
+                                .addComponent(startGameButton)
+                                .addComponent(nextPlayerButton)
+                                .addComponent(startRoundButton)
+                        )
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(textOutputPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(gameGuiLayout.createParallelGroup()
@@ -122,22 +160,27 @@ public class GameGui extends JPanel {
                 )
                 .addComponent(buttonPanel)
         );
-        gameGuiLayout.setHorizontalGroup(
-                gameGuiLayout.createSequentialGroup()
+        gameGuiLayout.setHorizontalGroup(gameGuiLayout.createSequentialGroup()
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(playerPlayFieldPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(startGameButton))
+                        .addComponent(startGameButton)
+                        .addComponent(nextPlayerButton)
+                        .addComponent(startRoundButton)
+                )
                 .addGroup(gameGuiLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(textOutputPanel, 0, GroupLayout.DEFAULT_SIZE, 350)
                         .addGroup(gameGuiLayout.createSequentialGroup()
                                 .addComponent(playerListPanel)
-                                .addComponent(shipListPanel))
+                                .addComponent(shipListPanel)
+                        )
                         .addComponent(buttonPanel))
         );
+        
+        playerPlayFieldPanel.add(emptyMatrixPanel,"emptyMatrix");
 
         gameGuiLayout.setAutoCreateGaps(true);
         gameGuiLayout.setAutoCreateContainerGaps(true);
-        
+
         setPreferredSize(new Dimension(1024, 768));
         setVisible(true);
     }
@@ -147,6 +190,17 @@ public class GameGui extends JPanel {
         playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerPlayFieldGui(), "Player" + playerNumber);
 
     }
+    public void addPlayerPlayfieldOpponentView(int playerNumber,  ArrayList<Player> playerList) {
+        playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerOpponentViewGui(), "" + playerList.get(playerNumber).getNumber());
+    }
+    public void showPlayerPlayfieldOpponentView(int enemyNumber) {
+        playFieldCardLayout.show(playerPlayFieldPanel, "" + enemyNumber);
+    }
+    public void showEmptyMatrix() {
+
+        playFieldCardLayout.show(playerPlayFieldPanel,"emptyMatrix");
+
+    }
 
     public void showPlayerPlayField(int playerNumber) {
         playFieldCardLayout.show(playerPlayFieldPanel, "Player" + playerNumber);
@@ -154,55 +208,114 @@ public class GameGui extends JPanel {
 
     }
 
-    public void addPlayersToGameGui(ArrayList<Player> playerList) {
-        playerButton = new JButton[playerList.size()];
-        for (int i = 0; i < playerButton.length; i++) {
-            playerButton[i] = new JButton(playerList.get(i).getName());
-            playerButton[i].setEnabled(false);
-            playerListPanel.add(playerButton[i]);
-            
+    public void addShipButtonsToGameGui(int playerNumber, ArrayList<Player> playerList) {
+        shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
+        Dimension maxButtonSize;
+        for (int i = 0; i < shipListButtons.length; i++) {
+            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
+            maxButtonSize = shipListButtons[0].getMaximumSize();
+            shipListButtons[i].setActionCommand(playerList.get(playerNumber).getShips().get(i).getName());
+            shipListButtons[i].setEnabled(false);
+            shipListButtons[i].setMaximumSize(maxButtonSize);
+            shipListPanel.add(shipListButtons[i]);
+        }
+    }
+      public void setShipButtonsActionListener(ActionListener l) {
+        for (int i = 0; i < shipListButtons.length; i++) {
+           shipListButtons[i].addActionListener(l);
+
         }
 
     }
-    
+    public void addPlayerButtonsToGameGui(ArrayList<Player> playerList) {
+        playerButton = new JButton[playerList.size()];
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i] = new JButton(playerList.get(i).getName());
+            playerButton[i].setActionCommand(Integer.toString(playerList.get(i).getNumber()));
+            playerButton[i].setEnabled(false);
+            playerListPanel.add(playerButton[i]);
+
+        }
+
+    }
+    public void setPlayerButtonsActionListener(ActionListener l) {
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i].addActionListener(l);
+
+        }
+
+    }
+
     public void activatePlayerButton(int player) {
         for (int i = 0; i < playerButton.length; i++) {
             playerButton[i].setEnabled(false);
             playerButton[player].setEnabled(true);
         }
     }
-    
-    
-
-    public void addShipsToGameGui(int playerNumber, ArrayList<Player> playerList) {
-        shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
-        Dimension maxButtonSize;
-        for (int i = 0; i < shipListButtons.length; i++) {
-            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
-            maxButtonSize = shipListButtons[0].getMaximumSize();
-            shipListButtons[i].setEnabled(false);
-            shipListButtons[i].setMaximumSize(maxButtonSize);
-            shipListPanel.add(shipListButtons[i]);
+    public void activateEnemyPlayerButton(int player) {
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i].setEnabled(true);
+            playerButton[player].setEnabled(false);
         }
-//        revalidate();
     }
-    
-    public void activateShipButtons(int ship) {
-          for (int i = 0; i < shipListButtons.length; i++) {
-              shipListButtons[i].setEnabled(false);
-              shipListButtons[ship].setEnabled(true);
+
+
+    public void activateSingleShipButton(int ship) {
+        for (int i = 0; i < shipListButtons.length; i++) {
+            shipListButtons[i].setEnabled(false);
+            shipListButtons[ship].setEnabled(true);
         }
+    }
+    public void activateShipButtons() {
+        for (int i = 0; i < shipListButtons.length; i++) {
+            shipListButtons[i].setEnabled(true);
+        }
+    }
+
+    public void deActivatePlayerAndShipButtons() {
+        for (int i = 0; i < shipListButtons.length; i++) {
+            shipListButtons[i].setEnabled(false);
+        }
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i].setEnabled(false);
+
+        }
+    }
+
+    public void activateStartRoundButton() {
+        this.startRoundButton.setVisible(true);
+    }
+
+    public void deActivateStartRoundButton() {
+        this.startRoundButton.setVisible(false);
+    }
+
+    public void activateNextPlayerButton() {
+        this.nextPlayerButton.setVisible(true);
+    }
+
+    public void setStartRoundButtonListener(ActionListener l) {
+        this.startRoundButton.addActionListener(l);
+    }
+
+    public void deActivateNextPlayerButton() {
+        this.nextPlayerButton.setVisible(false);
+    }
+
+    public void setNextPlayerButtonListener(ActionListener l) {
+        this.nextPlayerButton.addActionListener(l);
     }
 
     public void setGameButtonListener(ActionListener l) {
         this.menuButton.addActionListener(l);
         this.saveGameButton.addActionListener(l);
     }
+
     public void setStartGameButtonListener(ActionListener l) {
         this.startGameButton.addActionListener(l);
     }
-    
-    public void disableButton() {
+
+    public void disableStartGameButton() {
         this.startGameButton.setVisible(false);
     }
 

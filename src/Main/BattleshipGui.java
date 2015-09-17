@@ -8,7 +8,7 @@ package Main;
 import Game.GameGui;
 import Game.InstructionsGui;
 import Game.SettingsGui;
-import Gameobjects.Playfield.PlayerPlayfieldGui;
+import Gameobjects.Playfield.PlayerViewGui;
 import Multimedia.BackgroundImagePanel;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +32,7 @@ public class BattleshipGui extends JFrame {
         setTitle("Battleship");
         setSize(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
         setContentPane(backgroundImagePanel = new BackgroundImagePanel("G:\\hs\\Prog2\\Battleship_Alpha2\\Images\\background.jpg"));
+        setContentPane(backgroundImagePanel = new BackgroundImagePanel("C:\\Hochschule\\Prog2\\Battleship_Beta1\\Images\\background.jpg"));
 
         menuHandler = new MenuHandler();
 

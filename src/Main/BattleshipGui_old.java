@@ -24,7 +24,7 @@ public class BattleshipGui_old extends JFrame {
     SettingsGui settingsGui;
     InstructionsGui instructionsGui;
     GameGui gameGui;
-    PlayerPlayfieldGui playfieldGui;
+    PlayerViewGui playfieldGui;
 
     GridBagLayout gameGuiLayout;
     GridBagConstraints gridBagConstraints;

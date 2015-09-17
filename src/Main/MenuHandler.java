@@ -10,7 +10,7 @@ import Game.GameGui;
 import Game.InstructionsGui;
 import Game.Settings;
 import Game.SettingsGui;
-import Gameobjects.Playfield.PlayerPlayfieldGui;
+import Gameobjects.Playfield.PlayerViewGui;
 import Multimedia.BackgroundImagePanel;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,7 +27,7 @@ public class MenuHandler extends JPanel implements ActionListener {
     SettingsGui settingsGui;
     InstructionsGui instructionsGui;
     GameGui gameGui;
-    PlayerPlayfieldGui playfieldGui;
+    PlayerViewGui playfieldGui;
 
     GridBagLayout gameGuiLayout;
     GridBagConstraints gridBagConstraints;

@@ -1,14 +1,14 @@
 package Gameobjects.Player;
 
 import Game.Settings;
-import Gameobjects.Playfield.Playfield;
+import Gameobjects.Playfield.*;
 import Gameobjects.Ships.*;
 import IO.IO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Gameobjects.Playfield.PlayerPlayfieldGui;
+import Gameobjects.Playfield.PlayerViewGui;
 
 public  abstract class Player implements Serializable {
 
@@ -19,8 +19,8 @@ public  abstract class Player implements Serializable {
 	private ArrayList<Ship> ships;
 	private Playfield playfield;
 	private Playfield opponentField;
-	private PlayerPlayfieldGui playerPlayFieldGui;
-	private PlayerPlayfieldGui opponentPlayFieldGui;
+	private PlayerViewGui playerPlayFieldGui;
+	private OpponentViewGui playerOpponentViewGui;
 	private boolean lost;
 	private boolean isAi;
 
@@ -36,8 +36,8 @@ public  abstract class Player implements Serializable {
 		this.gameSettings = gameSettings;
 		this.isAi = isAi;
 		buildShipArray(gameSettings);
-		this.playerPlayFieldGui = new PlayerPlayfieldGui(gameSettings);
-		this.opponentPlayFieldGui = new PlayerPlayfieldGui(gameSettings);
+		this.playerPlayFieldGui = new PlayerViewGui(gameSettings);
+		this.playerOpponentViewGui = new OpponentViewGui(gameSettings);
 		// playfield = new
 		// Playfield(gameSettings.getPlayfieldSize(),gameSettings.getPlayfieldSize());
 		// playfield.printPlayField();
@@ -144,7 +144,7 @@ public  abstract class Player implements Serializable {
 	 *
 	 * @return playerPlayFieldGui SpielerGui
 	 */
-	public PlayerPlayfieldGui getPlayerPlayFieldGui() {
+	public PlayerViewGui getPlayerPlayFieldGui() {
 		return playerPlayFieldGui;
 	}
 
@@ -154,7 +154,7 @@ public  abstract class Player implements Serializable {
 	 * @param playerPlayFieldGui
 	 *            SpielerGUI
 	 */
-	public void setPlayerPlayFieldGui(PlayerPlayfieldGui playerPlayFieldGui) {
+	public void setPlayerPlayFieldGui(PlayerViewGui playerPlayFieldGui) {
 		this.playerPlayFieldGui = playerPlayFieldGui;
 	}
 	
@@ -163,8 +163,8 @@ public  abstract class Player implements Serializable {
 	 *
 	 * @return playerPlayFieldGui GegnerGui
 	 */
-	public PlayerPlayfieldGui getOpponentPlayFieldGui() {
-		return opponentPlayFieldGui;
+	public OpponentViewGui getPlayerOpponentViewGui() {
+		return playerOpponentViewGui;
 	}
 
 	/**
@@ -173,8 +173,8 @@ public  abstract class Player implements Serializable {
 	 * @param playerPlayFieldGui
 	 *            GegnerGUI
 	 */
-	public void setOpponentPlayFieldGui(PlayerPlayfieldGui opponentPlayFieldGui) {
-		this.opponentPlayFieldGui = opponentPlayFieldGui;
+	public void setOpponentPlayFieldGui(OpponentViewGui opponentPlayFieldGui) {
+		this.playerOpponentViewGui = opponentPlayFieldGui;
 	}
 	
 	/**
