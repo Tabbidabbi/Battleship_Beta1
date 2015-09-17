@@ -14,7 +14,7 @@ import Game.*;
  *
  * @author Tobias
  */
-public class PlayerViewGui extends JPanel implements ActionListener {
+public class PlayerViewGui extends JPanel  {
 
     private Settings gameSettings;
     private FieldGui playfieldButton;
@@ -35,7 +35,6 @@ public class PlayerViewGui extends JPanel implements ActionListener {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {
                 playerViewMatrix[i][j] = new FieldGui();
                 playerViewMatrix[i][j].setActionCommand("" + i + "#" + j);
-                playerViewMatrix[i][j].addActionListener(this);
                 playerViewMatrix[i][0].setText("" + i);
                 playerViewMatrix[i][0].setActive(false);
                 playerViewMatrix[0][j].setText("" + j);
@@ -67,7 +66,7 @@ public class PlayerViewGui extends JPanel implements ActionListener {
         this.playfieldButton = playfieldButton;
     }
 
-    public void setFieldButtonListener(ActionListener l) {
+    public void setPlayerViewButtonListener(ActionListener l) {
 
         for (int i = 0; i < playerViewMatrix.length; i++) {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {
@@ -77,7 +76,7 @@ public class PlayerViewGui extends JPanel implements ActionListener {
         }
     }
 
-    public FieldGui[][] getPlacementMatrix() {
+    public FieldGui[][] getPlayerViewMatrix() {
         return playerViewMatrix;
     }
 
@@ -110,10 +109,5 @@ public class PlayerViewGui extends JPanel implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String coordinateInput = e.getActionCommand();
-
-    }
 
 }

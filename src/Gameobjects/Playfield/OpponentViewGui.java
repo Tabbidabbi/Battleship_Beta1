@@ -15,7 +15,7 @@ import java.awt.color.ColorSpace;
  *
  * @author Tobias
  */
-public class OpponentViewGui extends JPanel implements ActionListener {
+public class OpponentViewGui extends JPanel {
 
     private Settings gameSettings;
     private FieldGui playfieldButton;
@@ -36,7 +36,6 @@ public class OpponentViewGui extends JPanel implements ActionListener {
                 opponentViewMatrix[i][j] = new FieldGui();
                 opponentViewMatrix[i][j].setEnabled(true);
                 opponentViewMatrix[i][j].setActionCommand("" + i + "#" + j);
-                opponentViewMatrix[i][j].addActionListener(this);
                 opponentViewMatrix[i][0].setText("" + i);
                 opponentViewMatrix[i][0].setBackground(Color.white);
                 opponentViewMatrix[i][0].setEnabled(false);
@@ -75,13 +74,18 @@ public class OpponentViewGui extends JPanel implements ActionListener {
     public FieldGui[][] getOpponentViewMatrix() {
         return opponentViewMatrix;
     }
+    
+      public void setOpponentViewButtonListener(ActionListener l) {
 
+        for (int i = 0; i < opponentViewMatrix.length; i++) {
+            for (int j = 0; j < opponentViewMatrix[i].length; j++) {
+                opponentViewMatrix[i][j].addActionListener(l);
+            }
 
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String coordinateInput = e.getActionCommand();
-
+        }
     }
+
+
+
 
 }
