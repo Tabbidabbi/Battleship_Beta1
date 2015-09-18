@@ -5,6 +5,8 @@
  */
 package Gameobjects.Playfield;
 
+import IO.IO;
+
 import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 
 import java.awt.*;
@@ -54,15 +56,34 @@ public class FieldGui extends JButton implements Serializable {
         this.active = active;
     }
     
-    public boolean isShot() {
+    public boolean getIsShot() {
 		return isShot;
 	}
 
-	public void setIsShot(boolean isShot) {
-		this.isShot = isShot;
+    /**
+     * Setzt Schuss auf das Feld
+     * @return int; Gibt die Schiffsnummer zurück
+     */
+    public int setIsShot(){
+		if(this.isShot == false){
+			this.isShot = true;
+			if(getHasShip() == true){
+				this.setText("X");
+				this.setIsHit(true);
+				//IO.println("Sie haben ein Schiff getroffen!");
+			}
+			else{
+				this.setText("O");
+				//IO.println("Sie haben auf Wasser geschossen!");
+			}
+		}
+		else{
+			IO.println("Sie haben bereits auf dieses Feld geschossen. Ein verschenkter Schuss!");
+		}
+		return getShipNumber();
 	}
 
-	public boolean isWater() {
+	public boolean getIsWater() {
 		return isWater;
 	}
 
@@ -70,7 +91,7 @@ public class FieldGui extends JButton implements Serializable {
 		this.isWater = isWater;
 	}
 
-	public boolean isHit() {
+	public boolean getIsHit() {
 		return isHit;
 	}
 
@@ -92,6 +113,14 @@ public class FieldGui extends JButton implements Serializable {
 
 	public void setShipNumber(int shipNumber) {
 		this.shipNumber = shipNumber;
+	}
+
+	public String getFieldNumber() {
+		return fieldNumber;
+	}
+
+	public void setFieldNumber(String fieldNumber) {
+		this.fieldNumber = fieldNumber;
 	}
 
 	@Override

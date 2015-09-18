@@ -14,7 +14,7 @@ import Game.*;
  *
  * @author Tobias
  */
-public class PlayerViewGui extends JPanel implements ActionListener {
+public class PlayerViewGui extends JPanel  {
 
     private Settings gameSettings;
     private FieldGui playfieldButton;
@@ -35,7 +35,6 @@ public class PlayerViewGui extends JPanel implements ActionListener {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {
                 playerViewMatrix[i][j] = new FieldGui();
                 playerViewMatrix[i][j].setActionCommand("" + i + "#" + j);
-                playerViewMatrix[i][j].addActionListener(this);
                 playerViewMatrix[i][0].setText("" + i);
                 playerViewMatrix[i][0].setActive(false);
                 playerViewMatrix[0][j].setText("" + j);
@@ -67,7 +66,7 @@ public class PlayerViewGui extends JPanel implements ActionListener {
         this.playfieldButton = playfieldButton;
     }
 
-    public void setFieldButtonListener(ActionListener l) {
+    public void setPlayerViewButtonListener(ActionListener l) {
 
         for (int i = 0; i < playerViewMatrix.length; i++) {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {
@@ -77,8 +76,52 @@ public class PlayerViewGui extends JPanel implements ActionListener {
         }
     }
 
-    public FieldGui[][] getPlacementMatrix() {
+    public FieldGui[][] getPlayerViewMatrix() {
         return playerViewMatrix;
+    }
+    
+    /**
+     * Setzt Schuß auf das Feld, das getroffen wurde
+     * @param String coordinate
+     * @param int shootRange
+     * @param boolean orientation
+     * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
+     */
+    public int[] setShot(String coordinate, int shootRange, boolean orientation) {
+        //Array, in dem  die getroffenen Schiffe stehen
+        int[] hitShips = new int[shootRange];
+        if (orientation == true) {
+            for (int y = 0; y < getPlayerViewMatrix().length; y++) {
+                for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.playerViewMatrix[y][x + i].setIsShot();
+                        	}
+                        	catch(IndexOutOfBoundsException e){
+                        		e.printStackTrace();
+                        	}
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int y = 0; y < getPlayerViewMatrix().length; y++) {
+                for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.playerViewMatrix[y + i][x].setIsShot();
+                        	}
+                            catch(IndexOutOfBoundsException e){
+                            	e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return hitShips;
     }
 
 
@@ -110,10 +153,5 @@ public class PlayerViewGui extends JPanel implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String coordinateInput = e.getActionCommand();
-
-    }
 
 }

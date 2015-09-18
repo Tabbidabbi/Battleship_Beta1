@@ -1,26 +1,16 @@
 package Game;
 
-import Gameobjects.Ships.Ship;
 import Gameobjects.Player.AiPlayer;
 import Gameobjects.Player.HumanPlayer;
 import Gameobjects.Player.Player;
-import Gameobjects.Playfield.Playfield;
 import IO.IO;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import com.sun.org.apache.xml.internal.security.utils.HelperNodeList;
-
 import Helper.Helper;
 import SaveLoad.SaveLoad;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import Helper.*;
-
-import java.io.UnsupportedEncodingException;
 
 public class Game implements Serializable, ActionListener {
 
@@ -30,15 +20,12 @@ public class Game implements Serializable, ActionListener {
     private static final long serialVersionUID = -4356896699088096722L;
     private ArrayList<Player> playerList;
     private GameGui gameGui;
-    private HelperStartGameDialog startGameDialog;
     private Settings gameSettings;
-    private boolean shipsNotPlaced = true;
     private boolean shipOrientation;
     private int player = 0;
     private int roundNumber = 1;
     private int shipsPlaced = 0;
     //0 = Placement, 1 = Shoot
-    private int gameStatus = 0;
 
     /**
      * Konstruktor der Klasse Game
@@ -79,7 +66,7 @@ public class Game implements Serializable, ActionListener {
      */
     private void addPlayerToGameGui(ArrayList<Player> playerList) {
         gameGui.addPlayerPlayField(player, playerList);
-        gameGui.addPlayerPlayfieldOpponentView(player, playerList);
+        gameGui.addOpponentView(player, playerList);
         gameGui.showPlayerPlayField(player);
     }
 
@@ -88,7 +75,7 @@ public class Game implements Serializable, ActionListener {
      * angezeigt.
      */
     private void addGameGui() {
-        addPlayFieldMatrixListener();
+        addPlayerViewMatrixListener();
         addStartGameListener();
         addNextPlayerButtonListener();
         addStartRoundListener();
@@ -180,7 +167,7 @@ public class Game implements Serializable, ActionListener {
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
-                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
+                    if (!playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         System.out.println("Horizontal");
@@ -202,7 +189,7 @@ public class Game implements Serializable, ActionListener {
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurück".
-                    if (!playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
+                    if (!playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                             .isActive()) {
                         System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         System.out.println("Vertikal");
@@ -237,14 +224,14 @@ public class Game implements Serializable, ActionListener {
         if (orientation == true) {
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                   playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i ].setIsWater(false);
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                 playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setIsWater(true);
-                playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
-                playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                                   playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setIsWater(false);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setIsWater(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
 
             }
 
@@ -252,7 +239,7 @@ public class Game implements Serializable, ActionListener {
             for (int i = (Integer.parseInt(splitted[1]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(splitted[1]); i++) {
                 for (int j = (Integer.parseInt(splitted[0]) - 1); j < Integer.parseInt(splitted[0]) + 2; j++) {
                     try {
-                        playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[j][i]
+                        playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[j][i]
                                 .setActive(false);
                         // Tetstweise eingebaut um zu sehen welche
                         // Felder deaktiviert werden
@@ -270,14 +257,14 @@ public class Game implements Serializable, ActionListener {
         else {
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(false);
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
-                playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(true);
-                playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
-                playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                                     playerList.get(player).getPlayerOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(false);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
 
             }
 
@@ -285,7 +272,7 @@ public class Game implements Serializable, ActionListener {
             for (int i = (Integer.parseInt(splitted[0]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(splitted[0]); i++) {
                 for (int j = (Integer.parseInt(splitted[1]) - 1); j < Integer.parseInt(splitted[1]) + 2; j++) {
                     try {
-                        playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[i][j]
+                        playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[i][j]
                                 .setActive(false);
                         // Tetstweise eingebaut um zu sehen welche
                         // Felder deaktiviert werden
@@ -313,7 +300,7 @@ public class Game implements Serializable, ActionListener {
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurÃ¼ck".
-                    if (playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate][xCoordinate + i]
+                    if (playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate + i]
                             .isActive() == false) {
                         //System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
@@ -333,7 +320,7 @@ public class Game implements Serializable, ActionListener {
                     // Schiff gesetzt werden soll, deaktiviert ist.
                     // Falls ja:
                     // gibt die ganze Methode "false zurÃ¼ck".
-                    if (playerList.get(player).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate + i][xCoordinate]
+                    if (playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate + i][xCoordinate]
                             .isActive() == false) {
                         //System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
                         return false;
@@ -379,19 +366,19 @@ public class Game implements Serializable, ActionListener {
                 // Setze Schiff
 
                 for (int i = 0; i < playerList.get(playerIndex).getShips().get(shipsPlaced).getSize(); i++) {
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate][xCoordinate + i].setText(playerList.get(playerIndex).getShips().get(shipsPlaced).getSign());
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate][xCoordinate + i].setIsWater(false);
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate][xCoordinate + i].setHasShip(true);
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setIsWater(true);
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setHasShip(true);
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate + i].setText(playerList.get(playerIndex).getShips().get(shipsPlaced).getSign());
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate + i].setIsWater(false);
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate + i].setHasShip(true);
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setIsWater(true);
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setHasShip(true);
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate][xCoordinate + i].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
                 }
                 // Deaktiviere Felder um das Schiff herum fÃ¼r Spieleransicht/ -matrix
                 for (int i = (xCoordinate - 1); i <= playerList.get(playerIndex).getShips().get(shipsPlaced).getSize() + xCoordinate; i++) {
                     for (int j = (yCoordinate - 1); j < yCoordinate + 2; j++) {
                         try {
-                            playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[j][i]
+                            playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[j][i]
                                     .setActive(false);
                         } catch (ArrayIndexOutOfBoundsException ex) {
 
@@ -402,20 +389,20 @@ public class Game implements Serializable, ActionListener {
             else {
                 // Setze Schiff
                 for (int i = 0; i < playerList.get(playerIndex).getShips().get(shipsPlaced).getSize(); i++) {
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate + i][xCoordinate].setText(playerList.get(playerIndex).getShips().get(shipsPlaced).getSign());
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate + i][xCoordinate].setIsWater(false);
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate + i][xCoordinate].setHasShip(true);
-                    playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setIsWater(false);
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setHasShip(true);
-                    playerList.get(playerIndex).getPlayerOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate + i][xCoordinate].setText(playerList.get(playerIndex).getShips().get(shipsPlaced).getSign());
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate + i][xCoordinate].setIsWater(false);
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate + i][xCoordinate].setHasShip(true);
+                    playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setIsWater(false);
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setHasShip(true);
+                    playerList.get(playerIndex).getOpponentViewGui().getOpponentViewMatrix()[yCoordinate + i][xCoordinate].setShipNumber(playerList.get(playerIndex).getShips().get(shipsPlaced).getNumber());
                 }
 
                 // Deaktiviere Felder um das Schiff herumfÃ¼r Spieleransicht/ -matrix
                 for (int i = (yCoordinate - 1); i <= playerList.get(playerIndex).getShips().get(shipsPlaced).getSize() + yCoordinate; i++) {
                     for (int j = (xCoordinate - 1); j < xCoordinate + 2; j++) {
                         try {
-                            playerList.get(playerIndex).getPlayerPlayFieldGui().getPlacementMatrix()[i][j]
+                            playerList.get(playerIndex).getPlayerViewGui().getPlayerViewMatrix()[i][j]
                                     .setActive(false);
                             // Tetstweise eingebaut um zu sehen welche
                             // Felder deaktiviert werden
@@ -462,7 +449,7 @@ public class Game implements Serializable, ActionListener {
                                 IO.println("Spieler " + playerList.get(playerCounter).getNumber()
                                         + ": " + playerList.get(playerCounter).getName()
                                         + " ist am Zug!");
-                                playerList.get(playerCounter).getPlayfield().printPlayField();
+                                playerList.get(playerCounter).getPlayerViewGui().printPlayField();
                                 //Vorher casten
                                 int aiShipIndex = ((AiPlayer) playerList.get(playerCounter)).getRandomShip(playerList, playerCounter);
                                 int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
@@ -503,7 +490,7 @@ public class Game implements Serializable, ActionListener {
                             } else {
                                 IO.println("Spieler " + playerList.get(playerCounter).getNumber()
                                         + ": " + playerList.get(playerCounter).getName() + " ist am Zug!");
-                                playerList.get(playerCounter).getPlayfield().printPlayField();
+                                playerList.get(playerCounter).getPlayerViewGui().printPlayField();
 
                                 // 1. Auswahl eines verfuegbaren Schiffes.
                                 int shipIndex = playerList.get(playerCounter).getAvailableShipToShoot(playerList, playerCounter);
@@ -516,7 +503,7 @@ public class Game implements Serializable, ActionListener {
 
                                 // 2. Auswahl eines Gegners.
                                 int opponent = playerList.get(playerCounter).getAvailableOpponentsToShoot(playerList, playerCounter);
-                                playerList.get(opponent).getOpponentField().printOpponentField();
+                                playerList.get(opponent).getOpponentViewGui().printOpponentField();
 
                                 // 3. Koordinate auf dem Spielfeld auswählen.
                                 String koordinate = playerList.get(playerCounter).coordinateToShoot();
@@ -552,34 +539,42 @@ public class Game implements Serializable, ActionListener {
         Helper.printWinner(playerList);
     }
 
-    private void addPlayFieldMatrixListener() {
+    private void addPlayerViewMatrixListener() {
 
 //        for (Player p : playerList) {
-        playerList.get(player).getPlayerPlayFieldGui().setFieldButtonListener(new ActionListener() {
+        playerList.get(player).getPlayerViewGui().setPlayerViewButtonListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (gameStatus == 0) {
-                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
-                    shipOrientation = orientationDialog.getOrientation();
-                    if (!checkShipPlacement(e, shipOrientation)) {
-                        System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+                HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+                shipOrientation = orientationDialog.getOrientation();
+                if (!checkShipPlacement(e, shipOrientation)) {
+                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+                } else {
+                    placeShip(e, shipOrientation, playerList);
+                    shipsPlaced++;
+                    if (shipsPlaced < playerList.get(player).getShips().size()) {
+                        gameGui.activateSingleShipButton(shipsPlaced);
+                        nextShipDialog();
                     } else {
-                        placeShip(e, shipOrientation, playerList);
-                        shipsPlaced++;
-                        if (shipsPlaced < playerList.get(player).getShips().size()) {
-                            gameGui.activateSingleShipButton(shipsPlaced);
-                            nextShipDialog();
-                        } else {
-                            shipsPlaced = 0;
-                            showNextPlayerButton();
-                        }
-
+                        shipsPlaced = 0;
+                        showNextPlayerButton();
                     }
+
                 }
             }
         });
 //        }
+    }
+
+    private void addOpponentViewMatrixListener(int enemyPlayer) {
+        playerList.get(enemyPlayer - 1).getOpponentViewGui().setOpponentViewButtonListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM");
+            }
+        });
     }
 
     private void addPlayerButtonsActionListener() {
@@ -588,12 +583,15 @@ public class Game implements Serializable, ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int enemyPlayer = Integer.parseInt(e.getActionCommand());
-                
+
                 System.out.println(enemyPlayer);
-                gameGui.showPlayerPlayfieldOpponentView(enemyPlayer);
+                addOpponentViewMatrixListener(enemyPlayer);
+
+                gameGui.showOpponentView(enemyPlayer);
             }
         });
     }
+
     private void addShipButtonsActionListener() {
         gameGui.setShipButtonsActionListener(new ActionListener() {
 
@@ -602,12 +600,12 @@ public class Game implements Serializable, ActionListener {
             }
         });
     }
-    
+
     private void showNextPlayerButton() {
         if (player < playerList.size() - 1) {
             System.out.println("Alle Schiffe wurden gesetzt!");
             gameGui.deActivatePlayerAndShipButtons();
-            playerList.get(player).getPlayerPlayFieldGui().disablePlayfield();
+            playerList.get(player).getPlayerViewGui().disablePlayfield();
             gameGui.activateNextPlayerButton();
             gameGui.showEmptyMatrix();
         } else {
@@ -615,9 +613,8 @@ public class Game implements Serializable, ActionListener {
             System.out.println("Runde beginnt");
             gameGui.showEmptyMatrix();
             gameGui.deActivatePlayerAndShipButtons();
-            playerList.get(player).getPlayerPlayFieldGui().disablePlayfield();
+            playerList.get(player).getPlayerViewGui().disablePlayfield();
             gameGui.activateStartRoundButton();
-            gameStatus = 1;
             player = 0;
 
         }
@@ -651,7 +648,7 @@ public class Game implements Serializable, ActionListener {
                         gameGui.activateSingleShipButton(shipsPlaced);
 
                         addPlayerToGameGui(playerList);
-                        playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+                        playerList.get(player).getPlayerViewGui().enablePlayfield();
                         if (playerList.get(player) instanceof AiPlayer) {
                             placeAiShip(player, shipsPlaced);
                             gameGui.activatePlayerButton(player);
@@ -660,7 +657,7 @@ public class Game implements Serializable, ActionListener {
                             interactWithPlayer(playerList);
                             gameGui.activatePlayerButton(player);
 
-                            addPlayFieldMatrixListener();
+                            addPlayerViewMatrixListener();
 
                         }
 
@@ -677,7 +674,7 @@ public class Game implements Serializable, ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                playerList.get(player).getPlayerPlayFieldGui().enablePlayfield();
+                playerList.get(player).getPlayerViewGui().enablePlayfield();
                 gameGui.disableStartGameButton();
                 if (playerList.get(player) instanceof AiPlayer) {
                     placeAiShip(player, shipsPlaced);

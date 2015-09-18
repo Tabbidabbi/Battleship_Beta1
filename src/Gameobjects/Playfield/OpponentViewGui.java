@@ -7,15 +7,19 @@ package Gameobjects.Playfield;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import Game.*;
+import IO.IO;
+
 import java.awt.color.ColorSpace;
 
 /**
  *
  * @author Tobias
  */
-public class OpponentViewGui extends JPanel implements ActionListener {
+public class OpponentViewGui extends JPanel {
 
     private Settings gameSettings;
     private FieldGui playfieldButton;
@@ -36,7 +40,6 @@ public class OpponentViewGui extends JPanel implements ActionListener {
                 opponentViewMatrix[i][j] = new FieldGui();
                 opponentViewMatrix[i][j].setEnabled(true);
                 opponentViewMatrix[i][j].setActionCommand("" + i + "#" + j);
-                opponentViewMatrix[i][j].addActionListener(this);
                 opponentViewMatrix[i][0].setText("" + i);
                 opponentViewMatrix[i][0].setBackground(Color.white);
                 opponentViewMatrix[i][0].setEnabled(false);
@@ -75,13 +78,62 @@ public class OpponentViewGui extends JPanel implements ActionListener {
     public FieldGui[][] getOpponentViewMatrix() {
         return opponentViewMatrix;
     }
-
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String coordinateInput = e.getActionCommand();
-
+    
+    /**
+     * Setzt Schuß auf das Feld, das getroffen wurde
+     * @param String coordinate
+     * @param int shootRange
+     * @param boolean orientation
+     * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
+     */
+    public int[] setShot(String coordinate, int shootRange, boolean orientation) {
+        //Array, in dem  die getroffenen Schiffe stehen
+        int[] hitShips = new int[shootRange];
+        if (orientation == true) {
+            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
+                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.opponentViewMatrix[y][x + i].setIsShot();
+                        	}
+                        	catch(IndexOutOfBoundsException e){
+                        		e.printStackTrace();
+                        	}
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
+                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.opponentViewMatrix[y + i][x].setIsShot();
+                        	}
+                            catch(IndexOutOfBoundsException e){
+                            	e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return hitShips;
     }
+    
+      public void setOpponentViewButtonListener(ActionListener l) {
+
+        for (int i = 0; i < opponentViewMatrix.length; i++) {
+            for (int j = 0; j < opponentViewMatrix[i].length; j++) {
+                opponentViewMatrix[i][j].addActionListener(l);
+            }
+
+        }
+    }
+
+
+
 
 }

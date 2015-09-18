@@ -17,10 +17,8 @@ public  abstract class Player implements Serializable {
 	private int number;
 	private String name;
 	private ArrayList<Ship> ships;
-	private Playfield playfield;
-	private Playfield opponentField;
-	private PlayerViewGui playerPlayFieldGui;
-	private OpponentViewGui playerOpponentViewGui;
+	private PlayerViewGui playerViewGui;
+	private OpponentViewGui opponentViewGui;
 	private boolean lost;
 	private boolean isAi;
 
@@ -36,8 +34,8 @@ public  abstract class Player implements Serializable {
 		this.gameSettings = gameSettings;
 		this.isAi = isAi;
 		buildShipArray(gameSettings);
-		this.playerPlayFieldGui = new PlayerViewGui(gameSettings);
-		this.playerOpponentViewGui = new OpponentViewGui(gameSettings);
+		this.playerViewGui = new PlayerViewGui(gameSettings);
+		this.opponentViewGui = new OpponentViewGui(gameSettings);
 		// playfield = new
 		// Playfield(gameSettings.getPlayfieldSize(),gameSettings.getPlayfieldSize());
 		// playfield.printPlayField();
@@ -101,51 +99,15 @@ public  abstract class Player implements Serializable {
 		this.ships = ships;
 	}
 	
-	/**
-	 * Gibt Playfield zurück
-	 *
-	 * @return Playfield playfield
-	 */
-	public Playfield getPlayfield() {
-		return playfield;
-	}
 
-	/**
-	 * Setzt Playfield
-	 *
-	 * @param Playfield
-	 *            playfield
-	 */
-	public void setPlayfield(Playfield playfield) {
-		this.playfield = playfield;
-	}
-
-	/**
-	 * Gibt gegnerisches Spielfeld zurück
-	 *
-	 * @return Playfield opponentField
-	 */
-	public Playfield getOpponentField() {
-		return opponentField;
-	}
-
-	/**
-	 * Setzt gegnerisches Spielfeld
-	 *
-	 * @param Playfield
-	 *            opponentField
-	 */
-	public void setOpponentField(Playfield opponentField) {
-		this.opponentField = opponentField;
-	}
 
 	/**
 	 * Gibt SpielerGUI zurück
 	 *
 	 * @return playerPlayFieldGui SpielerGui
 	 */
-	public PlayerViewGui getPlayerPlayFieldGui() {
-		return playerPlayFieldGui;
+	public PlayerViewGui getPlayerViewGui() {
+		return playerViewGui;
 	}
 
 	/**
@@ -155,7 +117,7 @@ public  abstract class Player implements Serializable {
 	 *            SpielerGUI
 	 */
 	public void setPlayerPlayFieldGui(PlayerViewGui playerPlayFieldGui) {
-		this.playerPlayFieldGui = playerPlayFieldGui;
+		this.playerViewGui = playerPlayFieldGui;
 	}
 	
 	/**
@@ -163,8 +125,8 @@ public  abstract class Player implements Serializable {
 	 *
 	 * @return playerPlayFieldGui GegnerGui
 	 */
-	public OpponentViewGui getPlayerOpponentViewGui() {
-		return playerOpponentViewGui;
+	public OpponentViewGui getOpponentViewGui() {
+		return opponentViewGui;
 	}
 
 	/**
@@ -174,7 +136,7 @@ public  abstract class Player implements Serializable {
 	 *            GegnerGUI
 	 */
 	public void setOpponentPlayFieldGui(OpponentViewGui opponentPlayFieldGui) {
-		this.playerOpponentViewGui = opponentPlayFieldGui;
+		this.opponentViewGui = opponentPlayFieldGui;
 	}
 	
 	/**
@@ -244,15 +206,6 @@ public  abstract class Player implements Serializable {
 	}
 	
 	/**
-	 * Gibt die ArrayListe der Schiffe aus
-	 */
-	public void printShipList() {
-		for (Ship ship : ships) {
-			IO.println(ship.getName() + "\t" + ship.getNumber() + "\t" + " Größe " + "(" + ship.getSize() + ")");
-		}
-	}
-
-	/**
 	 * Gibt Koordinate des Schusses zurueck
 	 *
 	 * @return Gibt Koordinate zurueck
@@ -284,8 +237,8 @@ public  abstract class Player implements Serializable {
 	 */
 	public void shootOnPlayField(ArrayList<Player> playerList, int opponentIndex, int shootRange, boolean orientation, String coordinate) {
 		int[] hitShips;
-		hitShips = playerList.get(opponentIndex).getPlayfield().setShot(coordinate, shootRange, orientation);
-		playerList.get(opponentIndex).getOpponentField().setShot(coordinate, shootRange, orientation);
+		hitShips = playerList.get(opponentIndex).getPlayerViewGui().setShot(coordinate, shootRange, orientation);
+		playerList.get(opponentIndex).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
 		// Prüfen ob schiffe getroffen
 		for (int i = 0; i < hitShips.length; i++) {
 			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex).getShips().size(); shipIndex++) {
@@ -294,7 +247,6 @@ public  abstract class Player implements Serializable {
 				}
 			}
 		}
-		playerList.get(opponentIndex).getOpponentField().printOpponentField();
 	}
 
 	/**

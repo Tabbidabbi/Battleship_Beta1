@@ -9,19 +9,11 @@ import Gameobjects.Player.Player;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.*;
 import Gameobjects.Playfield.*;
-import Gameobjects.Ships.Ship;
-import Main.BattleshipGui_old;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import Main.BattleshipGui_old;
-import Main.MenuHandler;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import javax.swing.GroupLayout.SequentialGroup;
 
 /**
  *
@@ -34,16 +26,16 @@ public class GameGui extends JPanel {
     private FieldGui[][] emptyMatrix;
     private JPanel emptyMatrixPanel;
 
-    CardLayout playFieldCardLayout;
+    private CardLayout playFieldCardLayout;
 
-    JPanel playerPlayFieldPanel;
-    JPanel[] playerPlayFieldArray;
+    private JPanel playerPlayFieldPanel;
+    private JPanel[] playerPlayFieldArray;
 
-    Settings gameSettings;
+    private Settings gameSettings;
 
-    JLabel playerListLabel;
-    JButton[] playerButton;
-    JPanel playerListPanel;
+    private JLabel playerListLabel;
+    private JButton[] playerButton;
+    private JPanel playerListPanel;
 
     JTextArea textOutputArea;
     JScrollPane textOutputPanel;
@@ -175,8 +167,8 @@ public class GameGui extends JPanel {
                         )
                         .addComponent(buttonPanel))
         );
-        
-        playerPlayFieldPanel.add(emptyMatrixPanel,"emptyMatrix");
+
+        playerPlayFieldPanel.add(emptyMatrixPanel, "emptyMatrix");
 
         gameGuiLayout.setAutoCreateGaps(true);
         gameGuiLayout.setAutoCreateContainerGaps(true);
@@ -187,18 +179,21 @@ public class GameGui extends JPanel {
 
     public void addPlayerPlayField(int playerNumber, ArrayList<Player> playerList) {
 
-        playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerPlayFieldGui(), "Player" + playerNumber);
+        playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerViewGui(), "Player" + playerNumber);
 
     }
-    public void addPlayerPlayfieldOpponentView(int playerNumber,  ArrayList<Player> playerList) {
-        playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerOpponentViewGui(), "" + playerList.get(playerNumber).getNumber());
+
+    public void addOpponentView(int playerNumber, ArrayList<Player> playerList) {
+        playerPlayFieldPanel.add(playerList.get(playerNumber).getOpponentViewGui(), "" + playerList.get(playerNumber).getNumber());
     }
-    public void showPlayerPlayfieldOpponentView(int enemyNumber) {
+
+    public void showOpponentView(int enemyNumber) {
         playFieldCardLayout.show(playerPlayFieldPanel, "" + enemyNumber);
     }
+
     public void showEmptyMatrix() {
 
-        playFieldCardLayout.show(playerPlayFieldPanel,"emptyMatrix");
+        playFieldCardLayout.show(playerPlayFieldPanel, "emptyMatrix");
 
     }
 
@@ -220,13 +215,15 @@ public class GameGui extends JPanel {
             shipListPanel.add(shipListButtons[i]);
         }
     }
-      public void setShipButtonsActionListener(ActionListener l) {
+
+    public void setShipButtonsActionListener(ActionListener l) {
         for (int i = 0; i < shipListButtons.length; i++) {
-           shipListButtons[i].addActionListener(l);
+            shipListButtons[i].addActionListener(l);
 
         }
 
     }
+
     public void addPlayerButtonsToGameGui(ArrayList<Player> playerList) {
         playerButton = new JButton[playerList.size()];
         for (int i = 0; i < playerButton.length; i++) {
@@ -238,6 +235,7 @@ public class GameGui extends JPanel {
         }
 
     }
+
     public void setPlayerButtonsActionListener(ActionListener l) {
         for (int i = 0; i < playerButton.length; i++) {
             playerButton[i].addActionListener(l);
@@ -252,6 +250,7 @@ public class GameGui extends JPanel {
             playerButton[player].setEnabled(true);
         }
     }
+
     public void activateEnemyPlayerButton(int player) {
         for (int i = 0; i < playerButton.length; i++) {
             playerButton[i].setEnabled(true);
@@ -259,13 +258,13 @@ public class GameGui extends JPanel {
         }
     }
 
-
     public void activateSingleShipButton(int ship) {
         for (int i = 0; i < shipListButtons.length; i++) {
             shipListButtons[i].setEnabled(false);
             shipListButtons[ship].setEnabled(true);
         }
     }
+
     public void activateShipButtons() {
         for (int i = 0; i < shipListButtons.length; i++) {
             shipListButtons[i].setEnabled(true);
