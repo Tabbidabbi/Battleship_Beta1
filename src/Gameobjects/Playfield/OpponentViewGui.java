@@ -7,8 +7,12 @@ package Gameobjects.Playfield;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import Game.*;
+import IO.IO;
+
 import java.awt.color.ColorSpace;
 
 /**
@@ -75,6 +79,50 @@ public class OpponentViewGui extends JPanel {
         return opponentViewMatrix;
     }
     
+    /**
+     * Setzt Schuß auf das Feld, das getroffen wurde
+     * @param String coordinate
+     * @param int shootRange
+     * @param boolean orientation
+     * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
+     */
+    public int[] setShot(String coordinate, int shootRange, boolean orientation) {
+        //Array, in dem  die getroffenen Schiffe stehen
+        int[] hitShips = new int[shootRange];
+        if (orientation == true) {
+            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
+                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.opponentViewMatrix[y][x + i].setIsShot();
+                        	}
+                        	catch(IndexOutOfBoundsException e){
+                        		e.printStackTrace();
+                        	}
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
+                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
+                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
+                        for (int i = 0; i < shootRange; i++) {
+                        	try{
+                        		hitShips[i] = this.opponentViewMatrix[y + i][x].setIsShot();
+                        	}
+                            catch(IndexOutOfBoundsException e){
+                            	e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return hitShips;
+    }
+    
       public void setOpponentViewButtonListener(ActionListener l) {
 
         for (int i = 0; i < opponentViewMatrix.length; i++) {
@@ -84,6 +132,9 @@ public class OpponentViewGui extends JPanel {
 
         }
     }
+
+
+
 
 
 

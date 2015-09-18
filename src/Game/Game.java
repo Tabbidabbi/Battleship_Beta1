@@ -448,7 +448,6 @@ public class Game implements Serializable, ActionListener {
                                 IO.println("Spieler " + playerList.get(playerCounter).getNumber()
                                         + ": " + playerList.get(playerCounter).getName()
                                         + " ist am Zug!");
-                                playerList.get(playerCounter).getPlayerViewGui().printPlayField();
                                 //Vorher casten
                                 int aiShipIndex = ((AiPlayer) playerList.get(playerCounter)).getRandomShip(playerList, playerCounter);
                                 int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
@@ -489,7 +488,6 @@ public class Game implements Serializable, ActionListener {
                             } else {
                                 IO.println("Spieler " + playerList.get(playerCounter).getNumber()
                                         + ": " + playerList.get(playerCounter).getName() + " ist am Zug!");
-                                playerList.get(playerCounter).getPlayerViewGui().printPlayField();
 
                                 // 1. Auswahl eines verfuegbaren Schiffes.
                                 int shipIndex = playerList.get(playerCounter).getAvailableShipToShoot(playerList, playerCounter);
@@ -502,7 +500,6 @@ public class Game implements Serializable, ActionListener {
 
                                 // 2. Auswahl eines Gegners.
                                 int opponent = playerList.get(playerCounter).getAvailableOpponentsToShoot(playerList, playerCounter);
-                                playerList.get(opponent).getOpponentViewGui().printOpponentField();
 
                                 // 3. Koordinate auf dem Spielfeld auswählen.
                                 String koordinate = playerList.get(playerCounter).coordinateToShoot();
