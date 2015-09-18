@@ -85,7 +85,6 @@ public class OpponentViewGui extends JPanel {
      * @param boolean orientation
      * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
      */
-<<<<<<< HEAD
     public ArrayList<Integer> setAiShot(int yCoordinate, int xCoordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
         ArrayList<Integer> hitShips = new ArrayList<>();
@@ -112,7 +111,8 @@ public class OpponentViewGui extends JPanel {
 			}
 		}
 		return hitShips;
-=======
+}
+
     public ArrayList<Integer> setShot(String[] coordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
         ArrayList<Integer> hitShips = new ArrayList<>();
@@ -138,7 +138,6 @@ public class OpponentViewGui extends JPanel {
             }
         }
         return hitShips;
->>>>>>> master
     }
 
     public void setOpponentViewButtonListener(ActionListener l) {
