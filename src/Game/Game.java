@@ -419,53 +419,53 @@ public class Game implements Serializable, ActionListener {
         return true;
     }
 
-    /**
-     * Spielrunden beginnen
-     *
-     * @param Übergebeparameter ArrayList<> playerList
-     */
-    public void playRounds(ArrayList<Player> playerList) {
-        // Runden beginnen
-        // Solange es mehr als einen spieler gibt, wird diese Schleife
-        // ausgeführt
-        while (Helper.getAmountOfLivingPlayers(playerList) > 1) {
-            for (int playerNumber = 0; playerNumber < playerList.size(); playerNumber++) {
-
-                // Spieler, die verloren haben, kommen nicht mehr an die Reihe
-                if (playerList.get(playerNumber).getisLost() == false) {
-                    // Setzt die Nachladezeit aller Schiffe in jeder Runde um 1 runter
-                    setDownReloadTime(playerList, playerNumber);
-
-                    IO.println("Runde " + this.roundNumber + " beginnt.");
-
-                    // Runde des Spielers playerCounter
-                    for (int playerCounter = 0; playerCounter < playerList.size(); playerCounter++) {
-                        if (playerList.get(playerCounter).getisLost() == false) {
-
-                            if (playerList.get(playerCounter).getIsAi() == true) {
-
-                                aiPlayerTurn(playerList, playerCounter);
-                            } else {
-                                //humanPlayerTurn(playerList, playerCounter);
-                            }
-                        }
-                    }
-                }
-                // Setzt den Counter der for-Schleife auf 0, damit eine neue Runde beginnt.
-                if (playerNumber + 1 == playerList.size()) {
-                    playerNumber = 0;
-
-                }
-            }
-            //Rundennummer wird einen hochgesetzt
-            this.roundNumber++;
-            // Speichert das Spiel
-            SaveLoad.save(this);
-            IO.println("Das Spiel wurde gespeichert.");
-        }
-        //Gibt es Gewinner aus
-        Helper.printWinner(playerList);
-    }
+//    /**
+//     * Spielrunden beginnen
+//     *
+//     * @param Übergebeparameter ArrayList<> playerList
+//     */
+//    public void playRounds(ArrayList<Player> playerList) {
+//        // Runden beginnen
+//        // Solange es mehr als einen spieler gibt, wird diese Schleife
+//        // ausgeführt
+//        while (Helper.getAmountOfLivingPlayers(playerList) > 1) {
+//            for (int playerNumber = 0; playerNumber < playerList.size(); playerNumber++) {
+//
+//                // Spieler, die verloren haben, kommen nicht mehr an die Reihe
+//                if (playerList.get(playerNumber).getisLost() == false) {
+//                    // Setzt die Nachladezeit aller Schiffe in jeder Runde um 1 runter
+//                    setDownReloadTime(playerList, playerNumber);
+//
+//                    IO.println("Runde " + this.roundNumber + " beginnt.");
+//
+//                    // Runde des Spielers playerCounter
+//                    for (int playerCounter = 0; playerCounter < playerList.size(); playerCounter++) {
+//                        if (playerList.get(playerCounter).getisLost() == false) {
+//
+//                            if (playerList.get(playerCounter).getIsAi() == true) {
+//
+//                                aiPlayerTurn(playerList, playerCounter);
+//                            } else {
+//                                //humanPlayerTurn(playerList, playerCounter);
+//                            }
+//                        }
+//                    }
+//                }
+//                // Setzt den Counter der for-Schleife auf 0, damit eine neue Runde beginnt.
+//                if (playerNumber + 1 == playerList.size()) {
+//                    playerNumber = 0;
+//
+//                }
+//            }
+//            //Rundennummer wird einen hochgesetzt
+//            this.roundNumber++;
+//            // Speichert das Spiel
+//            SaveLoad.save(this);
+//            IO.println("Das Spiel wurde gespeichert.");
+//        }
+//        //Gibt es Gewinner aus
+//        Helper.printWinner(playerList);
+//    }
 
     private void setDownReloadTime(ArrayList<Player> playerList,
             int playerNumber) {
@@ -521,53 +521,6 @@ public class Game implements Serializable, ActionListener {
     }
 
 
-//    /**
-//     * Spielrunden beginnen
-//     *
-//     * @param Übergebeparameter ArrayList<> playerList
-//     */
-//    public void playRounds(ArrayList<Player> playerList) {
-//        // Runden beginnen
-//        // Solange es mehr als einen spieler gibt, wird diese Schleife
-//        // ausgeführt
-//        while (Helper.getAmountOfLivingPlayers(playerList) > 1) {
-//            for (int playerNumber = 0; playerNumber < playerList.size(); playerNumber++) {
-//
-//                // Spieler, die verloren haben, kommen nicht mehr an die Reihe
-//                if (playerList.get(playerNumber).getisLost() == false) {
-//                    // Setzt die Nachladezeit aller Schiffe in jeder Runde um 1 runter
-//                    setDownReloadTime(playerList, playerNumber);
-//
-//                    IO.println("Runde " + this.roundNumber + " beginnt.");
-//
-//                    // Runde des Spielers playerCounter
-//                    for (int playerCounter = 0; playerCounter < playerList.size(); playerCounter++) {
-//                        if (playerList.get(playerCounter).getisLost() == false) {
-//
-//                            if (playerList.get(playerCounter).getIsAi() == true) {
-//
-//                                aiPlayerTurn(playerList, playerCounter);
-//                            } else {
-//                                humanPlayerTurn(playerList, playerCounter);
-//                            }
-//                        }
-//                    }
-//                }
-//                // Setzt den Counter der for-Schleife auf 0, damit eine neue Runde beginnt.
-//                if (playerNumber + 1 == playerList.size()) {
-//                    playerNumber = 0;
-//
-//                }
-//            }
-//            //Rundennummer wird einen hochgesetzt
-//            this.roundNumber++;
-//            // Speichert das Spiel
-//            SaveLoad.save(this);
-//            IO.println("Das Spiel wurde gespeichert.");
-//        }
-//        //Gibt es Gewinner aus
-//        Helper.printWinner(playerList);
-//    }
 
     private void addPlayerViewMatrixListener() {
 
@@ -593,7 +546,6 @@ public class Game implements Serializable, ActionListener {
                 }
             }
         });
-//        }
     }
 
     private void addOpponentViewMatrixListener() {

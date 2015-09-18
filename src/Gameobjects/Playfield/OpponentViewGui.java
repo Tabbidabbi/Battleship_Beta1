@@ -88,7 +88,6 @@ public class OpponentViewGui extends JPanel {
     public ArrayList<Integer> setAiShot(int yCoordinate, int xCoordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
         ArrayList<Integer> hitShips = new ArrayList<>();
-        
 		if (orientation == true) {
 			for (int i = 0; i < shootRange; i++) {
 				try {
@@ -96,7 +95,7 @@ public class OpponentViewGui extends JPanel {
 						hitShips.add(this.opponentViewMatrix[yCoordinate][(xCoordinate) + i].setIsShot());
 					}
 				} catch (IndexOutOfBoundsException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
 		} else {
@@ -106,7 +105,7 @@ public class OpponentViewGui extends JPanel {
 						hitShips.add(this.opponentViewMatrix[(yCoordinate) + i][xCoordinate].setIsShot());	
 					}
 				} catch (IndexOutOfBoundsException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
 		}
