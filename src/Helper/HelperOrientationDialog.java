@@ -22,6 +22,7 @@ import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 public class HelperOrientationDialog extends JDialog implements ActionListener {
 
     private String message;
+    private String objectType;
     private JRadioButton radioHorizontal;
     private JRadioButton radioVertical;
     private ButtonGroup group;
@@ -33,13 +34,13 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
      *
      * @param String message
      */
-    public HelperOrientationDialog(String message) {
+    public HelperOrientationDialog(String message, String objectType) {
         super();
 
         this.message = message;
-
+        this.objectType = objectType;
         //Setzt Titel des Windows
-        setTitle("Ausrichtung");
+        setTitle("Alignment");
         //Fenster kann nicht skaliert werden
         setResizable(false);
         //Fenster bleibt im Vordergrund
@@ -63,7 +64,7 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
 
         //RadioButtons
         this.radioHorizontal = new JRadioButton("horizontal");
-        this.radioVertical = new JRadioButton("vertikal");
+        this.radioVertical = new JRadioButton("vertical");
 
         //Gruppe für Radio Buttons
         this.group = new ButtonGroup();
@@ -93,13 +94,13 @@ public class HelperOrientationDialog extends JDialog implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (this.radioHorizontal.isSelected()) {
-            System.out.println("Das Schiff wurde " + this.radioHorizontal.getText() + " gesetzt!");
+            System.out.println("The " + objectType + " was placed " + this.radioHorizontal.getText() + " !");
             this.result = this.radioHorizontal.getText();
             this.orientation = true;
             setVisible(false);
             dispose();
         } else if (this.radioVertical.isSelected()) {
-            System.out.println("Das Schiff wurde " + this.radioVertical.getText() + " gesetzt!");
+            System.out.println("The " + objectType + " was placed " + this.radioVertical.getText() + " !");
             this.result = this.radioHorizontal.getText();
             this.orientation = false;
             setVisible(false);
