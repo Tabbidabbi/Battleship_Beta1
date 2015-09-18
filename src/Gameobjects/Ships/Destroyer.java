@@ -13,11 +13,7 @@ public class Destroyer extends Ship implements Serializable{
 
 	//Zerstörer positionieren
     public Destroyer(int number) {
-<<<<<<< HEAD
-        super("Z", 5, false, number, false, 3, 0, 3, "Destroyer");
-=======
         super("D", 5, false, number, false, 3, 0, 3, "Destroyer");
->>>>>>> master
         this.isPlaced = false;
         // TODO Auto-generated constructor stub
     }

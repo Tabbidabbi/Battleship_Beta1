@@ -32,10 +32,6 @@ public class BattleshipGui extends JFrame {
         setTitle("Battleship");
         setSize(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
         setContentPane(backgroundImagePanel = new BackgroundImagePanel("Images\\background.jpg"));
-<<<<<<< HEAD
-        setContentPane(backgroundImagePanel = new BackgroundImagePanel("Images\\background.jpg"));
-=======
->>>>>>> master
 
         menuHandler = new MenuHandler();
 
