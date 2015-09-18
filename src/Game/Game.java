@@ -44,7 +44,7 @@ public class Game implements Serializable, ActionListener {
      * Vorbereitung des Spiels und Prüfung ob ein Ki Spieler vorhanden ist.
      */
     private void gamePreperation() {
-        System.out.println("Willkommen bei Schiffeversenken Alpha 4!!!" + "\n");
+        System.out.println("################# Welcome to Battleship #################" + "\n");
         addPlayerToGameGui(playerList);
         addGameGui();
 
@@ -65,7 +65,7 @@ public class Game implements Serializable, ActionListener {
      * @param playerList
      */
     private void addPlayerToGameGui(ArrayList<Player> playerList) {
-        gameGui.addPlayerPlayField(player, playerList);
+        gameGui.addPlayerView(player, playerList);
         gameGui.addOpponentView(player, playerList);
         gameGui.showPlayerPlayField(player);
     }
@@ -76,6 +76,7 @@ public class Game implements Serializable, ActionListener {
      */
     private void addGameGui() {
         addPlayerViewMatrixListener();
+        addOpponentViewMatrixListener();
         addStartGameListener();
         addNextPlayerButtonListener();
         addStartRoundListener();
@@ -91,16 +92,16 @@ public class Game implements Serializable, ActionListener {
      * @param playerList
      */
     private void interactWithPlayer(ArrayList<Player> playerList) {
-        System.out.println("Spieler " + playerList.get(player).getName() + ", " + " ist am Zug.");
-        System.out.println("Setzen Sie Bitte alle vefuegbaren Schiffe." + "\n");
-        System.out.println("Klicken Sie auf das Spielfeld um das Schiff " + playerList.get(player).getShips().get(shipsPlaced).getName() + " zu setzen: ");
+        System.out.println("Player " + playerList.get(player).getName() + ", " + " its your turn.");
+        System.out.println("Please place all available ships." + "\n");
+        System.out.println("Click on the playfield to place " + playerList.get(player).getShips().get(shipsPlaced).getName() + " : ");
     }
 
     /**
      * Textinteraktion mit dem Spieler
      */
     private void nextShipDialog() {
-        System.out.println("Klicken Sie auf das Spielfeld um das Schiff " + playerList.get(player).getShips().get(shipsPlaced).getName() + " zu setzen: ");
+        System.out.println("Click on the playfield " + playerList.get(player).getShips().get(shipsPlaced).getName() + " : ");
     }
 
     /**
@@ -169,8 +170,7 @@ public class Game implements Serializable, ActionListener {
                     // gibt die ganze Methode "false zurück".
                     if (!playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i]
                             .isActive()) {
-                        System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                        System.out.println("Horizontal");
+                        System.out.println("Sorry the ship cant be placed here " + "\n" + " the ship´s must have one field space in between!");
 
                         return false;
                     }
@@ -178,7 +178,7 @@ public class Game implements Serializable, ActionListener {
                     // Array passt, fange die Fehlermeldung ab und
                     // gib folgendes aus...
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
+                    IO.println("The ship does not fit on the playfield");
                     return false;
                 }
             }
@@ -191,15 +191,14 @@ public class Game implements Serializable, ActionListener {
                     // gibt die ganze Methode "false zurück".
                     if (!playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])]
                             .isActive()) {
-                        System.out.println("Leider nicht moeglich," + "\n" + "das Schiff muss mindestens 1 Feld Abstand zum naechsten Schiff haben!");
-                        System.out.println("Vertikal");
+                        System.out.println("Sorry the ship cant be placed here " + "\n" + " the ships must have one field space in between!");
                         return false;
                     }
                     // Falls das Schiff mit der Größe nicht in das
                     // Array passt, fange die Fehlermeldung ab und
                     // gib folgendes aus...
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    IO.println("Das Schiff passt so nicht auf das Spielfeld, bitte neue koordinaten eingeben!!!");
+                    IO.println("The ship does not fit on the playfield");
                     return false;
                 }
             }
@@ -544,10 +543,10 @@ public class Game implements Serializable, ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung des Schiffes ein: ");
+                HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Please choose what orientation the ship should have: ");
                 shipOrientation = orientationDialog.getOrientation();
                 if (!checkShipPlacement(e, shipOrientation)) {
-                    System.out.println("Schiff konnte nicht gesetzt werden, bitte erneut versuchen.");
+                    System.out.println("The Ship cant be placed please try again.");
                 } else {
                     placeShip(e, shipOrientation, playerList);
                     shipsPlaced++;
@@ -565,14 +564,17 @@ public class Game implements Serializable, ActionListener {
 //        }
     }
 
-    private void addOpponentViewMatrixListener(int enemyPlayer) {
-        playerList.get(enemyPlayer - 1).getOpponentViewGui().setOpponentViewButtonListener(new ActionListener() {
+    private void addOpponentViewMatrixListener() {
+        for (Player pl : playerList) {
+            pl.getOpponentViewGui().setOpponentViewButtonListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM");
-            }
-        });
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                                    System.out.println("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM");
+
+                }
+            });
+        }
     }
 
     private void addPlayerButtonsActionListener() {
@@ -583,7 +585,6 @@ public class Game implements Serializable, ActionListener {
                 int enemyPlayer = Integer.parseInt(e.getActionCommand());
 
                 System.out.println(enemyPlayer);
-                addOpponentViewMatrixListener(enemyPlayer);
 
                 gameGui.showOpponentView(enemyPlayer);
             }
@@ -601,14 +602,14 @@ public class Game implements Serializable, ActionListener {
 
     private void showNextPlayerButton() {
         if (player < playerList.size() - 1) {
-            System.out.println("Alle Schiffe wurden gesetzt!");
+            System.out.println("All ships placed!");
             gameGui.deActivatePlayerAndShipButtons();
             playerList.get(player).getPlayerViewGui().disablePlayfield();
             gameGui.activateNextPlayerButton();
             gameGui.showEmptyMatrix();
         } else {
 
-            System.out.println("Runde beginnt");
+            System.out.println("Click on start round to start the first round");
             gameGui.showEmptyMatrix();
             gameGui.deActivatePlayerAndShipButtons();
             playerList.get(player).getPlayerViewGui().disablePlayfield();
@@ -627,8 +628,7 @@ public class Game implements Serializable, ActionListener {
                 gameGui.showPlayerPlayField(player);
                 gameGui.activateEnemyPlayerButton(player);
                 gameGui.activateShipButtons();
-                System.out.println("Spieler " + playerList.get(player).getName() + ", wählen Sie Bitte aus, welchen Spieler Sie angreifen möchten, klicken Sie dazu auf "
-                        + "die Spieler-Buttons!");
+                System.out.println(playerList.get(player).getName() + ", please choose the player you want to attack: ");
 
             }
         });
