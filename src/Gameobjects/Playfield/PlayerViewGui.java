@@ -98,31 +98,23 @@ public class PlayerViewGui extends JPanel {
         ArrayList<Integer> hitShips = new ArrayList<Integer>();
 
         if (orientation == true) {
-            for (int y = 0; y < getPlayerViewMatrix().length; y++) {
-                for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
-                    if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
-                        for (int i = 0; i < shootRange; i++) {
-                            try {
-                                hitShips[i] = this.playerViewMatrix[y][x + i].setIsShot();
-                            } catch (IndexOutOfBoundsException e) {
-                                e.printStackTrace();
-                            }
-                        }
+            for (int i = 0; i < shootRange; i++) {
+                try {
+                    if (this.playerViewMatrix[Integer.parseInt(coordinate[0])][Integer.parseInt(coordinate[1]) + i].setIsShot() != 99) {
+                        hitShips.add(this.playerViewMatrix[Integer.parseInt(coordinate[0])][Integer.parseInt(coordinate[1]) + i].setIsShot());
                     }
+                } catch (ArrayIndexOutOfBoundsException e) {
+//                    e.printStackTrace();
                 }
             }
         } else {
-            for (int y = 0; y < getPlayerViewMatrix().length; y++) {
-                for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
-                    if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
-                        for (int i = 0; i < shootRange; i++) {
-                            try {
-                                hitShips[i] = this.playerViewMatrix[y + i][x].setIsShot();
-                            } catch (IndexOutOfBoundsException e) {
-                                e.printStackTrace();
-                            }
-                        }
+            for (int i = 0; i < shootRange; i++) {
+                try {
+                    if (this.playerViewMatrix[Integer.parseInt(coordinate[0]) + i][Integer.parseInt(coordinate[1])].setIsShot() != 99) {
+                        hitShips.add(this.playerViewMatrix[Integer.parseInt(coordinate[0]) + i][Integer.parseInt(coordinate[1])].setIsShot());
                     }
+                } catch (ArrayIndexOutOfBoundsException e) {
+//                    e.printStackTrace();
                 }
             }
         }

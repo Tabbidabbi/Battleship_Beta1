@@ -84,6 +84,7 @@ public class FieldGui extends JButton implements Serializable {
 			if(getHasShip() == true){
 				this.setText("X");
 				this.setIsHit(true);
+				return getShipNumber();
 				//IO.println("Sie haben ein Schiff getroffen!");
 			}
 			else{
@@ -94,7 +95,7 @@ public class FieldGui extends JButton implements Serializable {
 		else{
 			IO.println("Sie haben bereits auf dieses Feld geschossen. Ein verschenkter Schuss!");
 		}
-		return getShipNumber();
+		return 99;
 	}
 
     /**

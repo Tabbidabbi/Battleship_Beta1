@@ -219,9 +219,9 @@ public  abstract class Player implements Serializable {
 		hitShips = playerList.get(selectedPlayer).getPlayerViewGui().setShot(coordinate, shootRange, orientation);
 		playerList.get(selectedPlayer).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
 		// Prüfen ob schiffe getroffen
-		for (int i = 0; i < hitShips.length; i++) {
+		for (int i = 0; i < hitShips.size(); i++) {
 			for (int shipIndex = 0; shipIndex < playerList.get(selectedPlayer).getShips().size(); shipIndex++) {
-				if (playerList.get(selectedPlayer).getShips().get(shipIndex).getNumber() == hitShips[i]) {
+				if (playerList.get(selectedPlayer).getShips().get(shipIndex).getNumber() == hitShips.get(i)) {
 					playerList.get(selectedPlayer).getShips().get(shipIndex).setHitpoints();
 				}
 			}
