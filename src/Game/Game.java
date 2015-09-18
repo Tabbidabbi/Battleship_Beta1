@@ -220,27 +220,27 @@ public class Game implements Serializable, ActionListener {
     public boolean placeShip(ActionEvent e, boolean orientation,
             ArrayList<Player> playerList) {
 
-        String input = e.getActionCommand();
+        String placeShipCoordinateInput = e.getActionCommand();
 
-        String[] splitted = input.split("\\#");
+        String[] placeShipCoordinateSplitted = placeShipCoordinateInput.split("\\#");
         // true = horizontal
         if (orientation == true) {
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setIsWater(false);
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setIsWater(true);
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setHasShip(true);
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0])][Integer.parseInt(splitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setIsWater(false);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setHasShip(true);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setIsWater(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setHasShip(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0])][Integer.parseInt(placeShipCoordinateSplitted[1]) + i].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
 
             }
 
 //                         Deaktiviere Felder um das Schiff herum
-            for (int i = (Integer.parseInt(splitted[1]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(splitted[1]); i++) {
-                for (int j = (Integer.parseInt(splitted[0]) - 1); j < Integer.parseInt(splitted[0]) + 2; j++) {
+            for (int i = (Integer.parseInt(placeShipCoordinateSplitted[1]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(placeShipCoordinateSplitted[1]); i++) {
+                for (int j = (Integer.parseInt(placeShipCoordinateSplitted[0]) - 1); j < Integer.parseInt(placeShipCoordinateSplitted[0]) + 2; j++) {
                     try {
                         playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[j][i]
                                 .setActive(false);
@@ -260,20 +260,20 @@ public class Game implements Serializable, ActionListener {
         else {
             // Setze Schiff
             for (int i = 0; i < playerList.get(player).getShips().get(shipsPlaced).getSize(); i++) {
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(false);
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
-                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setIsWater(true);
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setHasShip(true);
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
-                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(splitted[0]) + i][Integer.parseInt(splitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setIsWater(false);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setHasShip(true);
+                playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setIsWater(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setHasShip(true);
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setShipNumber(playerList.get(player).getShips().get(shipsPlaced).getNumber());
+                playerList.get(player).getOpponentViewGui().getOpponentViewMatrix()[Integer.parseInt(placeShipCoordinateSplitted[0]) + i][Integer.parseInt(placeShipCoordinateSplitted[1])].setText(playerList.get(player).getShips().get(shipsPlaced).getSign());
 
             }
 
             // Deaktiviere Felder um das Schiff herum
-            for (int i = (Integer.parseInt(splitted[0]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(splitted[0]); i++) {
-                for (int j = (Integer.parseInt(splitted[1]) - 1); j < Integer.parseInt(splitted[1]) + 2; j++) {
+            for (int i = (Integer.parseInt(placeShipCoordinateSplitted[0]) - 1); i <= playerList.get(player).getShips().get(shipsPlaced).getSize() + Integer.parseInt(placeShipCoordinateSplitted[0]); i++) {
+                for (int j = (Integer.parseInt(placeShipCoordinateSplitted[1]) - 1); j < Integer.parseInt(placeShipCoordinateSplitted[1]) + 2; j++) {
                     try {
                         playerList.get(player).getPlayerViewGui().getPlayerViewMatrix()[i][j]
                                 .setActive(false);
@@ -589,7 +589,9 @@ public class Game implements Serializable, ActionListener {
                             HelperOrientationDialog shootOrientationDialog = new HelperOrientationDialog("Please choose the shoot alignment: ", "shoot");
                             shootOrientation = shootOrientationDialog.getOrientation();
                             }
-                            
+                            String shootCoordinate = e.getActionCommand();
+                            String[] shootCoordinateSplitted = shootCoordinate.split("\\#");
+                            playerList.get(player).humanShootOnPlayfield(playerList, selectedPlayer, shootRange, shipOrientation, shootCoordinateSplitted);
                         }
                     }
             });

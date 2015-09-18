@@ -9,12 +9,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import Game.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author Tobias
  */
-public class PlayerViewGui extends JPanel  {
+public class PlayerViewGui extends JPanel {
 
     private Settings gameSettings;
     private FieldGui playfieldButton;
@@ -57,7 +58,6 @@ public class PlayerViewGui extends JPanel  {
 
     }
 
-
     public FieldGui getPlayfieldButton() {
         return playfieldButton;
     }
@@ -78,33 +78,35 @@ public class PlayerViewGui extends JPanel  {
 
     /**
      * Gibt Spielfeld aus Spielersicht zurück.
+     *
      * @return playerViewMatrix
      */
     public FieldGui[][] getPlayerViewMatrix() {
         return playerViewMatrix;
     }
-    
+
     /**
      * Setzt Schuß auf das Feld, das getroffen wurde
+     *
      * @param String coordinate
      * @param int shootRange
      * @param boolean orientation
      * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
      */
-    public int[] setShot(String coordinate, int shootRange, boolean orientation) {
+    public ArrayList<Integer> setShot(String[] coordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
-        int[] hitShips = new int[shootRange];
+        ArrayList<Integer> hitShips = new ArrayList<Integer>();
+
         if (orientation == true) {
             for (int y = 0; y < getPlayerViewMatrix().length; y++) {
                 for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
                     if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
                         for (int i = 0; i < shootRange; i++) {
-                        	try{
-                        		hitShips[i] = this.playerViewMatrix[y][x + i].setIsShot();
-                        	}
-                        	catch(IndexOutOfBoundsException e){
-                        		e.printStackTrace();
-                        	}
+                            try {
+                                hitShips[i] = this.playerViewMatrix[y][x + i].setIsShot();
+                            } catch (IndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -114,11 +116,10 @@ public class PlayerViewGui extends JPanel  {
                 for (int x = 0; x < getPlayerViewMatrix()[y].length; x++) {
                     if (coordinate.equals(getPlayerViewMatrix()[y][x].getFieldNumber())) {
                         for (int i = 0; i < shootRange; i++) {
-                        	try{
-                        		hitShips[i] = this.playerViewMatrix[y + i][x].setIsShot();
-                        	}
-                            catch(IndexOutOfBoundsException e){
-                            	e.printStackTrace();
+                            try {
+                                hitShips[i] = this.playerViewMatrix[y + i][x].setIsShot();
+                            } catch (IndexOutOfBoundsException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -161,6 +162,5 @@ public class PlayerViewGui extends JPanel  {
         }
 
     }
-
 
 }

@@ -209,20 +209,20 @@ public  abstract class Player implements Serializable {
 	/**
 	 * 
 	 * @param playerList
-	 * @param opponentIndex
+	 * @param selectedPlayer
 	 * @param shootRange
 	 * @param orientation
 	 * @param coordinate
 	 */
-	public void shootOnPlayField(ArrayList<Player> playerList, int opponentIndex, int shootRange, boolean orientation, String coordinate) {
-		int[] hitShips;
-		hitShips = playerList.get(opponentIndex).getPlayerViewGui().setShot(coordinate, shootRange, orientation);
-		playerList.get(opponentIndex).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
+	public void humanShootOnPlayfield(ArrayList<Player> playerList, int selectedPlayer, int shootRange, boolean orientation, String[] coordinate) {
+		ArrayList<Integer> hitShips;
+		hitShips = playerList.get(selectedPlayer).getPlayerViewGui().setShot(coordinate, shootRange, orientation);
+		playerList.get(selectedPlayer).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
 		// Prüfen ob schiffe getroffen
 		for (int i = 0; i < hitShips.length; i++) {
-			for (int shipIndex = 0; shipIndex < playerList.get(opponentIndex).getShips().size(); shipIndex++) {
-				if (playerList.get(opponentIndex).getShips().get(shipIndex).getNumber() == hitShips[i]) {
-					playerList.get(opponentIndex).getShips().get(shipIndex).setHitpoints();
+			for (int shipIndex = 0; shipIndex < playerList.get(selectedPlayer).getShips().size(); shipIndex++) {
+				if (playerList.get(selectedPlayer).getShips().get(shipIndex).getNumber() == hitShips[i]) {
+					playerList.get(selectedPlayer).getShips().get(shipIndex).setHitpoints();
 				}
 			}
 		}
