@@ -14,6 +14,7 @@ import Game.*;
 import IO.IO;
 
 import java.awt.color.ColorSpace;
+import java.util.ArrayList;
 
 /**
  *
@@ -86,41 +87,37 @@ public class OpponentViewGui extends JPanel {
      * @param boolean orientation
      * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
      */
-    public int[] setShot(String coordinate, int shootRange, boolean orientation) {
+    public ArrayList<Integer> setShot(String coordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
-        int[] hitShips = new int[shootRange];
-        if (orientation == true) {
-            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
-                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
-                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
-                        for (int i = 0; i < shootRange; i++) {
-                        	try{
-                        		hitShips[i] = this.opponentViewMatrix[y][x + i].setIsShot();
-                        	}
-                        	catch(IndexOutOfBoundsException e){
-                        		e.printStackTrace();
-                        	}
-                        }
-                    }
-                }
-            }
-        } else {
-            for (int y = 0; y < getOpponentViewMatrix().length; y++) {
-                for (int x = 0; x < getOpponentViewMatrix()[y].length; x++) {
-                    if (coordinate.equals(getOpponentViewMatrix()[y][x].getFieldNumber())) {
-                        for (int i = 0; i < shootRange; i++) {
-                        	try{
-                        		hitShips[i] = this.opponentViewMatrix[y + i][x].setIsShot();
-                        	}
-                            catch(IndexOutOfBoundsException e){
-                            	e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return hitShips;
+        ArrayList<Integer> hitShips = new ArrayList<>();
+        
+        int[] intCoordinates = new int[2];
+		String[] splitted = coordinate.split("\\#");
+		intCoordinates[0] = Integer.parseInt(splitted[0]);
+		intCoordinates[1] = Integer.parseInt(splitted[1]);
+        
+		if (orientation == true) {
+			for (int i = 0; i < shootRange; i++) {
+				try {
+					if(this.opponentViewMatrix[intCoordinates[0]][(intCoordinates[1]) + i].setIsShot() != 99){
+						hitShips.add(this.opponentViewMatrix[intCoordinates[0]][(intCoordinates[1]) + i].setIsShot());
+					}
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			for (int i = 0; i < shootRange; i++) {
+				try {
+					if(this.opponentViewMatrix[(intCoordinates[0]) + i][intCoordinates[1]].setIsShot() != 99){
+						hitShips.add(this.opponentViewMatrix[(intCoordinates[0]) + i][intCoordinates[1]].setIsShot());	
+					}
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return hitShips;
     }
     
       public void setOpponentViewButtonListener(ActionListener l) {
