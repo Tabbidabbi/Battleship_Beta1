@@ -72,7 +72,7 @@ public class GameGui extends JPanel {
         textOutputArea.setLineWrap(true);
         textOutputArea.setFont(new Font("Serif", Font.BOLD, 12));
         PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea), true);
-        standardOut = System.out;
+//        standardOut = System.out;
         System.setOut(printStream);
 
         textOutputPanel = new JScrollPane(textOutputArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -177,7 +177,7 @@ public class GameGui extends JPanel {
         setVisible(true);
     }
 
-    public void addPlayerPlayField(int playerNumber, ArrayList<Player> playerList) {
+    public void addPlayerView(int playerNumber, ArrayList<Player> playerList) {
 
         playerPlayFieldPanel.add(playerList.get(playerNumber).getPlayerViewGui(), "Player" + playerNumber);
 
