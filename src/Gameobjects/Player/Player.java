@@ -182,7 +182,7 @@ public  abstract class Player implements Serializable {
 	 */
 	private void buildShipArray(Settings cSettings) {
 		ships = new ArrayList<>();
-		int shipNumber = 1;
+		int shipNumber = 0;
 		for (int i = 1; i <= cSettings.getAmountOfDestroyer(); i++) {
 			Ship ship = new Destroyer(shipNumber);
 			ships.add(ship);

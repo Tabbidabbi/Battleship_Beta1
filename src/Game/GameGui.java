@@ -72,7 +72,7 @@ public class GameGui extends JPanel {
         textOutputArea.setLineWrap(true);
         textOutputArea.setFont(new Font("Serif", Font.BOLD, 12));
         PrintStream printStream = new PrintStream(new CustomOutputStream(textOutputArea), true);
-//        standardOut = System.out;
+        standardOut = System.out;
         System.setOut(printStream);
 
         textOutputPanel = new JScrollPane(textOutputArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -207,10 +207,11 @@ public class GameGui extends JPanel {
         shipListButtons = new JButton[playerList.get(playerNumber).getShips().size()];
         Dimension maxButtonSize;
         for (int i = 0; i < shipListButtons.length; i++) {
-            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(Gr. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
+            shipListButtons[i] = new JButton(playerList.get(playerNumber).getShips().get(i).getName() + "(S. " + playerList.get(playerNumber).getShips().get(i).getSize() + ")");
             maxButtonSize = shipListButtons[0].getMaximumSize();
-            shipListButtons[i].setActionCommand(playerList.get(playerNumber).getShips().get(i).getName());
+            shipListButtons[i].setActionCommand(Integer.toString(playerList.get(playerNumber).getShips().get(i).getNumber()));
             shipListButtons[i].setEnabled(false);
+            shipListButtons[i].setSelected(false);
             shipListButtons[i].setMaximumSize(maxButtonSize);
             shipListPanel.add(shipListButtons[i]);
         }
@@ -250,6 +251,36 @@ public class GameGui extends JPanel {
             playerButton[player].setEnabled(true);
         }
     }
+    
+    public boolean checkShipButtonSelection() {
+        for (int i = 0; i < shipListButtons.length; i++) {
+            if (shipListButtons[i].isSelected()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void changePlayerButtonColor(int enemyPlayer) {
+
+        for (int i = 0; i < playerButton.length; i++) {
+            playerButton[i].setBackground(new JButton().getBackground());
+            playerButton[enemyPlayer].setBackground(Color.red);
+
+        }
+
+    }
+    public void changeShipButtonColor(int shipNumber) {
+        
+        
+        for (int i = 0; i < shipListButtons.length; i++) {
+                shipListButtons[i].setBackground(new JButton().getBackground());
+                shipListButtons[i].setSelected(false);
+                shipListButtons[shipNumber].setBackground(Color.red);
+                shipListButtons[shipNumber].setSelected(true);
+        }
+
+    }
 
     public void activateEnemyPlayerButton(int player) {
         for (int i = 0; i < playerButton.length; i++) {
@@ -265,10 +296,18 @@ public class GameGui extends JPanel {
         }
     }
 
-    public void activateShipButtons() {
+    public boolean activateShipButtons(ArrayList<Player> playerlist, int player) {
+
         for (int i = 0; i < shipListButtons.length; i++) {
-            shipListButtons[i].setEnabled(true);
+            if (playerlist.get(player).getShips().get(i).getIsSunk() == false
+                    && playerlist.get(player).getShips().get(i).getCurrentReloadTime() == 0) {
+                shipListButtons[i].setEnabled(true);
+
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     public void deActivatePlayerAndShipButtons() {

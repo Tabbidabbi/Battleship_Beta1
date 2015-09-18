@@ -108,12 +108,12 @@ public class SettingsGui extends JPanel {
         setAmmountOfShipsSpinner[0].setModel(new SpinnerNumberModel(1, 0, 2, 1));
         setAmmountOfShipsSpinner[1].setModel(new SpinnerNumberModel(0, 0, 3, 1));
         setAmmountOfShipsSpinner[2].setModel(new SpinnerNumberModel(0, 0, 3, 1));
-        setAmmountOfShipsSpinner[3].setModel(new SpinnerNumberModel(2, 0, 4, 1));
+        setAmmountOfShipsSpinner[3].setModel(new SpinnerNumberModel(0, 0, 4, 1));
 
         playFieldSizeLabel = new JLabel("Spielfeldgröße:");
         playFieldSizeSpinner = new JSpinner();
 //        playFieldSizeSpinner.addChangeListener(new PlayfieldSizeHandler());
-        playFieldSizeSpinner.setModel(new SpinnerNumberModel(8, 6, 16, 1));
+        playFieldSizeSpinner.setModel(new SpinnerNumberModel(8, 6, 18, 1));
 
         playFieldSizePanel = new JPanel();
         playFieldSizePanel.add(playFieldSizeLabel);
