@@ -10,6 +10,13 @@ public class AiPlayer extends Player implements Serializable {
 	private int aiLastHitOpponentIndex;
 	private String aiLastHitCoordinate;
 
+	/**
+	 * Konstruktor
+	 * @param number Spielernummer
+	 * @param name Spielername
+	 * @param gameSettings Spieleinstellungen
+	 * @param isAi KI
+	 */
 	public AiPlayer(int number, String name, Settings gameSettings, boolean isAi) {
 		super(number, name, gameSettings, isAi);
 		setAiLastHitCoordinate(null);
@@ -130,7 +137,7 @@ public class AiPlayer extends Player implements Serializable {
 	 * @param playerIndex Index des aktuellen Spielers
 	 * @return coordinate Koordinate vom Type String
 	 */
-	public String getAiShootCoordinate(ArrayList<Player> playerList, int opponentIndex, String lastHitCoordinate) {
+	public String getAiChooseCoordinate(ArrayList<Player> playerList, int opponentIndex, String lastHitCoordinate) {
 		String aiCoordinate = null;
 		if(lastHitCoordinate == null){
 			aiCoordinate = getRandomCoordinate(playerList, opponentIndex);	

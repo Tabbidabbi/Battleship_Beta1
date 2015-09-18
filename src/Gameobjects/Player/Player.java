@@ -255,7 +255,6 @@ public  abstract class Player implements Serializable {
 	 * @param player Playerarray
 	 * @param playerN Index des Spielers in Player-Array
 	 */
-	
 	public int[] listOfAvalableShips(ArrayList<Player> playerList,
 		int playerindex) {
 		int[] tempShipArray;

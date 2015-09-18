@@ -76,6 +76,10 @@ public class PlayerViewGui extends JPanel  {
         }
     }
 
+    /**
+     * Gibt Spielfeld aus Spielersicht zurück.
+     * @return playerViewMatrix
+     */
     public FieldGui[][] getPlayerViewMatrix() {
         return playerViewMatrix;
     }
@@ -124,7 +128,9 @@ public class PlayerViewGui extends JPanel  {
         return hitShips;
     }
 
-
+    /**
+     * Setzt das Spielfeld auf verfügbar, damit der interagieren kann.
+     */
     public void enablePlayfield() {
         for (int i = 0; i < playerViewMatrix.length; i++) {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {
@@ -141,6 +147,9 @@ public class PlayerViewGui extends JPanel  {
 
     }
 
+    /**
+     * Setzt Spielfeld auf disable, damit kein Spieler interagieren kann.
+     */
     public void disablePlayfield() {
         for (int i = 0; i < playerViewMatrix.length; i++) {
             for (int j = 0; j < playerViewMatrix[i].length; j++) {

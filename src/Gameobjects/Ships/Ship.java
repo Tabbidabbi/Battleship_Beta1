@@ -10,26 +10,16 @@ public abstract class Ship implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -7853606283486598296L;
-
-	private int size;
-
+	private boolean orientation;
     private boolean sunk;
-
-    private int number;
-
-    private boolean orientation;
-
-    private int reloadTime;
-
     private int currentReloadTime;
-
-    private int shootRange;
-
     private int hitpoints;
-
-    private String sign;
-
+    private int number;
+    private int reloadTime;
+    private int shootRange;
+    private int size;    
     private String name;
+    private String sign;
     
     private String description;
     

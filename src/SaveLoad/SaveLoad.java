@@ -22,7 +22,7 @@ public class SaveLoad {
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			//Schreibt in Datei
 			objectOut.writeObject(game);
-			IO.println("Spiel wurde erfolgreich gespeichert...");
+			IO.println("Save game was successful.");
 			//Schliesst Datei
 			objectOut.close();
 		}
@@ -42,7 +42,7 @@ public class SaveLoad {
 				//Gameobjekt aus der Datei wird dem Gameobjekt game zugeordnet
 				game = (Game)objectIn.readObject();
 				
-				IO.println("Spiel wurde erfolgreich geladen...");
+				IO.println("The game was successful loaded.");
 			} 
 			catch (ClassNotFoundException e) {
 				e.printStackTrace();
