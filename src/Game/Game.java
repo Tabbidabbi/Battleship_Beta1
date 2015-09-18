@@ -26,6 +26,7 @@ public class Game implements Serializable, ActionListener {
     private int roundNumber = 1;
     private int shipsPlaced = 0;
     //0 = Placement, 1 = Shoot
+    private int gameState = 0;
 
     /**
      * Konstruktor der Klasse Game
@@ -130,7 +131,7 @@ public class Game implements Serializable, ActionListener {
      */
     private ArrayList buildPlayerArray(Settings gameSettings) {
         this.playerList = new ArrayList<>();
-        int playerNumber = 1;
+        int playerNumber = 0;
         for (int i = 0; i < gameSettings.getAmountOfPlayer(); i++) {
             if (gameSettings.getAiArray()[i] == false) {
                 Player player = new HumanPlayer(playerNumber, gameSettings.getPlayerNames()[i], gameSettings, false);
@@ -582,8 +583,11 @@ public class Game implements Serializable, ActionListener {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                                    System.out.println("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM");
 
+                    if (gameGui.checkShipButtonSelection()) {
+                        System.out.println("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM");
+
+                    }
                 }
             });
         }
@@ -594,11 +598,17 @@ public class Game implements Serializable, ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int enemyPlayer = Integer.parseInt(e.getActionCommand());
-
-                System.out.println(enemyPlayer);
-
-                gameGui.showOpponentView(enemyPlayer);
+                if (gameState == 1) {
+                    int enemyPlayer = Integer.parseInt(e.getActionCommand());
+                    gameGui.showOpponentView(enemyPlayer);
+                    System.out.println("You choosed player " + playerList.get(enemyPlayer).getName());
+                    gameGui.changePlayerButtonColor(enemyPlayer);
+                    if (gameGui.activateShipButtons(playerList, player)) {
+                        System.out.println("Choose the ship you want to shoot with: ");
+                    } else {
+                        System.out.println("next player");
+                    }
+                }
             }
         });
     }
@@ -608,6 +618,11 @@ public class Game implements Serializable, ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (gameState == 1) {
+                    int currentShip = Integer.parseInt(e.getActionCommand());
+                    System.out.println(playerList.get(player).getShips().get(currentShip).getDescription());
+                    gameGui.changeShipButtonColor(currentShip);
+                }
             }
         });
     }
@@ -627,6 +642,7 @@ public class Game implements Serializable, ActionListener {
             playerList.get(player).getPlayerViewGui().disablePlayfield();
             gameGui.activateStartRoundButton();
             player = 0;
+            gameState = 1;
 
         }
     }
@@ -637,11 +653,14 @@ public class Game implements Serializable, ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameGui.deActivateStartRoundButton();
-                gameGui.showPlayerPlayField(player);
-                gameGui.activateEnemyPlayerButton(player);
-                gameGui.activateShipButtons();
-                System.out.println(playerList.get(player).getName() + ", please choose the player you want to attack: ");
+                if (playerList.get(player) instanceof AiPlayer) {
+                    gameGui.showPlayerPlayField(player);
 
+                } else {
+                    gameGui.showPlayerPlayField(player);
+                    gameGui.activateEnemyPlayerButton(player);
+                    System.out.println(playerList.get(player).getName() + ", please choose the player you want to attack: ");
+                }
             }
         });
     }

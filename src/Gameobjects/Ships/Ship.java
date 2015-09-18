@@ -21,6 +21,8 @@ public abstract class Ship implements Serializable{
     private String name;
     private String sign;
     
+    private String description;
+    
     /**
      * Konstruktor Schiff
      * @param sign
@@ -44,7 +46,9 @@ public abstract class Ship implements Serializable{
         this.shootRange = shootRange;
         this.hitpoints = size;
         this.name = name;
-
+        this.description = "You choosed " + name + " : "
+                                    + "The " + name + " can shoot on " + shootRange + "\n" + " (contigous) fields and has a reload time "
+                + " of  " + reloadTime + " rounds.";
     }
 
 	/**
@@ -172,6 +176,7 @@ public abstract class Ship implements Serializable{
     public int getHitpoints() {
         return hitpoints;
     }
+    
 
     /**
      * Setzt Trefferpunkte
@@ -217,6 +222,11 @@ public abstract class Ship implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getDescription() {
+        return description;
+    }
+    
        
        
 }
