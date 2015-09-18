@@ -41,6 +41,10 @@ public class FieldGui extends JButton implements Serializable {
         setVisible(true);
         setBackground(new Color(64, 164, 223));
         this.active = true;
+        this.hasShip = false;
+        this.isWater = true;
+        this.isHit = false;
+        this.isShot = false;
     }
 
     /**

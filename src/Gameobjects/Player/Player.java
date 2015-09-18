@@ -205,27 +205,6 @@ public  abstract class Player implements Serializable {
 		}
 	}
 	
-	/**
-	 * Gibt Koordinate des Schusses zurueck
-	 *
-	 * @return Gibt Koordinate zurueck
-	 */
-	public String coordinateToShoot() {
-		String coordinate;
-		boolean error = false;
-		//IO.print("Bitte geben Sie die Koordinaten fuer das Schiessen ein:");
-		do {
-			coordinate = IO.readString().toLowerCase(); // Grossbuchstaben->Kleinbuchstaben
-			if (coordinate.matches("^[1-9]{1}[0-9]{0,1}[a-z]{1}$")) { 
-				// Teste Eingabe mit RegEx(^Anfang, 1 oder 2 Zahlen(0-9) & 1 Buchstabe (a-z), $ Ende
-				error = false;
-			} else {
-				IO.println("Fehler");
-				error = true;
-			}
-		} while (error);
-		return coordinate;
-	}
 
 	/**
 	 * 
