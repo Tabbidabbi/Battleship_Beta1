@@ -65,7 +65,6 @@ public class OpponentViewGui extends JPanel {
 
     }
 
-
     public FieldGui getPlayfieldButton() {
         return playfieldButton;
     }
@@ -74,19 +73,19 @@ public class OpponentViewGui extends JPanel {
         this.playfieldButton = playfieldButton;
     }
 
-
-
     public FieldGui[][] getOpponentViewMatrix() {
         return opponentViewMatrix;
     }
-    
+
     /**
      * Setzt Schuß auf das Feld, das getroffen wurde
+     *
      * @param String coordinate
      * @param int shootRange
      * @param boolean orientation
      * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
      */
+<<<<<<< HEAD
     public ArrayList<Integer> setAiShot(int yCoordinate, int xCoordinate, int shootRange, boolean orientation) {
         //Array, in dem  die getroffenen Schiffe stehen
         ArrayList<Integer> hitShips = new ArrayList<>();
@@ -113,9 +112,36 @@ public class OpponentViewGui extends JPanel {
 			}
 		}
 		return hitShips;
+=======
+    public ArrayList<Integer> setShot(String[] coordinate, int shootRange, boolean orientation) {
+        //Array, in dem  die getroffenen Schiffe stehen
+        ArrayList<Integer> hitShips = new ArrayList<>();
+        if (orientation == true) {
+            for (int i = 0; i < shootRange; i++) {
+                try {
+                    if (this.opponentViewMatrix[Integer.parseInt(coordinate[0])][Integer.parseInt(coordinate[1]) + i].setIsShot() != 99) {
+                        hitShips.add(this.opponentViewMatrix[Integer.parseInt(coordinate[0])][Integer.parseInt(coordinate[1]) + i].setIsShot());
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+//                    e.printStackTrace();
+                }
+            }
+        } else {
+            for (int i = 0; i < shootRange; i++) {
+                try {
+                    if (this.opponentViewMatrix[Integer.parseInt(coordinate[0]) + i][Integer.parseInt(coordinate[1])].setIsShot() != 99) {
+                        hitShips.add(this.opponentViewMatrix[Integer.parseInt(coordinate[0]) + i][Integer.parseInt(coordinate[1])].setIsShot());
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+//                    e.printStackTrace();
+                }
+            }
+        }
+        return hitShips;
+>>>>>>> master
     }
-    
-      public void setOpponentViewButtonListener(ActionListener l) {
+
+    public void setOpponentViewButtonListener(ActionListener l) {
 
         for (int i = 0; i < opponentViewMatrix.length; i++) {
             for (int j = 0; j < opponentViewMatrix[i].length; j++) {
@@ -124,11 +150,5 @@ public class OpponentViewGui extends JPanel {
 
         }
     }
-
-
-
-
-
-
 
 }
