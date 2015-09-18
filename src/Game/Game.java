@@ -458,6 +458,8 @@ public class Game implements Serializable, ActionListener {
         
         // 4.Schiessen
         String lastHitCoordinate = ((AiPlayer) playerList.get(playerCounter)).aiShootOnPlayField(playerList, aiOpponentIndex, shootRange, orientation, aiCoordinateToShoot);
+                            gameGui.showOpponentView(aiOpponentIndex);
+
         ((AiPlayer) playerList.get(playerCounter)).setAiLastHitCoordinate(lastHitCoordinate);
 
         // 5. Rundenende.

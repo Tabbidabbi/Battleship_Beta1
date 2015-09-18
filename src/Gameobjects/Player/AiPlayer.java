@@ -234,8 +234,8 @@ public class AiPlayer extends Player implements Serializable {
     	int yCoordinate = tempIntCoordinates[0];
     	int xCoordinate = tempIntCoordinates[1];
     	//Getroffene Schiffsnummern werden in das Array geschrieben
-        hitShips = playerList.get(aiOpponentIndex).getPlayerViewGui().setShot(yCoordinate, xCoordinate, shootRange, orientation);
-        playerList.get(aiOpponentIndex).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
+        hitShips = playerList.get(aiOpponentIndex).getPlayerViewGui().setAiShot(yCoordinate, xCoordinate, shootRange,orientation);
+        playerList.get(aiOpponentIndex).getOpponentViewGui().setAiShot(yCoordinate, xCoordinate, shootRange, orientation);
         //Prüft, ob schiffe getroffen wurden und setzt Hitpoints
         for(Integer ship : hitShips){
             for (int shipIndex = 0; shipIndex < playerList.get(aiOpponentIndex).getShips().size(); shipIndex++) {
