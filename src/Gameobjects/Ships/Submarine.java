@@ -8,12 +8,12 @@ public class Submarine extends Ship implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -8570994728399446892L;
-	String name = "U-Boot";
-        boolean isPlaced;
+	String name = "Submarine";
+    boolean isPlaced;
 
   //U-Boote positionieren
     public Submarine(int number) {
-        super("U", 2, false, number, false, 1, 0, 1, "U-Boot");
+        super("U", 2, false, number, false, 1, 0, 1, "Submarine");
         this.isPlaced = false;
     }
 

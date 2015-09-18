@@ -531,6 +531,7 @@ public class Game implements Serializable, ActionListener {
             this.roundNumber++;
             // Speichert das Spiel
             SaveLoad.save(this);
+            IO.println("Das Spiel wurde gespeichert.");
         }
         //Gibt es Gewinner aus
         Helper.printWinner(playerList);

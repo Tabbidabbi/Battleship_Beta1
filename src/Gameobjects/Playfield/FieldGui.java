@@ -23,9 +23,6 @@ import javax.swing.plaf.ColorUIResource;
  */
 public class FieldGui extends JButton implements Serializable {
     
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -787848770021504750L;
     private boolean active;
     private boolean isShot;
@@ -33,8 +30,6 @@ public class FieldGui extends JButton implements Serializable {
     private boolean isHit;
     private boolean hasShip;
     private int shipNumber;
-    private String fieldStatusPlayer;
-    private String fieldStatusOpponent;
     private String fieldNumber;
 
     /**
@@ -48,21 +43,36 @@ public class FieldGui extends JButton implements Serializable {
         this.active = true;
     }
 
+    /**
+     * Gibt zurück, ob das Feld aktiv ist.
+     * Active wird geprüft, um Schiffe zu setzen.
+     * @return boolean active
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Setzt Feld aktiv oder inaktiv.
+     * Auf dem Feld wird die Lage des Schiffes und drumherum auf inaktiv gesetzt.
+     * @param boolean active
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
     
+    /**
+     * Gibt zurück, ob auf das Feld geschossen wurde.
+     * @return boolean isShot
+     */
     public boolean getIsShot() {
 		return isShot;
 	}
 
     /**
-     * Setzt Schuss auf das Feld
-     * @return int; Gibt die Schiffsnummer zurück
+     * Setzt Schuss auf das Feld, versieht es mit einem Zeichen und
+     * gibt die Schiffsnummer zurück, wenn sich eines auf dem Feld befindet.
+     * @return int shipNumber
      */
     public int setIsShot(){
 		if(this.isShot == false){
@@ -83,48 +93,94 @@ public class FieldGui extends JButton implements Serializable {
 		return getShipNumber();
 	}
 
+    /**
+     * Gibt zurück, ob diese Feld nur Wasser ist.
+     * @return boolean isWater
+     */
 	public boolean getIsWater() {
 		return isWater;
 	}
 
+	/**
+	 * Setzt Feld auf Wasser.
+	 * @param boolean isWater
+	 */
 	public void setIsWater(boolean isWater) {
 		this.isWater = isWater;
 	}
 
+	/**
+	 * Gibt zurück, ob Schiff getroffen wurde.
+	 * !Schiff muss sich auf dem Feld befinden!
+	 * @return boolean isHit
+	 */
 	public boolean getIsHit() {
 		return isHit;
 	}
 
+	/**
+	 * Setzt Hit auf dem Feld, jedoch nur, wenn dich ein Schiff auf dem Feld befindet,
+	 * welches abgeschossen wurde.
+	 * @param isHit
+	 */
 	public void setIsHit(boolean isHit) {
 		this.isHit = isHit;
 	}
 	
+	/**
+	 * Gibt zurück, ob sich ein Schiff auf dem Feld befindet.
+	 * @return boolean hasShip
+	 */
 	public boolean getHasShip() {
 		return hasShip;
 	}
 
+	/**
+	 * Setzt boolean, dass sich ein Schiff auf dem Feld befindet.
+	 * @param hasShip
+	 */
 	public void setHasShip(boolean hasShip) {
 		this.hasShip = hasShip;
 	}
 
+	/**
+	 * Gibt Schiffsnummer des Schiffes zurück, welches sich auf dem Feld befindet.
+	 * @return int shipNumber
+	 */
 	public int getShipNumber() {
 		return shipNumber;
 	}
 
+	/**
+	 * Setzt Schiffsnummer auf das Feld.
+	 * @param shipNumber
+	 */
 	public void setShipNumber(int shipNumber) {
 		this.shipNumber = shipNumber;
 	}
 
+	/**
+	 * Gibt Feldnummer zurück.
+	 * FieldNumber ist Koordiante.
+	 * @return String fieldNumber
+	 */
 	public String getFieldNumber() {
 		return fieldNumber;
 	}
 
+	/**
+	 * Setzt Feldnummer.
+	 * @param fieldNumber
+	 */
 	public void setFieldNumber(String fieldNumber) {
 		this.fieldNumber = fieldNumber;
 	}
 
-	@Override
-    public void setText(String text) {
-        super.setText(text); //To change body of generated methods, choose Tools | Templates.
+	/**
+	 * Setzt Text des Feldbuttons
+	 * @param String text (X, O)
+	 */
+	public void setText(String text) {
+        super.setText(text); 
     }
 }

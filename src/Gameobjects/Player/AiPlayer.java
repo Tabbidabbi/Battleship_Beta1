@@ -10,6 +10,13 @@ public class AiPlayer extends Player implements Serializable {
 	private int aiLastHitOpponentIndex;
 	private String aiLastHitCoordinate;
 
+	/**
+	 * Konstruktor
+	 * @param number Spielernummer
+	 * @param name Spielername
+	 * @param gameSettings Spieleinstellungen
+	 * @param isAi KI
+	 */
 	public AiPlayer(int number, String name, Settings gameSettings, boolean isAi) {
 		super(number, name, gameSettings, isAi);
 		setAiLastHitCoordinate(null);
