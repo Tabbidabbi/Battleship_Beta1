@@ -430,11 +430,7 @@ public class Game implements Serializable, ActionListener {
                 // Spieler, die verloren haben, kommen nicht mehr an die Reihe
                 if (playerList.get(playerNumber).getisLost() == false) {
                     // Setzt die Nachladezeit aller Schiffe in jeder Runde um 1 runter
-                    for (int shipNumber = 0; shipNumber < playerList.get(playerNumber).getShips().size(); shipNumber++) {
-                        if (playerList.get(playerNumber).getShips().get(shipNumber).getCurrentReloadTime() >= 1) {
-                            playerList.get(playerNumber).getShips().get(shipNumber).setDownReloadTime();
-                        }
-                    }
+                    setDownReloadTime(playerList, playerNumber);
 
                     IO.println("Runde " + this.roundNumber + " beginnt.");
 
@@ -444,80 +440,11 @@ public class Game implements Serializable, ActionListener {
 
                             if (playerList.get(playerCounter).getIsAi() == true) {
 
-                                //1. Auswahl des Schiffes
-                                IO.println("Spieler " + playerList.get(playerCounter).getNumber()
-                                        + ": " + playerList.get(playerCounter).getName()
-                                        + " ist am Zug!");
-                                //Vorher casten
-                                int aiShipIndex = ((AiPlayer) playerList.get(playerCounter)).getRandomShip(playerList, playerCounter);
-                                int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
-                                boolean orientation = false;
-                                if (shootRange > 1) {
-                                    orientation = ((AiPlayer) playerList.get(playerCounter)).getAiOrientation();
-                                }
-
-                                // 2. Auswahl eines Gegners.
-                                int aiOpponentIndex;
-                                if (((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex() == 9) {
-                                    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter);
-                                } else {
-                                    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex();
-                                }
-                                //IO.println("Spielfeld vom Gegner: " + playerList.get(aiOpponentIndex).getName());
-                                //playerList.get(aiOpponentIndex).getOpponentField().printOpponentField();
-                                // Koordinate wird gewählt
-
-                                // 3. Koordinate auf dem Spielfeld auswählen.
-                                String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
-								//String aiCoordinateToShoot = Helper.aiChooseCoordinate(playerList, playerCounter, playerList.get(playerCounter).getAiLastHitCoordinate());
-
-                                // 4.Schiessen
-                                String lastHitCoordinate = ((AiPlayer) playerList.get(playerCounter)).aiShootOnPlayField(playerList, aiOpponentIndex, shootRange, orientation, aiCoordinateToShoot);
-                                ((AiPlayer) playerList.get(playerCounter)).setAiLastHitCoordinate(lastHitCoordinate);
-
-                                // 5. Rundenende.
-                                // Nachladezeiten werden gesetzt
-                                playerList.get(playerCounter).getShips().get(aiShipIndex).setCurrentReloadTime();
-                                // Es wird geprüft, ob der Gegner verloren hat.
-                                if (Helper.checkIfShipAvailable(playerList, aiOpponentIndex) == false) {
-                                    playerList.get(aiOpponentIndex).setLost(true);
-                                }
-                                if (playerList.get(aiOpponentIndex).getisLost() == true) {
-                                    IO.println(playerList.get(aiOpponentIndex).getName() + " hat verloren!");
-                                }
+                                aiPlayerTurn(playerList, playerCounter);
                             } else {
-                                IO.println("Spieler " + playerList.get(playerCounter).getNumber()
-                                        + ": " + playerList.get(playerCounter).getName() + " ist am Zug!");
-
-                                // 1. Auswahl eines verfuegbaren Schiffes.
-                                int shipIndex = playerList.get(playerCounter).getAvailableShipToShoot(playerList, playerCounter);
-                                int shootRange = playerList.get(playerCounter).getShips().get(shipIndex).getShootRange();
-                                boolean orientation = false;
-                                if (shootRange > 1) {
-                                    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung ein");
-                                    orientation = orientationDialog.getOrientation();
-                                }
-
-                                // 2. Auswahl eines Gegners.
-                                int opponent = playerList.get(playerCounter).getAvailableOpponentsToShoot(playerList, playerCounter);
-
-                                // 3. Koordinate auf dem Spielfeld auswählen.
-                                String koordinate = playerList.get(playerCounter).coordinateToShoot();
-
-                                // 4.Schiessen
-                                playerList.get(playerCounter).shootOnPlayField(playerList, opponent, shootRange, orientation, koordinate);
-                                playerList.get(playerCounter).getShips().get(shipIndex).setCurrentReloadTime();
-
-                                if (Helper.checkIfShipAvailable(playerList, opponent) == false) {
-                                    playerList.get(opponent).setLost(true);
-                                }
-
-                                if (playerList.get(opponent).getisLost() == true) {
-                                    IO.println(playerList.get(opponent).getName() + " hat verloren!");
-                                }
+                                humanPlayerTurn(playerList, playerCounter);
                             }
                         }
-
                     }
                 }
                 // Setzt den Counter der for-Schleife auf 0, damit eine neue Runde beginnt.
@@ -535,6 +462,93 @@ public class Game implements Serializable, ActionListener {
         //Gibt es Gewinner aus
         Helper.printWinner(playerList);
     }
+
+	private void setDownReloadTime(ArrayList<Player> playerList,
+			int playerNumber) {
+		for (int shipNumber = 0; shipNumber < playerList.get(playerNumber).getShips().size(); shipNumber++) {
+		    if (playerList.get(playerNumber).getShips().get(shipNumber).getCurrentReloadTime() >= 1) {
+		        playerList.get(playerNumber).getShips().get(shipNumber).setDownReloadTime();
+		    }
+		}
+	}
+
+    private void aiPlayerTurn(ArrayList<Player> playerList, int playerCounter) {
+		//1. Auswahl des Schiffes
+		IO.println("Spieler " + playerList.get(playerCounter).getNumber()
+		        + ": " + playerList.get(playerCounter).getName()
+		        + " ist am Zug!");
+		//Vorher casten
+		int aiShipIndex = ((AiPlayer) playerList.get(playerCounter)).getRandomShip(playerList, playerCounter);
+		int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
+		boolean orientation = false;
+		if (shootRange > 1) {
+		    orientation = ((AiPlayer) playerList.get(playerCounter)).getAiOrientation();
+		}
+
+		// 2. Auswahl eines Gegners.
+		int aiOpponentIndex;
+		if (((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex() == 9) {
+		    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiOpponent(playerList, playerCounter);
+		} else {
+		    aiOpponentIndex = ((AiPlayer) playerList.get(playerCounter)).getAiLastHitOpponentIndex();
+		}
+		//IO.println("Spielfeld vom Gegner: " + playerList.get(aiOpponentIndex).getName());
+		//playerList.get(aiOpponentIndex).getOpponentField().printOpponentField();
+		// Koordinate wird gewählt
+
+		// 3. Koordinate auf dem Spielfeld auswählen.
+		String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
+		//String aiCoordinateToShoot = Helper.aiChooseCoordinate(playerList, playerCounter, playerList.get(playerCounter).getAiLastHitCoordinate());
+
+		// 4.Schiessen
+		String lastHitCoordinate = ((AiPlayer) playerList.get(playerCounter)).aiShootOnPlayField(playerList, aiOpponentIndex, shootRange, orientation, aiCoordinateToShoot);
+		((AiPlayer) playerList.get(playerCounter)).setAiLastHitCoordinate(lastHitCoordinate);
+
+		// 5. Rundenende.
+		// Nachladezeiten werden gesetzt
+		playerList.get(playerCounter).getShips().get(aiShipIndex).setCurrentReloadTime();
+		// Es wird geprüft, ob der Gegner verloren hat.
+		if (Helper.checkIfShipAvailable(playerList, aiOpponentIndex) == false) {
+		    playerList.get(aiOpponentIndex).setLost(true);
+		}
+		if (playerList.get(aiOpponentIndex).getisLost() == true) {
+		    IO.println(playerList.get(aiOpponentIndex).getName() + " hat verloren!");
+		}
+	}
+    
+	private void humanPlayerTurn(ArrayList<Player> playerList, int playerCounter) {
+		IO.println("Spieler " + playerList.get(playerCounter).getNumber()
+		        + ": " + playerList.get(playerCounter).getName() + " ist am Zug!");
+
+		// 1. Auswahl eines verfuegbaren Schiffes.
+		int shipIndex = playerList.get(playerCounter).getAvailableShipToShoot(playerList, playerCounter);
+		int shootRange = playerList.get(playerCounter).getShips().get(shipIndex).getShootRange();
+		boolean orientation = false;
+		if (shootRange > 1) {
+		    HelperOrientationDialog orientationDialog = new HelperOrientationDialog("Bitte geben Sie die Ausrichtung ein");
+		    orientation = orientationDialog.getOrientation();
+		}
+
+		// 2. Auswahl eines Gegners.
+		int opponent = playerList.get(playerCounter).getAvailableOpponentsToShoot(playerList, playerCounter);
+
+		// 3. Koordinate auf dem Spielfeld auswählen.
+		String koordinate = playerList.get(playerCounter).coordinateToShoot();
+
+		// 4.Schiessen
+		playerList.get(playerCounter).shootOnPlayField(playerList, opponent, shootRange, orientation, koordinate);
+		playerList.get(playerCounter).getShips().get(shipIndex).setCurrentReloadTime();
+
+		if (Helper.checkIfShipAvailable(playerList, opponent) == false) {
+		    playerList.get(opponent).setLost(true);
+		}
+
+		if (playerList.get(opponent).getisLost() == true) {
+		    IO.println(playerList.get(opponent).getName() + " hat verloren!");
+		}
+	}
+
+	
 
     private void addPlayerViewMatrixListener() {
 
