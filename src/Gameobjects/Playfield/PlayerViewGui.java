@@ -99,7 +99,7 @@ public class PlayerViewGui extends JPanel {
 	 * @param boolean orientation
 	 * @return hitShips int-Array mit Anzahl der getroffenen Schiffe
 	 */
-	public ArrayList<Integer> setShot(int yCoordinate, int xCoordinate, int shootRange, boolean orientation) {
+	public ArrayList<Integer> setAiShot(int yCoordinate, int xCoordinate, int shootRange, boolean orientation) {
 		// Array, in dem die getroffenen Schiffe stehen
 		ArrayList<Integer> hitShips = new ArrayList<>();
 		

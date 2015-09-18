@@ -508,7 +508,7 @@ public class Game implements Serializable, ActionListener {
         // 4.Schiessen
         String lastHitCoordinate = ((AiPlayer) playerList.get(playerCounter)).aiShootOnPlayField(playerList, aiOpponentIndex, shootRange, orientation, aiCoordinateToShoot);
         ((AiPlayer) playerList.get(playerCounter)).setAiLastHitCoordinate(lastHitCoordinate);
-
+        gameGui.showOpponentView(aiOpponentIndex);
         // 5. Rundenende.
         // Nachladezeiten werden gesetzt
         playerList.get(playerCounter).getShips().get(aiShipIndex).setCurrentReloadTime();
@@ -667,6 +667,7 @@ public class Game implements Serializable, ActionListener {
                 if (playerList.get(player) instanceof AiPlayer) {
                     gameGui.showPlayerPlayField(player);
                     aiPlayerTurn(playerList, player);
+                    
                 } else {
                     gameGui.showPlayerPlayField(player);
                     gameGui.activateEnemyPlayerButton(player);
