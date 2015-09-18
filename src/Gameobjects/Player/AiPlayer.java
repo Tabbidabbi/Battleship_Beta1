@@ -228,21 +228,21 @@ public class AiPlayer extends Player implements Serializable {
      * @return hitCoordinate Coordinate mit Treffer
      */
     public String aiShootOnPlayField(ArrayList<Player> playerList, int aiOpponentIndex, int shootRange, boolean orientation, String coordinate) {
-        int[] hitShips;
+        ArrayList<Integer> hitShips;
         String hitCoordinate = null;
     	int[] tempIntCoordinates = splitCoordinate(coordinate);
     	int yCoordinate = tempIntCoordinates[0];
     	int xCoordinate = tempIntCoordinates[1];
     	//Getroffene Schiffsnummern werden in das Array geschrieben
-        hitShips = playerList.get(aiOpponentIndex).getPlayerViewGui().setShot(coordinate, shootRange, orientation);
+        hitShips = playerList.get(aiOpponentIndex).getPlayerViewGui().setShot(yCoordinate, xCoordinate, shootRange, orientation);
         playerList.get(aiOpponentIndex).getOpponentViewGui().setShot(coordinate, shootRange, orientation);
         //Prüft, ob schiffe getroffen wurden und setzt Hitpoints
-        for (int i = 0; i < hitShips.length; i++) {
+        for(Integer ship : hitShips){
             for (int shipIndex = 0; shipIndex < playerList.get(aiOpponentIndex).getShips().size(); shipIndex++) {
-                if (playerList.get(aiOpponentIndex).getShips().get(shipIndex).getNumber() == hitShips[i]) {
+        		if (playerList.get(aiOpponentIndex).getShips().get(shipIndex).getNumber() == hitShips.get(ship)) {
                 	playerList.get(aiOpponentIndex).getShips().get(shipIndex).setHitpoints();
                 }
-            }
+        	}
         }
         if(playerList.get(aiOpponentIndex).getPlayerViewGui().getPlayerViewMatrix()[yCoordinate][xCoordinate].getHasShip() == true){
         	hitCoordinate = coordinate;
