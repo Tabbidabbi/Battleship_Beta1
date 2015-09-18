@@ -474,9 +474,7 @@ public class Game implements Serializable, ActionListener {
 
     private void aiPlayerTurn(ArrayList<Player> playerList, int playerCounter) {
 		//1. Auswahl des Schiffes
-		IO.println("Spieler " + playerList.get(playerCounter).getNumber()
-		        + ": " + playerList.get(playerCounter).getName()
-		        + " ist am Zug!");
+		IO.println(playerList.get(playerCounter).getName() + " ist am Zug!");
 		//Vorher casten
 		int aiShipIndex = ((AiPlayer) playerList.get(playerCounter)).getRandomShip(playerList, playerCounter);
 		int shootRange = playerList.get(playerCounter).getShips().get(aiShipIndex).getShootRange();
@@ -497,7 +495,7 @@ public class Game implements Serializable, ActionListener {
 		// Koordinate wird gewählt
 
 		// 3. Koordinate auf dem Spielfeld auswählen.
-		String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiShootCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
+		String aiCoordinateToShoot = ((AiPlayer) playerList.get(playerCounter)).getAiChooseCoordinate(playerList, aiOpponentIndex, ((AiPlayer) playerList.get(playerCounter)).getAiLastHitCoordinate());
 		//String aiCoordinateToShoot = Helper.aiChooseCoordinate(playerList, playerCounter, playerList.get(playerCounter).getAiLastHitCoordinate());
 
 		// 4.Schiessen
